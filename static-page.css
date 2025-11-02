@@ -1,0 +1,73 @@
+/* ======== static-page.css (Policy ও Terms পেজের জন্য) ======== */
+
+.static-page-main {
+    padding: 60px 0;
+}
+
+.static-page-main .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.page-title {
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--primary-color);
+    position: relative;
+}
+.page-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: var(--primary-color);
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+.static-content {
+    background: var(--card-bg-light);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: var(--shadow);
+}
+
+.static-content h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-top: 30px;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid var(--border-light);
+}
+.static-content h2:first-child {
+    margin-top: 0;
+}
+
+.static-content p,
+.static-content li {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text-color-light);
+    margin-bottom: 15px;
+}
+
+.static-content ul {
+    list-style-type: disc;
+    padding-left: 30px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 30px;
+    }
+    .static-content {
+        padding: 25px;
+    }
+}

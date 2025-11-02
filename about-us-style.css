@@ -1,0 +1,144 @@
+/* ======== about-us-style.css ======== */
+
+.about-main {
+    padding: 60px 0;
+}
+.about-main .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.about-section {
+    margin-bottom: 60px;
+}
+.about-section.text-center {
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.about-page-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+.about-subtitle {
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+.section-title-center {
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 40px;
+    position: relative;
+}
+.section-title-center::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: var(--primary-color);
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+/* "What We Do" কার্ড স্টাইল */
+.what-we-do-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+.about-card {
+    background: var(--card-bg-light);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s;
+}
+.about-card:hover {
+    transform: translateY(-8px);
+}
+.about-card i {
+    font-size: 40px;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+.about-card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+.about-card p {
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* "Our Team" কার্ড স্টাইল */
+.team-member-card {
+    max-width: 500px;
+    margin: 0 auto;
+    background: var(--card-bg-light);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+.team-member-card img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid var(--primary-color);
+    margin-bottom: 15px;
+    object-fit: cover;
+}
+.team-member-card h3 {
+    font-size: 24px;
+    font-weight: 600;
+}
+.team-member-card span {
+    font-size: 16px;
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-bottom: 15px;
+    display: block;
+}
+.team-member-card .founder-quote {
+    font-size: 16px;
+    line-height: 1.7;
+    font-style: italic;
+    color: #555;
+    margin-bottom: 20px;
+}
+body.dark-mode .team-member-card .founder-quote {
+    color: #ccc;
+}
+.social-links-team {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+.social-links-team a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--border-light);
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+.social-links-team a:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}

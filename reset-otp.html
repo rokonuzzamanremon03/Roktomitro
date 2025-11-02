@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP ভেরিফাই - Roktomitro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="auth-page.css"> 
+</head>
+<body>
+    <header class="header">
+        </header>
+
+    <main class="auth-main">
+        <div class="auth-container">
+            <h2>কোড ভেরিফাই করুন</h2>
+            <p class="auth-subtitle">আপনার মোবাইল নম্বরে পাঠানো ৬-ডিজিটের কোডটি লিখুন।</p>
+            
+            <form class="auth-form" action="set-new-password.html"> <div class="form-group">
+                    <label for="otp">OTP কোড:</label>
+                    <div class="otp-inputs">
+                        <input type="text" maxlength="1" required>
+                        <input type="text" maxlength="1" required>
+                        <input type="text" maxlength="1" required>
+                        <input type="text" maxlength="1" required>
+                        <input type="text" maxlength="1" required>
+                        <input type="text" maxlength="1" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">ভেরিফাই করুন</button>
+                
+                <div class="auth-links">
+                    <a href="#">কোড পাননি? পুনরায় পাঠান</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        </footer>
+    
+    <div id="login-modal" class="modal-overlay">
+        </div>
+    
+    <script src="script.js"></script> 
+</body>
+</html>

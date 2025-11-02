@@ -1,0 +1,433 @@
+/* ======== dashboard-style.css ======== */
+
+/* লগড-ইন হেডারের প্রোফাইল বাটন */
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+.profile-btn {
+    background: none;
+    border: 2px solid var(--primary-color);
+    border-radius: 50px;
+    padding: 8px 15px;
+    color: var(--primary-color);
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+.profile-btn:hover {
+    background: var(--primary-color);
+    color: #fff;
+}
+.profile-btn .avatar {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.profile-dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 110%;
+    background-color: var(--card-bg-light);
+    min-width: 180px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    z-index: 100;
+    overflow: hidden;
+}
+.profile-dropdown-content a {
+    color: var(--text-color-light);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-weight: 500;
+}
+.profile-dropdown-content a:hover {
+    background-color: var(--border-light);
+}
+.profile-dropdown-content a.logout-btn {
+    color: var(--primary-color);
+    font-weight: 600;
+    border-top: 1px solid var(--border-light);
+}
+.profile-dropdown:hover .profile-dropdown-content {
+    display: block;
+}
+
+/* ড্যাশবোর্ড লেআউট */
+.dashboard-wrapper {
+    display: flex;
+    max-width: 1300px;
+    margin: 30px auto;
+    padding: 0 20px;
+    gap: 30px;
+}
+
+/* সাইডবার */
+.dashboard-sidebar {
+    flex: 0 0 260px; /* সাইডবার প্রস্থ 260px */
+    background: var(--card-bg-light);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 25px;
+    height: fit-content; /* কন্টেন্ট অনুযায়ী উচ্চতা */
+    box-shadow: var(--shadow);
+}
+.sidebar-nav h3 {
+    font-size: 18px;
+    font-weight: 600;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid var(--border-light);
+}
+.sidebar-nav ul {
+    list-style: none;
+}
+.sidebar-nav li {
+    margin-bottom: 10px;
+}
+.sidebar-nav a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    text-decoration: none;
+    color: var(--text-color-light);
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.3s;
+}
+.sidebar-nav a:hover {
+    background: var(--border-light);
+    color: var(--primary-color);
+}
+.sidebar-nav a.active {
+    background: var(--primary-color);
+    color: #fff;
+}
+.sidebar-nav a.logout-link {
+    color: var(--primary-color);
+}
+.sidebar-nav a.logout-link:hover {
+    background: #e74c3c20;
+}
+
+/* মূল কন্টেন্ট */
+.dashboard-content {
+    flex: 1; /* বাকি জায়গা নিয়ে নেবে */
+}
+.dashboard-header {
+    background: var(--card-bg-light);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: var(--shadow);
+}
+.dashboard-header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+/* স্ট্যাটাস গ্রিড */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+.stat-card-dash {
+    background: var(--card-bg-light);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+}
+.stat-card-dash i {
+    font-size: 30px;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+.stat-card-dash h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #777;
+    margin-bottom: 5px;
+}
+body.dark-mode .stat-card-dash h3 {
+    color: #bbb;
+}
+.stat-card-dash span {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-color-light);
+}
+
+/* প্রোফাইল সামারি */
+.profile-summary h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+.summary-card {
+    background: var(--card-bg-light);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.profile-info {
+    font-size: 16px;
+    line-height: 1.8;
+}
+.status-available {
+    color: #2ECC71;
+    font-weight: 600;
+}
+/* .status-unavailable { color: #E74C3C; font-weight: 600; } */
+
+/* ড্যাশবোর্ড রেসপন্সিভ */
+@media (max-width: 992px) {
+    .dashboard-wrapper {
+        flex-direction: column;
+    }
+    .dashboard-sidebar {
+        flex: 0 0 auto; /* প্রস্থ অটো */
+    }
+    .sidebar-nav ul {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .sidebar-nav li {
+        flex-grow: 1;
+    }
+    .sidebar-nav a {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    /* মোবাইলে লগড-ইন হেডারে নাম হাইড করা */
+    .profile-btn span, .profile-btn .fa-caret-down {
+        display: none;
+    }
+    .profile-btn {
+        padding: 8px;
+        width: 42px;
+        height: 42px;
+        justify-content: center;
+    }
+    .profile-dropdown-content {
+        min-width: 150px;
+    }
+    .dashboard-header h1 {
+        font-size: 26px;
+    }
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    .summary-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .summary-card .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+/* ======== profile-edit.html এর পাসওয়ার্ড সেকশন ======== */
+.password-change-section {
+    margin-top: 30px;
+    background: var(--card-bg-light);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+}
+.password-change-section h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+/* পাসওয়ার্ড ফর্মের জন্য be-a-donor-style.css এর স্টাইল ধার করা */
+.password-change-section .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr; /* পাশাপাশি ৩টি কলাম */
+    gap: 25px;
+}
+.password-change-section .form-group {
+    display: flex;
+    flex-direction: column;
+}
+.password-change-section .form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+/* পাসওয়ার্ড ফর্ম রেসপন্সিভ */
+@media (max-width: 992px) {
+    .password-change-section .form-grid {
+        grid-template-columns: 1fr; /* সব এক কলামে */
+    }
+}
+
+/* ======== donation-history.html এর টেবিল স্টাইল ======== */
+.history-table-container {
+    background: var(--card-bg-light);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 20px; /* টেবিলের চারপাশে সামান্য প্যাডিং */
+    box-shadow: var(--shadow);
+    overflow-x: auto; /* মোবাইলের জন্য টেবিলটি স্ক্রল করা যাবে */
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse; /* বর্ডার একীভূত করা */
+    min-width: 600px; /* টেবিলের একটি সর্বনিম্ন প্রস্থ */
+}
+
+.history-table th,
+.history-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.history-table th {
+    font-size: 16px;
+    font-weight: 600;
+    background-color: var(--bg-light);
+    color: var(--text-color-light);
+}
+
+.history-table tbody tr:hover {
+    background-color: var(--border-light);
+}
+
+.history-table td {
+    font-size: 15px;
+}
+/* ======== my-requests.html পেজের স্টাইল ======== */
+
+/* পেজের হেডার (টাইটেল + বাটন) */
+.page-header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* মোবাইলের জন্য */
+    gap: 20px;
+    
+    /* dashboard-header এর স্টাইল ধার করছি */
+    background: var(--card-bg-light);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: var(--shadow);
+}
+.page-header-actions h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0;
+}
+.page-header-actions .btn-primary {
+    padding: 12px 24px;
+    font-size: 16px;
+}
+
+/* টেবিলের ভেতরের অ্যাকশন বাটন */
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 6px;
+    margin-right: 5px;
+    transition: all 0.3s;
+}
+.btn-action i {
+    font-size: 12px;
+}
+
+.btn-action.btn-edit {
+    background-color: #3498DB; /* Blue */
+    color: #fff;
+}
+.btn-action.btn-edit:hover {
+    background-color: #2980B9;
+}
+
+.btn-action.btn-delete {
+    background-color: #E74C3C; /* Red */
+    color: #fff;
+}
+.btn-action.btn-delete:hover {
+    background-color: #C0392B;
+}
+
+/* Disabled বাটন স্টাইল */
+.btn-action.disabled {
+    background-color: #bdc3c7; /* Gray */
+    color: #7f8c8d;
+    cursor: not-allowed;
+    pointer-events: none; /* কোনো ক্লিক কাজ করবে না */
+}
+
+/* স্ট্যাটাস ব্যাজ */
+.status-active,
+.status-fulfilled {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 13px;
+    color: #fff;
+}
+.status-active {
+    background-color: #2ECC71; /* Green */
+}
+.status-fulfilled {
+    background-color: #95a5a6; /* Gray */
+}
+
+/* টেবিলের নিচের নোট */
+.table-note {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #777;
+}
+body.dark-mode .table-note {
+    color: #bbb;
+}
+
+/* রেসপন্সিভ */
+@media (max-width: 768px) {
+    .page-header-actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .page-header-actions h1 {
+        font-size: 26px;
+    }
+    .page-header-actions .btn-primary {
+        width: 100%;
+        text-align: center;
+    }
+}

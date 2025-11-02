@@ -1,0 +1,108 @@
+/* ======== auth-page.css (Forgot Password, OTP, etc.) ======== */
+
+.auth-main {
+    padding: 80px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 160px); /* Header ও Footer বাদে বাকি জায়গা */
+}
+
+.auth-container {
+    width: 90%;
+    max-width: 480px;
+    background: var(--card-bg-light);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.auth-container h2 {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.auth-container p.auth-subtitle {
+    font-size: 16px;
+    color: var(--text-color-light);
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.auth-form .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.auth-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.auth-form input[type="tel"],
+.auth-form input[type="text"],
+.auth-form input[type="password"] {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    background: var(--bg-light);
+    color: var(--text-color-light);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+.auth-form .btn-primary {
+    width: 100%;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.auth-links {
+    margin-top: 25px;
+    font-size: 15px;
+}
+.auth-links a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+}
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+/* OTP ইনপুট স্টাইল */
+.otp-inputs {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 10px;
+}
+.otp-inputs input {
+    width: 50px;
+    height: 55px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    background: var(--bg-light);
+    color: var(--text-color-light);
+}
+.otp-inputs input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>রক্তদানের ইতিহাস - Roktomitro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="dashboard-style.css"> 
+</head>
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="index.html" class="nav-logo">
+                <img src="Source/logo.png" alt="Roktomitro Logo">
+            </a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">হোম</a></li>
+                <li class="nav-item"><a href="find-blood.html" class="nav-link">দাতা খুঁজুন</a></li>
+                <li class="nav-item"><a href="urgent-requests.html" class="nav-link">জরুরী আবেদন</a></li>
+                <li class="nav-item"><a href="dashboard.html" class="nav-link">ড্যাশবোর্ড</a></li>
+            </ul>
+            <div class="nav-right">
+                <div class="profile-dropdown">
+                    <button class="profile-btn">
+                        <img src="avatar.png" alt="Avatar" class="avatar">
+                        <span>রোকন</span> <i class="fas fa-caret-down"></i>
+                    </button>
+                    <div class="profile-dropdown-content">
+                        <a href="profile-edit.html">প্রোফাইল এডিট</a>
+                        <a href="donation-history.html">রক্তদানের ইতিহাস</a>
+                        <a href="index.html" class="logout-btn">লগআউট</a>
+                    </div>
+                </div>
+                <button id="theme-toggle" class="theme-toggle-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <div class="dashboard-wrapper">
+        
+        <aside class="dashboard-sidebar">
+    <nav class="sidebar-nav">
+        <h3>নেভিগেশন</h3>
+        <ul>
+            <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> ড্যাশবোর্ড</a></li>
+            <li><a href="profile-edit.html"><i class="fas fa-user-edit"></i> প্রোফাইল এডিট</a></li>
+            <li><a href="donation-history.html" class="active"><i class="fas fa-history"></i> রক্তদানের ইতিহাস</a></li>
+            <li><a href="my-requests.html"><i class="fas fa-list-alt"></i> জরুরী আবেদন</a></li>
+            
+            <li><a href="find-blood.html"><i class="fas fa-search"></i> রক্ত খুঁজুন</a></li>
+            <li><a href="index.html" class="logout-link"><i class="fas fa-sign-out-alt"></i> লগআউট</a></li>
+        </ul>
+    </nav>
+</aside>
+
+        <main class="dashboard-content">
+            <section class="dashboard-header">
+                <h1>রক্তদানের ইতিহাস</h1>
+                <p>আপনার সকল রক্তদানের রেকর্ড এখানে সংরক্ষিত আছে।</p>
+            </section>
+            
+            <section class="history-table-container">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>ক্রম</th>
+                            <th>তারিখ</th>
+                            <th>স্থান / হাসপাতালের নাম</th>
+                            <th>পরিমাণ</th>
+                            <th>রোগীর বিবরণ (ঐচ্ছিক)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>১</td>
+                            <td>১৫ জুলাই, ২০২৫</td>
+                            <td>ঢাকা মেডিকেল কলেজ হাসপাতাল</td>
+                            <td>১ ব্যাগ</td>
+                            <td>থাইalassemia রোগী</td>
+                        </tr>
+                        <tr>
+                            <td>২</td>
+                            <td>১০ মার্চ, ২০২৫</td>
+                            <td>স্কয়ার হাসপাতাল, ঢাকা</td>
+                            <td>১ ব্যাগ</td>
+                            <td>অপারেশন রোগী</td>
+                        </tr>
+                        <tr>
+                            <td>৩</td>
+                            <td>০৫ নভেম্বর, ২০২৪</td>
+                            <td>বঙ্গবন্ধু মেডিকেল (PG)</td>
+                            <td>১ ব্যাগ</td>
+                            <td>ডেঙ্গু রোগী</td>
+                        </tr>
+                        
+                        </tbody>
+                </table>
+            </section>
+
+        </main>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <a href="index.html" class="footer-logo"><span>Roktomitro (রক্তমিত্র)</span></a>
+                <p>রক্তদানের মাধ্যমে জীবন বাঁচানোর একটি অলাভজনক উদ্যোগ।</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>দ্রুত লিংক</h4>
+                <ul>
+                    <li><a href="#">আমাদের সম্পর্কে</a></li>
+                    <li><a href="#">যোগাযোগ</a></li>
+                    <li><a href="policy.html">গোপনীয়তা নীতি</a></li>
+                    <li><a href="terms.html">শর্তাবলী</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>সাহায্য</h4>
+                <ul>
+                    <li><a href="#">সচরাচর জিজ্ঞাস্য</a></li>
+                    <li><a href="#">কেন রক্ত দিবেন?</a></li>
+                    <li><a href="#">রক্তদানের যোগ্যতা</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>আমাদের অ্যাপ</h4>
+                <p>শীঘ্রই আসছে গুগল প্লে স্টোর এবং অ্যাপল অ্যাপ স্টোরে।</p>
+                <img src="app-store.svg" alt="App Store" class="store-badge">
+                <img src="google-play.svg" alt="Google Play" class="store-badge">
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Roktomitro. সমস্ত স্বত্ব সংরক্ষিত।</p>
+            <p class="visitor-counter">
+                মোট ভিজিটর: <span id="visit-count">0</span>
+            </p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script> 
+</body>
+</html>

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>দাতা হোন - Roktomitro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="be-a-donor-style.css"> 
+</head>
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="index.html" class="nav-logo">
+                <img src="Source/logo.png" alt="Roktomitro Logo">
+            </a>
+            <ul class="nav-menu">
+    <li class="nav-item"><a href="index.html" class="nav-link">হোম</a></li>
+    <li class="nav-item"><a href="find-blood.html" class="nav-link">দাতা খুঁজুন</a></li>
+    <li class="nav-item"><a href="be-a-donor.html" class="nav-link">দাতা হোন</a></li>
+    <li class="nav-item"><a href="urgent-requests.html" class="nav-link">জরুরী আবেদন</a></li> 
+	<li class="nav-item"><a href="blog.html" class="nav-link">ব্লগ</a></li>
+    <li class="nav-item"><a href="about-us.html" class="nav-link">আমাদের সম্পর্কে</a></li>
+</ul>
+            <div class="nav-right">
+                <button id="login-open-btn" class="btn btn-login">লগইন</button>
+                <button id="theme-toggle" class="theme-toggle-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="donor-registration-main">
+        <div class="container">
+            <h1 class="section-title">আমাদের সাথে যোগ দিন, রক্তদাতা হোন</h1>
+            <p class="section-subtitle">নিচের ফর্মটি পূরণ করে জীবন বাঁচানোর এই মহৎ উদ্যোগে অংশ নিন।</p>
+
+            <div class="registration-form-container">
+                <form id="registration-form">
+    <div class="form-grid">
+        
+        <div class="form-group full-width">
+            <label for="full-name">সম্পূর্ণ নাম (FullName): *</label>
+            <input type="text" id="full-name" name="full-name" placeholder="আপনার পুরো নাম লিখুন" required>
+        </div>
+
+        <div class="form-group">
+            <label for="blood-group-reg">রক্তের গ্রুপ (Blood Group): *</label>
+            <select id="blood-group-reg" name="blood-group" required>
+                <option value="">-- গ্রুপ সিলেক্ট করুন --</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="dob">জন্ম তারিখ (Date of Birth): *</label>
+            <input type="date" id="dob" name="dob" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="division-reg">বিভাগ (Division): *</label>
+            <select id="division-reg" name="division" required>
+                <option value="">-- বিভাগ সিলেক্ট করুন --</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="district-reg">জেলা (District): *</label>
+            <select id="district-reg" name="district" disabled required>
+                <option value="">-- প্রথমে বিভাগ সিলেক্ট করুন --</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="upazila-reg">উপজেলা/থানা (Upazila): *</label>
+            <select id="upazila-reg" name="upazila" disabled required>
+                <option value="">-- প্রথমে জেলা সিলেক্ট করুন --</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="address">বর্তমান ঠিকানা (Address): *</label>
+            <textarea id="address" name="address" rows="3" placeholder="বাসা/গ্রাম, রোড/ওয়ার্ড, পোস্ট অফিস" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="mobile">মোবাইল নম্বর (Mobile): *</label>
+            <input type="tel" id="mobile" name="mobile" placeholder="e.g., 017..." required>
+        </div>
+
+        <div class="form-group">
+            <label for="mobile-alt">বিকল্প মোবাইল (Alternative):</label>
+            <input type="tel" id="mobile-alt" name="mobile-alt" placeholder="(ঐচ্ছিক)">
+        </div>
+
+        <div class="form-group">
+            <label for="whatsapp">হোয়াটসঅ্যাপ নম্বর (WhatsApp):</label>
+            <input type="tel" id="whatsapp" name="whatsapp" placeholder="মোবাইল নম্বরের মতোই হলে খালি রাখুন">
+        </div>
+
+        <div class="form-group">
+            <label for="facebook">ফেসবুক প্রোফাইল (Facebook):</label>
+            <input type="text" id="facebook" name="facebook" placeholder="https://facebook.com/yourprofile">
+        </div>
+
+        <div class="form-group">
+            <label for="last-donation">শেষ রক্তদানের তারিখ:</label>
+            <input type="date" id="last-donation" name="last-donation">
+        </div>
+        
+        <div class="form-group">
+            <label for="gender">লিঙ্গ (Gender): *</label>
+            <select id="gender" name="gender" required>
+                <option value="">-- সিলেক্ট করুন --</option>
+                <option value="male">পুরুষ</option>
+                <option value="female">মহিলা</option>
+                <option value="other">অন্যান্য</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="password">পাসওয়ার্ড (Password): *</label>
+            <input type="password" id="password" name="password" placeholder="একটি নতুন পাসওয়ার্ড দিন" required>
+        </div>
+
+        <div class="form-group">
+            <label for="confirm-password">পাসওয়ার্ড নিশ্চিত করুন: *</label>
+            <input type="password" id="confirm-password" name="confirm-password" placeholder="পুনরায় পাসওয়ার্ড দিন" required>
+        </div>
+
+        <div class="form-group full-width terms">
+            <input type="checkbox" id="terms" name="terms" required>
+            <label for="terms">
+                আমি <a href="policy.html" target="_blank">গোপনীয়তা নীতি</a> এবং <a href="terms.html" target="_blank">ব্যবহারের শর্তাবলী</a> পড়েছি এবং তাতে সম্মত হচ্ছি।
+            </label>
+        </div>
+
+        <div class="form-group full-width">
+            <button type="submit" class="btn btn-primary">একাউন্ট তৈরি করুন</button>
+        </div>
+        
+        <div class="form-group full-width note">
+            <p>* চিহ্নিত ফিল্ডগুলো অবশ্যই পূরণ করতে হবে।</p>
+        </div>
+
+    </div>
+</form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <a href="#" class="footer-logo">
+                    <span>Roktomitro (রক্তমিত্র)</span>
+                </a>
+                <p>রক্তদানের মাধ্যমে জীবন বাঁচানোর একটি অলাভজনক উদ্যোগ।</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>দ্রুত লিংক</h4>
+                <ul>
+                    <li><a href="#">আমাদের সম্পর্কে</a></li>
+                    <li><a href="#">যোগাযোগ</a></li>
+                    <li><a href="policy.html">গোপনীয়তা নীতি</a></li>
+                    <li><a href="terms.html">শর্তাবলী</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>সাহায্য</h4>
+                <ul>
+                    <li><a href="#">সচরাচর জিজ্ঞাস্য</a></li>
+                    <li><a href="#">কেন রক্ত দিবেন?</a></li>
+                    <li><a href="#">রক্তদানের যোগ্যতা</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>আমাদের অ্যাপ</h4>
+                <p>শীঘ্রই আসছে গুগল প্লে স্টোর এবং অ্যাপল অ্যাপ স্টোরে।</p>
+                <img src="app-store.svg" alt="App Store" class="store-badge">
+                <img src="google-play.svg" alt="Google Play" class="store-badge">
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Roktomitro. সমস্ত স্বত্ব সংরক্ষিত।</p>
+            <p class="visitor-counter">
+                মোট ভিজিটর: <span id="visit-count">0</span>
+            </p>
+        </div>
+    </footer>
+<div id="login-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" id="login-close-btn">&times;</button>
+            <h2><i class="fas fa-sign-in-alt"></i> লগইন করুন</h2>
+            <p class="modal-subtitle">রক্তমিত্র-এ আপনাকে স্বাগতম!</p>
+            
+            <form class="login-form">
+                <div class="form-group">
+                    <label for="login-mobile">মোবাইল নম্বর:</label>
+                    <input type="tel" id="login-mobile" name="login-mobile" placeholder="e.g., 017..." required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">পাসওয়ার্ড:</label>
+                    <input type="password" id="login-password" name="login-password" placeholder="আপনার পাসওয়ার্ড দিন" required>
+                </div>
+                
+                <div class="form-options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">মনে রাখুন</label>
+                    </div>
+                    <a href="forgot-password.html" class="forgot-password" id="modal-forgot-pass">পাসওয়ার্ড ভুলে গেছেন?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary">লগইন</button>
+
+                <p class="register-link">
+                    আপনার কোনো একাউন্ট নেই? <a href="be-a-donor.html" id="modal-register-link">এখানে নিবন্ধন করুন</a>
+                </p>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script> 
+    <script src="be-a-donor-script.js"></script> 
+</body>
+</html>

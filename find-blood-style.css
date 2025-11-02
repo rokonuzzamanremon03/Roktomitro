@@ -1,0 +1,196 @@
+/* ======== find-blood.html পেজের জন্য নির্দিষ্ট স্টাইল ======== */
+.find-blood-main {
+    padding: 60px 0;
+}
+
+.search-section .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.search-section .section-title {
+    font-size: 36px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--primary-color);
+}
+.search-section .section-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 4px;
+    background-color: var(--primary-color);
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+.search-section .section-subtitle {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--text-color-light);
+}
+
+/* এই রুলটি খুঁজে বের করুন */
+.blood-search-form {
+    background: var(--card-bg-light);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: var(--shadow);
+    margin-bottom: 60px;
+
+    /* নতুন: এই ৩টি লাইন যোগ করুন */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+/* এই রুলটি খুঁজে বের করুন */
+.blood-search-form .form-group {
+    /* margin-bottom: 25px; - এই লাইনটি পরিবর্তন করে 0 করুন */
+    margin-bottom: 0;
+}
+.blood-search-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 17px;
+}
+.blood-search-form select,
+.blood-search-form input[type="text"] {
+    width: 100%;
+    padding: 14px 18px;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    border: 1px solid var(--border-light);
+    border-radius: 10px;
+    background: var(--bg-light);
+    color: var(--text-color-light);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.blood-search-form select:focus,
+.blood-search-form input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+}
+
+/* এই রুলটি খুঁজে বের করুন */
+.blood-search-form .btn-primary {
+    width: 100%;
+    font-size: 18px;
+    padding: 14px 28px;
+
+    /* নতুন: এই ২টি লাইন যোগ করুন */
+    grid-column: 1 / -1; /* বাটনটিকে সম্পূর্ণ প্রস্থ দিন */
+    margin-top: 10px; /* ফর্ম থেকে সামান্য গ্যাপ */
+}
+
+/* ======== সার্চ রেজাল্ট সেকশন ======== */
+.search-results {
+    margin-top: 50px;
+}
+
+.search-results .results-title {
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+}
+.search-results .results-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: var(--primary-color);
+    margin: 8px auto 0;
+    border-radius: 2px;
+}
+
+.no-results-message {
+    text-align: center;
+    font-size: 18px;
+    color: #777;
+    margin-top: 30px;
+}
+body.dark-mode .no-results-message {
+    color: #bbb;
+}
+
+
+/* ডামি রেজাল্ট কার্ডের স্টাইল (request-card style in index.css is reused) */
+/*
+.request-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.request-card {
+    background: var(--card-bg-light);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: var(--shadow);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+.request-card:hover {
+    transform: translateY(-5px);
+}
+
+.blood-group {
+    position: absolute;
+    top: -1px;
+    right: 20px;
+    background-color: var(--primary-color);
+    color: #fff;
+    padding: 20px 15px 10px;
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 5px 10px rgba(231, 76, 60, 0.3);
+}
+
+.request-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+.request-card p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    color: #555;
+}
+body.dark-mode .request-card p {
+    color: #ccc;
+}
+.request-card p i {
+    color: var(--primary-color);
+}
+
+.btn-primary-outline {
+    display: block;
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+.btn-primary-outline:hover {
+    background: var(--primary-color);
+    color: #fff;
+}
+*/

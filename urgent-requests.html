@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>জরুরী রক্তের আবেদন - Roktomitro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="find-blood-style.css"> </head>
+<body>
+
+    <header class="header">
+        <nav class="navbar">
+            <a href="index.html" class="nav-logo">
+                <img src="Source/logo.png" alt="Roktomitro Logo">
+            </a>
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="index.html" class="nav-link">হোম</a></li>
+                <li class="nav-item"><a href="find-blood.html" class="nav-link">দাতা খুঁজুন</a></li>
+                <li class="nav-item"><a href="be-a-donor.html" class="nav-link">দাতা হোন</a></li>
+                <li class="nav-item"><a href="urgent-requests.html" class="nav-link active">জরুরী আবেদন</a></li>
+                <li class="nav-item"><a href="blog.html" class="nav-link">ব্লগ</a></li>
+                <li class="nav-item"><a href="about-us.html" class="nav-link">আমাদের সম্পর্কে</a></li>
+            </ul>
+            <div class="nav-right">
+                <button id="login-open-btn" class="btn btn-login">লগইন</button>
+                <button id="theme-toggle" class="theme-toggle-btn"><i class="fas fa-moon"></i></button>
+            </div>
+            <div class="hamburger"><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>
+        </nav>
+    </header>
+
+    <main class="find-blood-main">
+        <section class="search-section">
+            <div class="container" style="max-width: 1200px;">
+                <h1 class="section-title">সকল জরুরী রক্তের আবেদন</h1>
+                <p class="section-subtitle">জরুরী রক্তের প্রয়োজনে সাহায্য করুন।</p>
+                
+                <div class="create-request-btn-container">
+                    <button id="trigger-login-for-request" class="btn btn-primary">
+                        <i class="fas fa-plus-circle"></i> নতুন আবেদন করুন
+                    </button>
+                </div>
+
+                <div class="how-it-works-container">
+                    <h2>জরুরী আবেদন প্রক্রিয়া যেভাবে কাজ করে</h2>
+                    <p>আমাদের জরুরী আবেদন সিস্টেমটি শুধুমাত্র নিবন্ধিত এবং ভেরিফাইড ব্যবহারকারীদের জন্য উন্মুক্ত।</p>
+                    <ol>
+                        <li><strong>লগইন করুন:</strong> একটি নতুন আবেদন পোস্ট করার জন্য আপনাকে অবশ্যই আপনার "রক্তমিত্র" একাউন্টে লগইন করতে হবে।</li>
+                        <li><strong>ফর্ম পূরণ করুন:</strong> লগইন করার পর, ড্যাশবোর্ড থেকে "নতুন আবেদন" ফর্মে রোগীর সকল সঠিক তথ্য (রক্তের গ্রুপ, হাসপাতাল, যোগাযোগের নম্বর) প্রদান করুন।</li>
+                        <li><strong>পোস্ট করুন:</strong> আপনার আবেদনটি সাবমিট করার পর তা আমাদের সাইটে তালিকাভুক্ত হবে এবং নিবন্ধিত রক্তদাতারা তা দেখতে পাবেন।</li>
+                        <li><strong>যোগাযোগ:</strong> আগ্রহী দাতা সরাসরি আপনার দেওয়া নম্বরে যোগাযোগ করবেন।</li>
+                    </ol>
+                    <p class="auth-note">
+                        আপনার একাউন্ট না থাকলে, <a href="be-a-donor.html">এখানে নিবন্ধন করুন</a> অথবা <a href="#" id="trigger-login-from-note">লগইন করুন</a>।
+                    </p>
+                </div>
+
+                <div class="search-results" id="search-results" style="margin-top: 40px;">
+                    <h2 class="results-title" style="font-size: 28px;">বর্তমান আবেদনসমূহ</h2>
+                    
+                    <div class="request-grid" style="margin-top: 30px;"> 
+                        <div class="request-card">
+                            <span class="blood-group">A+</span>
+                            <h3>রোগীর নাম: আসলাম হোসেন</h3>
+                            <p><i class="fas fa-hospital"></i> ঢাকা মেডিকেল কলেজ হাসপাতাল</p>
+                            <p><i class="fas fa-map-marker-alt"></i> ঢাকা</p>
+                            <p><i class="fas fa-clock"></i> ২ ঘন্টা আগে</p>
+                            <a href="#" class="btn btn-primary-outline">যোগাযোগ করুন</a>
+                        </div>
+                        <div class="request-card">
+                            <span class="blood-group">O-</span>
+                            <h3>রোগীর নাম: সুমাইয়া আক্তার</h3>
+                            <p><i class="fas fa-hospital"></i> চট্টগ্রাম মেডিকেল কলেজ</p>
+                            <p><i class="fas fa-map-marker-alt"></i> চট্টগ্রাম</p>
+                            <p><i class="fas fa-clock"></i> ৩ ঘন্টা আগে</p>
+                            <a href="#" class="btn btn-primary-outline">যোগাযোগ করুন</a>
+                        </div>
+                        <div class="request-card">
+                            <span class="blood-group">B+</span>
+                            <h3>রোগীর নাম: মো: করিম</h3>
+                            <p><i class="fas fa-hospital"></i> স্কয়ার হাসপাতাল</p>
+                            <p><i class="fas fa-map-marker-alt"></i> ঢাকা</p>
+                            <p><i class="fas fa-clock"></i> ৫ ঘন্টা আগে</p>
+                            <a href="#" class="btn btn-primary-outline">যোগাযোগ করুন</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-col">
+                <a href="#" class="footer-logo">
+                    <span>Roktomitro (রক্তমিত্র)</span>
+                </a>
+                <p>রক্তদানের মাধ্যমে জীবন বাঁচানোর একটি অলাভজনক উদ্যোগ।</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h4>দ্রুত লিংক</h4>
+                <ul>
+                    <li><a href="#">আমাদের সম্পর্কে</a></li>
+                    <li><a href="#">যোগাযোগ</a></li>
+                    <li><a href="policy.html">গোপনীয়তা নীতি</a></li>
+                    <li><a href="terms.html">শর্তাবলী</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>সাহায্য</h4>
+                <ul>
+                    <li><a href="#">সচরাচর জিজ্ঞাস্য</a></li>
+                    <li><a href="#">কেন রক্ত দিবেন?</a></li>
+                    <li><a href="#">রক্তদানের যোগ্যতা</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>আমাদের অ্যাপ</h4>
+                <p>শীঘ্রই আসছে গুগল প্লে স্টোর এবং অ্যাপল অ্যাপ স্টোরে।</p>
+                <img src="app-store.svg" alt="App Store" class="store-badge">
+                <img src="google-play.svg" alt="Google Play" class="store-badge">
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Roktomitro. সমস্ত স্বত্ব সংরক্ষিত।</p>
+            <p class="visitor-counter">
+                মোট ভিজিটর: <span id="visit-count">0</span>
+            </p>
+        </div>
+    </footer>
+
+    <div id="login-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" id="login-close-btn">&times;</button>
+            <h2><i class="fas fa-sign-in-alt"></i> লগইন করুন</h2>
+            <p class="modal-subtitle">রক্তমিত্র-এ আপনাকে স্বাগতম!</p>
+            
+            <form class="login-form">
+                <div class="form-group">
+                    <label for="login-mobile">মোবাইল নম্বর:</label>
+                    <input type="tel" id="login-mobile" name="login-mobile" placeholder="e.g., 017..." required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">পাসওয়ার্ড:</label>
+                    <input type="password" id="login-password" name="login-password" placeholder="আপনার পাসওয়ার্ড দিন" required>
+                </div>
+                
+                <div class="form-options">
+                    <div class="remember-me">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">মনে রাখুন</label>
+                    </div>
+                    <a href="forgot-password.html" class="forgot-password" id="modal-forgot-pass">পাসওয়ার্ড ভুলে গেছেন?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary">লগইন</button>
+
+                <p class="register-link">
+                    আপনার কোনো একাউন্ট নেই? <a href="be-a-donor.html" id="modal-register-link">এখানে নিবন্ধন করুন</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+
+    <script src="script.js"></script> 
+</body>
+</html>
