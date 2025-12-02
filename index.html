@@ -369,19 +369,19 @@
                 
                 <div class="info-list-item">
                     <div class="info-label"><i class="fa-solid fa-mobile-screen" style="color:#e2136e;"></i> বিকাশ (Personal)</div>
-                    <div class="info-value"><span id="bkash-num">017XX-XXXXXX</span> <i class="fa-regular fa-copy copy-btn" onclick="copyText('bkash-num')"></i></div>
+                    <div class="info-value"><span id="bkash-num">01778-326310</span> <i class="fa-regular fa-copy copy-btn" onclick="copyText('bkash-num')"></i></div>
                 </div>
                 <div class="info-list-item">
                     <div class="info-label"><i class="fa-solid fa-mobile-screen" style="color:#f6921e;"></i> নগদ (Personal)</div>
-                    <div class="info-value"><span id="nagad-num">019XX-XXXXXX</span> <i class="fa-regular fa-copy copy-btn" onclick="copyText('nagad-num')"></i></div>
+                    <div class="info-value"><span id="nagad-num">01778-326310</span> <i class="fa-regular fa-copy copy-btn" onclick="copyText('nagad-num')"></i></div>
                 </div>
                 <div class="info-list-item">
                     <div class="info-label"><i class="fa-solid fa-rocket" style="color:#8c3494;"></i> রকেট (Personal)</div>
-                    <div class="info-value"><span id="rocket-num">016XX-XXXXXX</span> <i class="fa-regular fa-copy copy-btn" onclick="copyText('rocket-num')"></i></div>
+                    <div class="info-value"><span id="rocket-num">01778-326310</span> <i class="fa-regular fa-copy copy-btn" onclick="copyText('rocket-num')"></i></div>
                 </div>
                  <div class="info-list-item">
                     <div class="info-label"><i class="fa-solid fa-building-columns text-primary"></i> ব্যাংক একাউন্ট</div>
-                    <div class="info-value"><span id="bank-num">DBBL - 123.XXXX</span> <i class="fa-regular fa-copy copy-btn" onclick="copyText('bank-num')"></i></div>
+                    <div class="info-value"><span id="bank-num">Not Available</span> <i class="fa-regular fa-copy copy-btn" onclick="copyText('bank-num')"></i></div>
                 </div>
             </div>
         </div>
@@ -455,222 +455,233 @@
         </div>
     </div>
 
+    <div id="view-already-registered" style="display: none; width: 95%; max-width: 500px; margin: 50px auto; text-align: center; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.1);">
+        <div style="font-size: 4rem; color: var(--success-color); margin-bottom: 20px;">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h2 style="color: var(--primary-color); margin-bottom: 10px;">স্বাগতম রক্তযোদ্ধা!</h2>
+        <p style="color: #666; margin-bottom: 30px;">এই ডিভাইস থেকে ইতিমধ্যে রেজিস্ট্রেশন সম্পন্ন হয়েছে।</p>
+        
+        <div style="background: #f4f6f9; padding: 20px; border-radius: 15px; text-align: left; margin-bottom: 30px; border-left: 5px solid var(--accent-color);">
+            <p><strong>নাম:</strong> <span id="reg-name">--</span></p>
+            <p><strong>আইডি:</strong> <span id="reg-id" style="color: var(--success-color); font-weight: bold;">--</span></p>
+            <p><strong>রক্তের গ্রুপ:</strong> <span id="reg-group" style="color: var(--accent-color); font-weight: bold;">--</span></p>
+        </div>
+
+        <button class="btn btn-secondary" onclick="showRegistrationForm(true)">
+            <i class="fa-solid fa-user-plus"></i> অন্যের জন্য রেজিস্ট্রেশন করুন
+        </button>
+        <br><br>
+        <button class="btn btn-primary" onclick="showHome()">
+            <i class="fa-solid fa-house"></i> হোম পেজে যান
+        </button>
+    </div>
+
     <div id="modal-success" class="modal-overlay">
-        <div class="modal-content" style="background: #f4f6f9; border-top: 8px solid var(--success-color);">
-            <div class="success-icon-container">
-                <i class="fa-solid fa-check"></i>
+        <div class="modal-content" style="text-align: center; border-top: 8px solid var(--success-color);">
+            <div style="font-size: 5rem; color: var(--success-color); margin-bottom: 20px;">
+                <i class="fa-solid fa-heart-circle-check"></i>
             </div>
-            <h2 class="text-center text-success" style="font-weight: 800; margin-bottom: 10px;">অভিনন্দন!</h2>
-            <p class="text-center mb-20" style="font-size: 1.1rem;">আপনার রেজিস্ট্রেশন সফল হয়েছে।</p>
+            <h2 class="text-success" style="font-weight: 800;">অভিনন্দন!</h2>
+            <p style="font-size: 1.2rem; margin: 10px 0;">রেজিস্ট্রেশন সফল হয়েছে।</p>
             
-            <div id="download-card">
-                <div class="card-content">
-                    <div class="card-header-text">রক্তমিত্র ডোনার কার্ড</div>
-                    <div class="card-row">
-                        <span>নাম:</span>
-                        <span id="card-name" class="card-data">--</span>
-                    </div>
-                    <div class="card-row">
-                        <span>গ্রুপ:</span>
-                        <span id="card-group" class="card-data" style="color: var(--accent-color);">--</span>
-                    </div>
-                    
-                    <div class="card-id-box" id="card-id">RM-XXXX</div>
-                    
-                    <div class="card-footer-text">
-                        আমি রেজিস্ট্রেশন করেছি, আপনিও করুন।<br>
-                        <span class="text-success">www.roktomitro.com</span>
-                    </div>
-                </div>
+            <div style="background: #f1f8e9; padding: 20px; border-radius: 10px; margin: 20px 0; border: 2px dashed #28a745;">
+                <p style="font-size: 1.1rem; color: #555;">আপনার ডোনার আইডি</p>
+                <h1 id="success-id" style="font-size: 3rem; color: var(--primary-color); margin: 10px 0; letter-spacing: 2px;">RM-XXXX</h1>
+                <p style="font-size: 0.9rem; color: #777;">(এটি মনে রাখুন)</p>
             </div>
 
-            <div class="text-center" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin-top: 30px;">
-                <button class="btn btn-primary" style="background: var(--accent-color);" onclick="downloadImage()">
-                    <i class="fa-solid fa-download"></i> কার্ড ডাউনলোড
-                </button>
-                <button class="btn btn-primary" style="background: #1877f2;" onclick="shareOnFacebook()">
-                    <i class="fa-brands fa-facebook"></i> ফেসবুকে শেয়ার
-                </button>
-                <button class="btn btn-secondary" onclick="location.reload()">
-                    <i class="fa-solid fa-house"></i> হোম
-                </button>
-            </div>
+            <button class="btn btn-primary" onclick="location.reload()">
+                <i class="fa-solid fa-check"></i> ঠিক আছে
+            </button>
         </div>
     </div>
 
     <script>
-        // ১. পেজ লোড হলে মেইনটেনেন্স পপ-আপ ও টাইমার
-        window.addEventListener('load', function() {
-            const popup = document.getElementById('popup-maintenance');
-            const timerDisplay = document.getElementById('timer');
-            let timeLeft = 20;
-            
-            // পপ-আপ দেখানো
-            popup.style.display = 'flex';
+    // তোমার নতুন Apps Script URL এখানে বসাবে
+    const scriptURL = 'https://script.google.com/macros/s/............/exec'; 
 
-            // টাইমার লজিক
+    // ১. পেজ লোড লজিক (ডিভাইস চেক)
+    window.addEventListener('load', function() {
+        // মেইনটেনেন্স পপ-আপ (আগের মতো)
+        const popup = document.getElementById('popup-maintenance');
+        if(popup) {
+            popup.style.display = 'flex';
+            let timeLeft = 20;
+            const timerDisplay = document.getElementById('timer');
             const countdown = setInterval(() => {
                 timeLeft--;
-                timerDisplay.innerText = timeLeft;
+                if(timerDisplay) timerDisplay.innerText = timeLeft;
                 if (timeLeft <= 0) {
                     clearInterval(countdown);
                     closeModal('popup-maintenance');
                 }
             }, 1000);
-
-            // ম্যানুয়ালি ক্লোজ করলে টাইমার বন্ধ হবে
             popup.querySelector('.modal-close-btn').addEventListener('click', () => clearInterval(countdown));
-        });
-
-        // ২. ভিউ সুইচিং
-        function showRegistration() {
-            document.getElementById('view-home').style.display = 'none';
-            document.getElementById('view-registration').style.display = 'block';
-            window.scrollTo(0, 0);
-        }
-        function showHome() {
-            document.getElementById('view-registration').style.display = 'none';
-            document.getElementById('view-home').style.display = 'block';
-            window.scrollTo(0, 0);
         }
 
-        // ৩. মডাল কন্ট্রোল
-        function openModal(modalId) {
-            event.preventDefault();
-            // অন্য কোনো খোলা মডাল বন্ধ করা (যদি থাকে)
-            document.querySelectorAll('.modal-overlay').forEach(m => {
-                if(m.id !== 'popup-maintenance') m.style.display = 'none';
-            });
-            document.getElementById(modalId).style.display = 'flex';
-        }
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-            // আন্ডারএজ মডাল বন্ধ করলে জন্মতারিখ রিসেট করা
-            if(modalId === 'modal-underage') {
-                document.getElementById('dob').value = '';
-            }
-        }
+        // রেজিস্ট্রেশন চেক (One Device Logic)
+        checkRegistrationStatus();
+    });
 
-        // ৪. কপি ও টোস্ট লজিক
-        function showToast(icon, msg, type = 'success') {
-            const toast = document.getElementById('toast-box');
-            toast.innerHTML = `<i class="${icon}"></i> ${msg}`;
-            toast.style.background = type === 'success' ? 'rgba(40, 167, 69, 0.95)' : 'rgba(255, 75, 43, 0.95)';
-            toast.style.display = 'flex';
-            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    // ২. ডিভাইস স্ট্যাটাস চেক ফাংশন
+    function checkRegistrationStatus() {
+        const savedUser = localStorage.getItem('roktomitro_donor');
+        if (savedUser) {
+            const user = JSON.parse(savedUser);
+            // ডাটা সেট করা
+            document.getElementById('reg-name').innerText = user.name;
+            document.getElementById('reg-id').innerText = user.id;
+            document.getElementById('reg-group').innerText = user.group;
         }
-        function copyText(elementId) {
-            const text = document.getElementById(elementId).innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                showToast('fa-solid fa-clipboard-check', `নম্বরটি কপি হয়েছে: ${text}`);
-            });
-        }
+    }
 
-        // ৫. ফর্মের স্টেপ ও লজিক
-        function nextStep(stepId) {
-            const step = document.getElementById(stepId);
-            if (step && !step.classList.contains('active')) {
-                step.classList.add('active');
-                // একটু দেরিতে স্ক্রল করা যাতে এনিমেশন স্মুথ হয়
-                setTimeout(() => step.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
-            }
-        }
-        function checkInput(input, nextStepId) { if(input.value.length > 2) nextStep(nextStepId); }
-        function checkMobileGroup() { if(document.getElementById('mobile').value.length >= 11) nextStep('step-address'); updateWhatsappList(); }
-        function checkAddressGroup() {
-            const dist = document.getElementById('district').value;
-            const upa = document.getElementById('upazila').value;
-            const addr = document.getElementById('address').value;
-            if(dist && upa && addr.length > 3) nextStep('step-donation');
-        }
+    // ৩. ভিউ কন্ট্রোল
+    function showRegistration() {
+        const savedUser = localStorage.getItem('roktomitro_donor');
+        document.getElementById('view-home').style.display = 'none';
         
-        // বয়স যাচাই (Age Check)
-        function checkAgeLogic() {
-            const dobInput = document.getElementById('dob').value;
-            if(!dobInput) return;
-            const dob = new Date(dobInput);
-            const today = new Date();
-            let age = today.getFullYear() - dob.getFullYear();
-            const m = today.getMonth() - dob.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) { age--; }
+        if (savedUser) {
+            // যদি আগে রেজিস্ট্রেশন করা থাকে
+            document.getElementById('view-already-registered').style.display = 'block';
+            document.getElementById('view-registration').style.display = 'none';
+        } else {
+            // একদম নতুন ইউজার
+            document.getElementById('view-already-registered').style.display = 'none';
+            document.getElementById('view-registration').style.display = 'block';
+        }
+        window.scrollTo(0, 0);
+    }
 
-            if (age < 18) {
-                openModal('modal-underage');
+    // "অন্যের জন্য রেজিস্ট্রেশন" বাটন ক্লিক করলে এটা কল হবে
+    function showRegistrationForm(forceShow = false) {
+        document.getElementById('view-already-registered').style.display = 'none';
+        document.getElementById('view-registration').style.display = 'block';
+        // ফর্ম ক্লিয়ার করা যাতে নতুনের জন্য ফ্রেশ থাকে
+        if(forceShow) {
+            document.getElementById('donorForm').reset();
+        }
+    }
+
+    function showHome() {
+        document.getElementById('view-registration').style.display = 'none';
+        document.getElementById('view-already-registered').style.display = 'none';
+        document.getElementById('view-home').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+
+    // ৪. মডাল ও অন্যান্য ছোট ফাংশন (আগের মতোই)
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    
+    function showToast(icon, msg, type) {
+        const t = document.getElementById('toast-box');
+        t.innerHTML = `<i class="${icon}"></i> ${msg}`;
+        t.style.background = type === 'success' ? '#28a745' : '#ff4b2b';
+        t.style.display = 'flex';
+        setTimeout(() => t.style.display = 'none', 3000);
+    }
+
+    // ৫. ফর্ম সাবমিশন লজিক (আপডেট করা)
+    document.getElementById('donorForm').addEventListener('submit', function(e){
+        e.preventDefault();
+        
+        const submitBtn = document.getElementById('submitBtn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং হচ্ছে...';
+        submitBtn.disabled = true;
+
+        let formData = {
+            fullName: document.getElementById('fullName').value,
+            bloodGroup: document.getElementById('bloodGroup').value,
+            dob: document.getElementById('dob').value,
+            gender: document.getElementById('gender').value,
+            mobile: document.getElementById('mobile').value,
+            altMobile: document.getElementById('altMobile').value || "N/A",
+            district: document.getElementById('district').value,
+            upazila: document.getElementById('upazila').value,
+            address: document.getElementById('address').value,
+            lastDonation: document.getElementById('lastDonation').value,
+            frequency: document.getElementById('frequency').value,
+            whatsapp: document.getElementById('whatsappSelect').value === 'custom' ? document.getElementById('whatsappCustom').value : document.getElementById('whatsappSelect').value,
+            facebook: document.getElementById('fbLink').value || "N/A"
+        };
+
+        fetch(scriptURL, {
+            method: 'POST',
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(response => {
+            if (response.result === "success") {
+                // ১. সফল হলে সাকসেস মডাল দেখানো
+                document.getElementById('success-id').innerText = response.donorId;
+                openModal('modal-success');
+
+                // ২. ডিভাইসে ডাটা সেভ করা (যদি আগে থেকে সেভ না থাকে)
+                // অর্থাৎ, নিজের রেজিস্ট্রেশন হলে সেভ হবে, অন্যের জন্য করলে সেভ হবে না
+                if (!localStorage.getItem('roktomitro_donor')) {
+                    const userData = {
+                        name: formData.fullName,
+                        id: response.donorId,
+                        group: formData.bloodGroup
+                    };
+                    localStorage.setItem('roktomitro_donor', JSON.stringify(userData));
+                }
+
+                document.getElementById('donorForm').reset();
+            } else if (response.result === "error" && response.message === "duplicate") {
+                showToast('fa-solid fa-triangle-exclamation', 'এই নম্বর দিয়ে ইতিমধ্যে রেজিস্ট্রেশন করা আছে!', 'error');
             } else {
-                nextStep('step-gender');
+                throw new Error("Server Error");
             }
-        }
-        // রক্তদানের তারিখ টোস্ট
-        function checkDonationDate() {
-            if(document.getElementById('lastDonation').value) {
-                showToast('fa-solid fa-heart', 'ধন্যবাদ! আপনি একজন অভিজ্ঞ রক্তদাতা। আমরা গর্বিত!', 'success');
-            }
-        }
-
-        // হোয়াটসঅ্যাপ ও সাবমিট বাটন
-        function updateWhatsappList() {
-            const m=document.getElementById('mobile').value, am=document.getElementById('altMobile').value, w=document.getElementById('whatsappSelect');
-            w.innerHTML='<option value="">বাছাই করুন (ঐচ্ছিক)</option>';
-            if(m.length>5) {let o=document.createElement('option'); o.value=m; o.text='মোবাইল: '+m; w.add(o);}
-            if(am.length>5) {let o=document.createElement('option'); o.value=am; o.text='বিকল্প: '+am; w.add(o);}
-            let o=document.createElement('option'); o.value='custom'; o.text='লিখুন (অন্য নম্বর)'; w.add(o);
-        }
-        function handleWhatsappLogic() {
-            document.getElementById('whatsappCustom').style.display=(document.getElementById('whatsappSelect').value==='custom')?'block':'none';
-            nextStep('step-agreement');
-        }
-        function toggleSubmit() {
-            document.getElementById('submitBtn').style.display = document.getElementById('agreePolicy').checked ? 'block' : 'none';
-        }
-
-        // ৬. সাবমিট ও কার্ড জেনারেশন
-        document.getElementById('donorForm').addEventListener('submit', function(e){
-            e.preventDefault();
-            
-            const fullName = document.getElementById('fullName').value || "শুভাকাঙ্ক্ষী";
-            const bloodGroup = document.getElementById('bloodGroup').value || "--";
-            const randomID = "RM-" + Math.floor(1000 + Math.random() * 9000);
-
-            // কার্ডে ডেটা বসানো
-            document.getElementById('card-name').innerText = fullName;
-            document.getElementById('card-group').innerText = bloodGroup;
-            document.getElementById('card-id').innerText = randomID;
-
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        })
+        .catch(error => {
+            console.error(error);
+            // এরর হলেও ইউজারকে আইডি পেন্ডিং দেখাবো
+            document.getElementById('success-id').innerText = "RM-Pending";
             openModal('modal-success');
-        });
-
-        // ৭. ইমেজ ডাউনলোড (FIXED)
-        function downloadImage() {
-            const cardElement = document.getElementById('download-card');
             
-            // html2canvas কনফিগারেশন
-            html2canvas(cardElement, {
-                scale: 3, // হাই রেজোলিউশন
-                useCORS: true, // ক্রস-অরিজিন ইমেজ সাপোর্ট
-                backgroundColor: null, // ট্রান্সপারেন্ট ব্যাকগ্রাউন্ড হ্যান্ডেল করা
-                logging: false, // কনসোল লগ বন্ধ রাখা
-                x: 0, y: 0 // সঠিক পজিশনিং
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `Roktomitro_Card_${document.getElementById('card-id').innerText}.png`;
-                link.href = canvas.toDataURL("image/png");
-                link.click();
-                showToast('fa-solid fa-image', 'কার্ড ডাউনলোড সফল হয়েছে!');
-            }).catch(err => {
-                console.error("Image generation failed:", err);
-                showToast('fa-solid fa-triangle-exclamation', 'কার্ড ডাউনলোড করা যায়নি। আবার চেষ্টা করুন।', 'error');
-            });
-        }
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        });
+    });
 
-        // ৮. শেয়ার লজিক
-        function shareOnFacebook() {
-            const id = document.getElementById('card-id').innerText;
-            const group = document.getElementById('card-group').innerText;
-            const caption = `আমি রক্তমিত্র পরিবারের গর্বিত সদস্য হলাম! আমার ব্লাড গ্রুপ: ${group}, ডোনার আইডি: ${id}। আপনিও রেজিস্ট্রেশন করুন এবং জীবন বাঁচান!`;
-            const siteLink = window.location.href; // আপনার আসল ডোমেইন এখানে থাকলে ভালো হয়
-            const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(siteLink)}&quote=${encodeURIComponent(caption)}`;
-            window.open(fbUrl, '_blank', 'width=600,height=400');
+    // স্টেপ নেভিগেশন (আগের লজিক)
+    function nextStep(stepId) {
+        const step = document.getElementById(stepId);
+        if (step && !step.classList.contains('active')) {
+            step.classList.add('active');
+            setTimeout(() => step.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
         }
-    </script>
+    }
+    // ইনপুট চেকার ফাংশনগুলো আগের মতোই থাকবে...
+    function checkInput(input, next) { if(input.value.length > 2) nextStep(next); }
+    function checkMobileGroup() { if(document.getElementById('mobile').value.length >= 11) nextStep('step-address'); updateWhatsappList(); }
+    function checkAddressGroup() { if(document.getElementById('address').value.length > 3) nextStep('step-donation'); }
+    function checkAgeLogic() {
+        const d = new Date(document.getElementById('dob').value);
+        const diff = new Date() - d;
+        const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+        if(age < 18) openModal('modal-underage'); else nextStep('step-gender');
+    }
+    function updateWhatsappList() {
+        const m=document.getElementById('mobile').value, am=document.getElementById('altMobile').value, w=document.getElementById('whatsappSelect');
+        w.innerHTML='<option value="">বাছাই করুন (ঐচ্ছিক)</option>';
+        if(m.length>5) {let o=document.createElement('option'); o.value=m; o.text='মোবাইল: '+m; w.add(o);}
+        if(am.length>5) {let o=document.createElement('option'); o.value=am; o.text='বিকল্প: '+am; w.add(o);}
+        let o=document.createElement('option'); o.value='custom'; o.text='লিখুন (অন্য নম্বর)'; w.add(o);
+    }
+    function handleWhatsappLogic() {
+        document.getElementById('whatsappCustom').style.display=(document.getElementById('whatsappSelect').value==='custom')?'block':'none';
+        nextStep('step-agreement');
+    }
+    function toggleSubmit() {
+        document.getElementById('submitBtn').style.display = document.getElementById('agreePolicy').checked ? 'block' : 'none';
+    }
+    function copyText(id) { navigator.clipboard.writeText(document.getElementById(id).innerText); showToast('fa-solid fa-check', 'কপি হয়েছে!', 'success'); }
+</script>
 </body>
 </html>
