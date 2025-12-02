@@ -215,6 +215,45 @@
             </div>
         </div>
     </div>
+    <div id="view-already-registered" style="display: none; width: 95%; max-width: 500px; margin: 50px auto; text-align: center; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <div style="font-size: 4rem; color: var(--success-color); margin-bottom: 15px;">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h2 style="color: var(--primary-color);">স্বাগতম রক্তযোদ্ধা!</h2>
+        <p style="color: #666; margin-bottom: 20px;">এই ডিভাইস থেকে ইতিমধ্যে রেজিস্ট্রেশন করা হয়েছে।</p>
+        
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; text-align: left; margin-bottom: 20px; border-left: 4px solid var(--success-color);">
+            <p><strong>নাম:</strong> <span id="reg-name">--</span></p>
+            <p><strong>আইডি:</strong> <span id="reg-id" style="font-weight: bold; color: var(--success-color);">--</span></p>
+            <p><strong>গ্রুপ:</strong> <span id="reg-group" style="font-weight: bold; color: var(--accent-color);">--</span></p>
+        </div>
+
+        <button class="btn btn-secondary" style="width: 100%; margin-bottom: 10px;" onclick="showRegistrationForm(true)">
+            <i class="fa-solid fa-user-plus"></i> অন্যের জন্য রেজিস্ট্রেশন করুন
+        </button>
+        <button class="btn btn-primary" style="width: 100%;" onclick="showHome()">
+            <i class="fa-solid fa-house"></i> হোম পেজে ফিরে যান
+        </button>
+    </div>
+
+    <div id="modal-success" class="modal-overlay">
+        <div class="modal-content" style="text-align: center; border-top: 8px solid var(--success-color);">
+            <div style="font-size: 4rem; color: var(--success-color); margin-bottom: 10px;">
+                <i class="fa-solid fa-heart-circle-check"></i>
+            </div>
+            <h2 class="text-success">অভিনন্দন!</h2>
+            <p>রেজিস্ট্রেশন সফল হয়েছে।</p>
+            
+            <div style="background: #e8f5e9; padding: 20px; border-radius: 15px; margin: 20px 0; border: 2px dashed #28a745;">
+                <span style="display: block; font-size: 0.9rem; color: #555;">আপনার ডোনার আইডি</span>
+                <span id="success-id" style="display: block; font-size: 2.5rem; font-weight: 800; color: #2e7d32; letter-spacing: 2px;">RM-XXXX</span>
+            </div>
+
+            <button class="btn btn-primary" onclick="location.reload()">
+                <i class="fa-solid fa-check"></i> ঠিক আছে
+            </button>
+        </div>
+    </div>
 
     <div class="container">
         
@@ -846,4 +885,5 @@
 </body>
 
 </html>
+
 
