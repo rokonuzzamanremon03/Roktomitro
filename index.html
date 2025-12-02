@@ -510,7 +510,7 @@
             const countdown = setInterval(() => {
                 timeLeft--;
                 timerDisplay.innerText = timeLeft;
-                if (timeLeft <= 0) {
+                if (timeLeft <= 20) {
                     clearInterval(countdown);
                     closeModal('popup-maintenance');
                 }
@@ -846,3 +846,4 @@
 </body>
 
 </html>
+
