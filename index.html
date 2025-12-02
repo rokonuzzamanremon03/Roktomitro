@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>রক্তমিত্র - Roktomitro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <style>
+        /* --- গ্লোবাল স্টাইল --- */
+        :root {
+            --primary-color: #764ba2;
+            --secondary-color: #667eea;
+            --accent-color: #ff4b2b;
+            --success-color: #28a745;
+            --warning-color: #ffcc00;
+            --text-dark: #333;
+            --text-light: #f4f6f9;
+            --gradient-bg: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
+        body { background: var(--gradient-bg); min-height: 100vh; color: var(--text-dark); overflow-x: hidden; }
+        a { text-decoration: none; }
+        
+        /* --- ইউটিলিটি ক্লাস --- */
+        .container { width: 95%; max-width: 1100px; margin: 0 auto; padding: 20px; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px; padding: 12px 25px;
+            border: none; border-radius: 50px; font-weight: 600; cursor: pointer;
+            transition: all 0.3s ease; font-size: 1rem; color: white;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .btn-primary { background: linear-gradient(90deg, #ff416c 0%, var(--accent-color) 100%); box-shadow: 0 4px 15px rgba(255, 75, 43, 0.3); }
+        .btn-success { background: linear-gradient(90deg, #11998e 0%, var(--success-color) 100%); }
+        .btn-info { background: linear-gradient(90deg, #36D1DC 0%, #5B86E5 100%); }
+        .btn-secondary { background: #6c757d; }
+        .text-accent { color: var(--accent-color); }
+        .text-success { color: var(--success-color); }
+        .text-center { text-align: center; }
+        .mb-20 { margin-bottom: 20px; }
+
+        /* --- টোস্ট নোটিফিকেশন --- */
+        #toast-box {
+            position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+            background: rgba(40, 167, 69, 0.95); color: white;
+            padding: 15px 30px; border-radius: 50px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: none; align-items: center; gap: 15px; z-index: 10000; font-size: 1rem;
+            animation: slideDown 0.5s forwards;
+        }
+        @keyframes slideDown { from{top: -100px; opacity: 0;} to{top: 30px; opacity: 1;} }
+
+        /* --- মডাল/পপ-আপ স্টাইল (Common) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+            display: none; justify-content: center; align-items: center; z-index: 5000;
+            padding: 20px;
+        }
+        .modal-content {
+            background: #fff; color: var(--text-dark); padding: 40px; border-radius: 25px;
+            width: 100%; max-width: 550px; max-height: 90vh; overflow-y: auto;
+            position: relative; animation: zoomIn 0.4s ease-out; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+        @keyframes zoomIn { from {transform: scale(0.8); opacity: 0;} to {transform: scale(1); opacity: 1;} }
+        .modal-close-btn {
+            position: absolute; top: 20px; right: 25px; font-size: 2rem; color: #999;
+            cursor: pointer; transition: 0.2s; line-height: 1;
+        }
+        .modal-close-btn:hover { color: var(--accent-color); transform: rotate(90deg); }
+        .modal-header { font-size: 1.8rem; font-weight: 700; margin-bottom: 25px; color: var(--primary-color); text-align: center; }
+        .modal-body { font-size: 1.1rem; line-height: 1.7; color: #555; }
+        
+        /* Specific Modal Styles */
+        #popup-maintenance .modal-content { border-top: 8px solid var(--warning-color); text-align: center; }
+        #popup-maintenance .warn-icon { font-size: 4rem; color: var(--warning-color); margin-bottom: 20px; animation: pulse 2s infinite; }
+        
+        .styled-list p { margin-bottom: 15px; position: relative; padding-left: 35px; }
+        .styled-list p::before {
+            content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; left: 0; top: 2px; color: var(--success-color); font-size: 1.2rem;
+        }
+        #modal-agreement .modal-content, #modal-policy .modal-content { border-left: 8px solid var(--secondary-color); }
+        
+        #modal-underage .modal-content { border-top: 8px solid var(--warning-color); text-align: center; }
+        #modal-underage .sad-icon { font-size: 5rem; color: var(--warning-color); margin-bottom: 25px; }
+        
+        /* Donation & Contact List */
+        .info-list-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: #f4f6f9; padding: 15px 20px; border-radius: 12px; margin-bottom: 15px;
+            border: 1px solid #e0e0e0;
+        }
+        .info-label { font-weight: 700; color: var(--primary-color); display: flex; align-items: center; gap: 10px; }
+        .info-value { font-family: monospace; font-size: 1.1rem; color: #333; display: flex; align-items: center; gap: 10px; }
+        .copy-btn {
+            background: rgba(var(--secondary-color), 0.1); color: var(--secondary-color);
+            padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 0.9rem; transition: 0.2s;
+        }
+        .copy-btn:hover { background: var(--secondary-color); color: white; }
+
+        /* --- হোম পেজ স্টাইল --- */
+        #view-home { color: white; padding-top: 40px; animation: fadeIn 0.8s; }
+        .home-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .logo-text { font-size: 2.5rem; font-weight: 800; }
+        .hero-section { text-align: center; margin-bottom: 60px; }
+        .hero-title { font-size: 3.5rem; font-weight: 800; margin-bottom: 20px; text-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .hero-buttons { display: flex; flex-direction: column; gap: 20px; align-items: center; margin-top: 40px; }
+        .btn-large { padding: 15px 40px; font-size: 1.3rem; width: 100%; max-width: 400px; justify-content: center; }
+        
+        .article-section { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 50px; border-radius: 30px; margin-top: 60px; }
+        .article-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 30px; text-align: center; color: var(--warning-color); }
+        .article-content p { font-size: 1.15rem; line-height: 1.8; margin-bottom: 25px; opacity: 0.9; text-align: justify; }
+        
+        /* --- রেজিস্ট্রেশন ভিউ (গ্লাস বক্স) --- */
+        #view-registration {
+            display: none; background: var(--glass-bg); backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); border-radius: 30px;
+            padding: 40px; width: 100%; max-width: 700px; margin: 40px auto; color: white;
+            max-height: 90vh; overflow-y: auto; animation: fadeIn 0.5s;
+        }
+        .form-header { text-align: center; margin-bottom: 40px; }
+        .form-header h2 { font-size: 2.2rem; margin-bottom: 10px; }
+        .input-group { margin-bottom: 25px; }
+        .input-group label { display: block; margin-bottom: 10px; font-weight: 600; font-size: 1.05rem; }
+        .input-group input, .input-group select {
+            width: 100%; padding: 15px; background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3); border-radius: 12px;
+            color: white; font-size: 1rem; outline: none; transition: 0.3s;
+        }
+        .input-group input:focus, .input-group select:focus { background: rgba(255,255,255,0.3); border-color: white; }
+        .input-group option { background: #333; color: white; }
+        .step { display: none; animation: slideUp 0.5s ease-out; }
+        .step.active { display: block; }
+        @keyframes slideUp { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+        .checkbox-wrapper {
+            display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.15);
+            padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.3);
+        }
+        .checkbox-wrapper input { width: 20px; height: 20px; accent-color: var(--accent-color); }
+
+        /* --- ডোনার কার্ড (ফিক্সড ডিজাইন) --- */
+        #download-card {
+            background: linear-gradient(145deg, #ffffff, #f0f2f5);
+            border: 3px solid var(--success-color); border-radius: 20px;
+            padding: 30px; margin: 20px auto; text-align: center;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1); position: relative; overflow: hidden;
+            width: 100%; max-width: 450px; /* ফিক্সড উইডথ */
+            display: flex; flex-direction: column; align-items: center; /* ফ্লেক্স দিয়ে সেন্টার */
+        }
+        #download-card::after {
+            content: '\f004'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-20deg);
+            font-size: 250px; color: rgba(40, 167, 69, 0.03); z-index: 0; pointer-events: none;
+        }
+        .card-content { position: relative; z-index: 1; width: 100%; }
+        .card-header-text {
+            font-size: 1.8rem; font-weight: 800; color: var(--success-color);
+            margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px;
+            border-bottom: 2px dashed #ccc; padding-bottom: 15px;
+        }
+        .card-row {
+            font-size: 1.4rem; color: #555; margin-bottom: 15px; /* ফিক্সড মার্জিন */
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+            width: 100%;
+        }
+        .card-data { font-weight: 800; color: var(--primary-color); font-size: 1.6rem; }
+        .card-id-box {
+            background: var(--success-color); color: white; padding: 10px 30px;
+            border-radius: 50px; font-size: 1.8rem; font-weight: 900; letter-spacing: 2px;
+            margin: 30px auto; /* ফিক্সড মার্জিন */ display: inline-block;
+            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+        }
+        .card-footer-text {
+            margin-top: 25px; font-size: 1rem; color: #777; font-weight: 600;
+            border-top: 1px solid #ddd; padding-top: 20px;
+        }
+
+        /* --- রেস্পন্সিভ --- */
+        @media (max-width: 768px) {
+            .home-header { flex-direction: column; gap: 20px; }
+            .hero-title { font-size: 2.5rem; }
+            .btn-large { font-size: 1.1rem; padding: 12px 30px; }
+            .article-section { padding: 30px; }
+            .modal-content { padding: 25px; }
+            #download-card { padding: 20px; }
+            .card-row { font-size: 1.2rem; flex-direction: column; gap: 5px; }
+            .card-data { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toast-box"></div>
+
+    <div id="popup-maintenance" class="modal-overlay" style="display: flex;">
+        <div class="modal-content">
+            <span class="modal-close-btn" onclick="closeModal('popup-maintenance')">&times;</span>
+            <i class="fa-solid fa-triangle-exclamation warn-icon"></i>
+            <div class="modal-header">ওয়েবসাইট মেইনটেনেন্স চলছে</div>
+            <div class="modal-body">
+                <p>প্রিয় ভিজিটর, আমাদের ওয়েবসাইটটির পূর্ণাঙ্গ কাজ বর্তমানে প্রক্রিয়াধীন রয়েছে। আমরা একটি অলাভজনক চ্যারিটি ফাউন্ডেশন এবং ফান্ডিং সীমাবদ্ধতার কারণে কিছু ফিচার এখনও চালু করা সম্ভব হয়নি।</p>
+                <p>সাময়িক অসুবিধার জন্য আমরা আন্তরিকভাবে দুঃখিত। তবে মূল ফিচারগুলো (যেমন ডোনার রেজিস্ট্রেশন) সচল আছে।</p>
+                <p>আমাদের কার্যক্রমকে আরও গতিশীল করতে আপনার সহযোগিতা একান্ত কাম্য।</p>
+            </div>
+            <div class="text-center" style="margin-top: 30px;">
+                <button class="btn btn-success btn-large" onclick="openModal('modal-donation-details')">
+                    <i class="fa-solid fa-hand-holding-heart"></i> ডোনেশন করুন
+                </button>
+                <p style="margin-top: 10px; font-size: 0.9rem; color: #777;">(এই পপ-আপটি <span id="timer">20</span> সেকেন্ড পর বন্ধ হবে)</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <div id="view-home">
+            <header class="home-header">
+                <div class="logo-text"><span class="text-accent">রক্ত</span>মিত্র</div>
+                <button class="btn btn-primary" onclick="showRegistration()">
+                    <i class="fa-solid fa-user-plus"></i> ডোনার রেজিস্ট্রেশন
+                </button>
+            </header>
+
+            <section class="hero-section">
+                <h1 class="hero-title">আপনার রক্তে বাঁচুক একটি প্রাণ</h1>
+                <p style="font-size: 1.2rem; opacity: 0.9;">রক্তদান একটি মহৎ কাজ। আসুন, আমরা সবাই মিলে একটি সুস্থ সমাজ গড়ে তুলি।</p>
+                
+                <div class="hero-buttons">
+                    <button class="btn btn-success btn-large" style="background: linear-gradient(90deg, #28a745 0%, #84c225 100%); font-size: 1.5rem; padding: 20px 50px;" onclick="openModal('modal-donation-details')">
+                        <i class="fa-solid fa-hand-holding-dollar"></i> আমাদের পাশে দাঁড়ান (Donation)
+                    </button>
+                    <button class="btn btn-info btn-large" onclick="openModal('modal-contact')">
+                        <i class="fa-solid fa-magnifying-glass"></i> রক্ত খুঁজুন (Blood Search)
+                    </button>
+                </div>
+            </section>
+
+            <section class="article-section">
+                <h2 class="article-title"><i class="fa-solid fa-quote-left"></i> রক্তমিত্র ও মানবতার ডাক <i class="fa-solid fa-quote-right"></i></h2>
+                <div class="article-content">
+                    <p><strong>"রক্তমিত্র"</strong> কেবল একটি নাম নয়, এটি একটি প্রতিশ্রুতি—মানুষের বিপদে পাশে দাঁড়ানোর, মুমূর্ষু রোগীর মুখে হাসি ফোটানোর। আমাদের যাত্রা শুরু হয়েছে একটি স্বপ্ন নিয়ে, যেখানে রক্তের অভাবে কোনো প্রাণ ঝরে যাবে না। আমরা বিশ্বাস করি, প্রতিটি মানুষই একজন সম্ভাব্য জীবনরক্ষক। আপনার শরীরের সামান্য রক্ত আরেকজনের জন্য বেঁচে থাকার নতুন সুযোগ হতে পারে।</p>
+                    <p>রক্তদান একটি অত্যন্ত সহজ ও নিরাপদ প্রক্রিয়া। একজন সুস্থ প্রাপ্তবয়স্ক মানুষ প্রতি ৩-৪ মাস অন্তর রক্তদান করতে পারেন। এতে শরীরের কোনো ক্ষতি হয় না, বরং নতুন রক্তকণিকা তৈরির প্রক্রিয়া ত্বরান্বিত হয় এবং শরীর আরও সুস্থ থাকে। নিয়মিত রক্তদান হৃদরোগ ও স্ট্রোকের ঝুঁকি কমায় এবং মানসিক প্রশান্তি দেয়।</p>
+                    <p>আমাদের সমাজে এখনও রক্তদান নিয়ে অনেক ভ্রান্ত ধারণা ও কুসংস্কার রয়েছে। অনেকে মনে করেন রক্ত দিলে শরীর দুর্বল হয়ে যায় বা অসুস্থ হওয়ার সম্ভাবনা থাকে। কিন্তু আধুনিক বিজ্ঞান প্রমাণ করেছে যে এগুলো সম্পূর্ণ ভিত্তিহীন। "রক্তমিত্র" ফাউন্ডেশন এই কুসংস্কার দূর করতে এবং মানুষকে সচেতন করতে নিরলসভাবে কাজ করে যাচ্ছে। আমরা বিভিন্ন ক্যাম্পেইন, সেমিনার এবং অনলাইন প্রচারণার মাধ্যমে সঠিক তথ্য ছড়িয়ে দিচ্ছি।</p>
+                    <p>আমরা একটি অলাভজনক স্বেচ্ছাসেবী সংগঠন। আমাদের কোনো বড় স্পনসর বা ফান্ডের উৎস নেই। আমাদের সকল কার্যক্রম পরিচালিত হয় আপনাদের মতো সহৃদয়বান মানুষের ছোট ছোট অনুদান এবং আমাদের স্বেচ্ছাসেবকদের অক্লান্ত পরিশ্রমের মাধ্যমে। ওয়েবসাইট রক্ষণাবেক্ষণ, সার্ভার খরচ, ক্যাম্পেইন আয়োজন, জরুরি প্রয়োজনে রোগীদের সহায়তা—সবকিছুর জন্যই অর্থের প্রয়োজন।</p>
+                    <p>বর্তমানে আমাদের ওয়েবসাইটের "রক্ত খুঁজুন" ফিচারটি পূর্ণাঙ্গভাবে চালু করা সম্ভব হয়নি শুধুমাত্র বাজেটের অভাবে। আমরা চাইলেই একটি অত্যাধুনিক সিস্টেম তৈরি করতে পারি যেখানে মুহূর্তের মধ্যে ডোনার খুঁজে পাওয়া যাবে, কিন্তু তার জন্য প্রয়োজন আপনাদের সহযোগিতা। আপনার সামান্য অনুদান আমাদের এই প্রযুক্তিগত উন্নয়ন করতে সাহায্য করবে।</p>
+                    <p>আসুন, আজই প্রতিজ্ঞা করি—আমরা নিয়মিত রক্তদান করব এবং অন্যকেও উৎসাহিত করব। "রক্তমিত্র" পরিবারের সদস্য হয়ে আপনিও হতে পারেন একজন গর্বিত জীবনরক্ষক। আপনার দেওয়া এক ব্যাগ রক্ত হয়তো কোনো মায়ের কোল খালি হওয়া থেকে বাঁচাবে, কোনো সন্তানের মাথায় বাবার ছায়া ধরে রাখবে। মানবতার এই মহামিলনে আপনার অংশগ্রহণ একান্ত কাম্য। ধন্যবাদ।</p>
+                </div>
+            </section>
+        </div>
+
+        <div id="view-registration">
+            <button class="btn btn-secondary mb-20" onclick="showHome()"><i class="fa-solid fa-arrow-left"></i> হোম পেজে ফিরে যান</button>
+            <div class="form-header">
+                <h2>ডোনার রেজিস্ট্রেশন</h2>
+                <p>সঠিক তথ্য দিয়ে ফর্মটি পূরণ করুন এবং জীবন বাঁচাতে এগিয়ে আসুন</p>
+            </div>
+            
+            <form id="donorForm">
+                <div class="input-group">
+                    <label><i class="fa-solid fa-droplet text-accent"></i> রক্তের গ্রুপ *</label>
+                    <select id="bloodGroup" onchange="nextStep('step-name')">
+                        <option value="" disabled selected>বাছাই করুন</option>
+                        <option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+                    </select>
+                </div>
+                <div id="step-name" class="step input-group">
+                    <label><i class="fa-solid fa-user text-accent"></i> পূর্ণ নাম *</label>
+                    <input type="text" id="fullName" placeholder="আপনার নাম লিখুন" oninput="checkInput(this, 'step-dob')">
+                </div>
+                <div id="step-dob" class="step input-group">
+                    <label><i class="fa-solid fa-calendar-days text-accent"></i> জন্ম তারিখ *</label>
+                    <input type="date" id="dob" onchange="checkAgeLogic()">
+                </div>
+                <div id="step-gender" class="step input-group">
+                    <label><i class="fa-solid fa-venus-mars text-accent"></i> লিঙ্গ *</label>
+                    <select id="gender" onchange="nextStep('step-mobile')">
+                        <option value="" disabled selected>বাছাই করুন</option>
+                        <option>পুরুষ</option><option>মহিলা</option><option>অন্যান্য</option>
+                    </select>
+                </div>
+                <div id="step-mobile" class="step">
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-phone text-accent"></i> মোবাইল নম্বর *</label>
+                        <input type="tel" id="mobile" placeholder="017xxxxxxxx" oninput="checkMobileGroup()">
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-mobile-screen text-accent"></i> বিকল্প মোবাইল নম্বর</label>
+                        <input type="tel" id="altMobile" placeholder="01xxxxxxxxx" oninput="updateWhatsappList()">
+                    </div>
+                </div>
+                <div id="step-address" class="step">
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-map-location-dot text-accent"></i> জেলা *</label>
+                        <select id="district" onchange="checkAddressGroup()">
+                            <option value="" disabled selected>বাছাই করুন</option>
+                            <option>সাতক্ষীরা</option><option>খুলনা</option><option>ঢাকা</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-map-pin text-accent"></i> উপজেলা *</label>
+                        <select id="upazila" onchange="checkAddressGroup()">
+                            <option value="" disabled selected>বাছাই করুন</option>
+                            <option>কলারোয়া</option><option>তালা</option><option>সদর</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-house-chimney text-accent"></i> বিস্তারিত ঠিকানা *</label>
+                        <input type="text" id="address" placeholder="গ্রাম/রোড নং/বাড়ি নং..." oninput="checkAddressGroup()">
+                    </div>
+                </div>
+                <div id="step-donation" class="step">
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-calendar-check text-accent"></i> শেষ রক্তদানের তারিখ</label>
+                        <input type="date" id="lastDonation" onchange="checkDonationDate()">
+                    </div>
+                    <div class="checkbox-wrapper mb-20">
+                        <input type="checkbox" id="activeDonor" checked>
+                        <label for="activeDonor" style="cursor:pointer; margin:0">আপনি কি নিয়মিত রক্ত দানে ইচ্ছুক?</label>
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-clock-rotate-left text-accent"></i> কত মাস পর পর রক্ত দিতে পারবেন?</label>
+                        <select id="frequency" onchange="nextStep('step-social')">
+                            <option value="4" selected>৪ মাস (স্ট্যান্ডার্ড)</option>
+                            <option value="3">৩ মাস</option><option value="6">৬ মাস</option>
+                        </select>
+                    </div>
+                    <p class="text-accent" style="text-align:right; font-size:0.9rem; cursor:pointer;" onclick="nextStep('step-social')">পরবর্তী ধাপ &rarr;</p>
+                </div>
+                <div id="step-social" class="step">
+                    <div class="input-group">
+                        <label><i class="fa-brands fa-whatsapp text-accent"></i> হোয়াটসঅ্যাপ নম্বর</label>
+                        <select id="whatsappSelect" onchange="handleWhatsappLogic()">
+                            <option value="">বাছাই করুন (ঐচ্ছিক)</option>
+                        </select>
+                        <input type="tel" id="whatsappCustom" placeholder="নম্বর লিখুন" style="display:none; margin-top:10px;">
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fa-brands fa-facebook text-accent"></i> ফেসবুক প্রোফাইল লিংক</label>
+                        <input type="url" id="fbLink" placeholder="https://facebook.com/user">
+                    </div>
+                    <p class="text-accent" style="text-align:right; font-size:0.9rem; cursor:pointer;" onclick="nextStep('step-agreement')">স্কিপ করুন &rarr;</p>
+                </div>
+                <div id="step-agreement" class="step">
+                    <div class="checkbox-wrapper" style="background: rgba(255, 75, 43, 0.2); border: 2px solid var(--accent-color);">
+                        <input type="checkbox" id="agreePolicy" onchange="toggleSubmit()">
+                        <label for="agreePolicy" style="cursor:pointer; margin:0; font-size: 1rem;">
+                            আমি <span class="clickable-text" onclick="openModal('modal-agreement')">শর্তাবলী</span> এবং <span class="clickable-text" onclick="openModal('modal-policy')">পলিসি</span> পড়েছি এবং মেনে নিচ্ছি।
+                        </label>
+                    </div>
+                    <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%; margin-top:25px; padding: 15px; font-size: 1.2rem; display:none;">
+                        রেজিস্ট্রেশন সম্পন্ন করুন <i class="fa-solid fa-check-circle"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-donation-details" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn" onclick="closeModal('modal-donation-details')">&times;</span>
+            <div class="modal-header"><i class="fa-solid fa-hand-holding-dollar text-success"></i> ডোনেশন ডিটেইলস</div>
+            <div class="modal-body">
+                <p class="text-center mb-20">আপনার সামান্য অনুদান আমাদের কার্যক্রমকে এগিয়ে নিতে সাহায্য করবে।</p>
+                
+                <div class="info-list-item">
+                    <div class="info-label"><i class="fa-solid fa-mobile-screen" style="color:#e2136e;"></i> বিকাশ (Personal)</div>
+                    <div class="info-value"><span id="bkash-num">017XX-XXXXXX</span> <i class="fa-regular fa-copy copy-btn" onclick="copyText('bkash-num')"></i></div>
+                </div>
+                <div class="info-list-item">
+                    <div class="info-label"><i class="fa-solid fa-mobile-screen" style="color:#f6921e;"></i> নগদ (Personal)</div>
+                    <div class="info-value"><span id="nagad-num">019XX-XXXXXX</span> <i class="fa-regular fa-copy copy-btn" onclick="copyText('nagad-num')"></i></div>
+                </div>
+                <div class="info-list-item">
+                    <div class="info-label"><i class="fa-solid fa-rocket" style="color:#8c3494;"></i> রকেট (Personal)</div>
+                    <div class="info-value"><span id="rocket-num">016XX-XXXXXX</span> <i class="fa-regular fa-copy copy-btn" onclick="copyText('rocket-num')"></i></div>
+                </div>
+                 <div class="info-list-item">
+                    <div class="info-label"><i class="fa-solid fa-building-columns text-primary"></i> ব্যাংক একাউন্ট</div>
+                    <div class="info-value"><span id="bank-num">DBBL - 123.XXXX</span> <i class="fa-regular fa-copy copy-btn" onclick="copyText('bank-num')"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-contact" class="modal-overlay">
+        <div class="modal-content" style="border-top: 8px solid var(--info-color);">
+             <span class="modal-close-btn" onclick="closeModal('modal-contact')">&times;</span>
+            <div class="text-center mb-20">
+                 <i class="fa-solid fa-circle-info text-accent" style="font-size: 4rem;"></i>
+            </div>
+            <div class="modal-header">ফিচারটি চালু নেই!</div>
+            <div class="modal-body text-center">
+                <p class="mb-20">দুঃখিত, বাজেট স্বল্পতার কারণে আমাদের অটোমেটিক "রক্ত খোঁজার" সিস্টেমটি বর্তমানে বন্ধ আছে।</p>
+                <p>তবে জরুরি প্রয়োজনে রক্তের জন্য আমাদের সাথে সরাসরি যোগাযোগ করতে পারেন:</p>
+                
+                <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px;">
+                    <a href="tel:+88017XXXXXXXX" class="btn btn-success" style="justify-content: center;"><i class="fa-solid fa-phone"></i> কল করুন: 017XX-XXXXXX</a>
+                    <a href="https://wa.me/+88017XXXXXXXX" target="_blank" class="btn btn-success" style="background:#25D366; justify-content: center;"><i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপ মেসেজ</a>
+                    <a href="https://facebook.com/roktomitro" target="_blank" class="btn btn-primary" style="background:#1877f2; justify-content: center;"><i class="fa-brands fa-facebook"></i> ফেসবুক পেজ ভিজিট করুন</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-agreement" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn" onclick="closeModal('modal-agreement')">&times;</span>
+            <div class="modal-header"><i class="fa-solid fa-file-signature"></i> শর্তাবলী (Agreement)</div>
+            <div class="modal-body styled-list">
+                <p>আমি স্বেচ্ছায় এবং সম্পূর্ণ বিনামূল্যে রক্তদান করার জন্য নিবন্ধন করছি।</p>
+                <p>আমার প্রদানকৃত সকল তথ্য (নাম, বয়স, রক্তের গ্রুপ, ঠিকানা ইত্যাদি) সম্পূর্ণ সত্য এবং সঠিক।</p>
+                <p>আমি জেনে শুনে এমন কোনো তথ্য গোপন করিনি যা রক্তগ্রহীতার জন্য ক্ষতিকারক হতে পারে (যেমন: কোনো সংক্রামক রোগ)।</p>
+                <p>রক্তমিত্র সংগঠনের প্রয়োজনে বা কোনো রোগীর প্রয়োজনে আমার দেওয়া নম্বরে যোগাযোগ করার অনুমতি প্রদান করছি।</p>
+                <p>আমি রক্তদানের বিনিময়ে কোনো প্রকার আর্থিক সুবিধা বা অন্য কোনো প্রতিদান আশা করি না।</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-policy" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn" onclick="closeModal('modal-policy')">&times;</span>
+            <div class="modal-header"><i class="fa-solid fa-shield-halved"></i> প্রাইভেসি পলিসি</div>
+            <div class="modal-body styled-list">
+                <p><strong>তথ্য সুরক্ষা:</strong> আপনার ব্যক্তিগত তথ্য (বিশেষ করে মোবাইল নম্বর ও ঠিকানা) অত্যন্ত সতর্কতার সাথে সংরক্ষণ করা হবে।</p>
+                <p><strong>তথ্যের ব্যবহার:</strong> আপনার তথ্য শুধুমাত্র রক্ত সংগ্রহের প্রয়োজনে ব্যবহার করা হবে। অন্য কোনো বাণিজ্যিক উদ্দেশ্যে এটি ব্যবহার করা হবে না।</p>
+                <p><strong>তৃতীয় পক্ষ:</strong> আপনার স্পষ্ট অনুমতি ছাড়া আমরা কোনো তৃতীয় পক্ষের (Third Party) কাছে আপনার তথ্য শেয়ার করব না।</p>
+                <p><strong>নিয়ন্ত্রণ:</strong> আপনি যেকোনো সময় আমাদের সাথে যোগাযোগ করে আপনার তথ্য পরিবর্তন বা ডোনার লিস্ট থেকে আপনার নাম প্রত্যাহার করতে পারবেন।</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-underage" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn" onclick="closeModal('modal-underage')">&times;</span>
+            <div class="text-center">
+                <i class="fa-regular fa-face-sad-tear sad-icon"></i>
+            </div>
+            <div class="modal-header text-accent">বয়স ১৮ হয়নি!</div>
+            <div class="modal-body text-center">
+                <p style="font-size: 1.2rem; font-weight: bold;">প্রিয় ভবিষ্যতের হিরো,</p>
+                <p>আপনার রক্ত দেওয়ার এই অদম্য ইচ্ছাকে আমরা স্যালুট জানাই! আপনার মতো মহানুভব মানুষেরাই পৃথিবীর আসল শক্তি।</p>
+                <p>তবে চিকিৎসাবিজ্ঞানের নিয়ম অনুযায়ী, রক্তদানের জন্য ন্যূনতম বয়স ১৮ বছর হতে হয়। যেহেতু আপনার বয়স এখনও ১৮ হয়নি, তাই এই মুহূর্তে আমরা আপনাকে ডোনার হিসেবে নিবন্ধন করতে পারছি না।</p>
+                <p style="color: var(--primary-color); font-weight: 600; margin-top: 20px;">
+                    প্লিজ, মন খারাপ করবেন না! আপনার এই আগ্রহ ধরে রাখুন। ১৮ বছর পূর্ণ হলেই আমরা আপনাকে "রক্তমিত্র" পরিবারে সাদরে গ্রহণ করব। ততদিন পর্যন্ত সুস্থ থাকুন, ভালো থাকুন এবং অন্যদের রক্তদানে উৎসাহিত করুন।
+                </p>
+                <button class="btn btn-warning" style="margin-top: 25px; color: #333;" onclick="closeModal('modal-underage')">
+                    <i class="fa-solid fa-thumbs-up"></i> ঠিক আছে, আমি অপেক্ষা করব
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-already-registered" style="display: none; width: 95%; max-width: 500px; margin: 50px auto; text-align: center; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 20px 50px rgba(0,0,0,0.1);">
+        <div style="font-size: 4rem; color: var(--success-color); margin-bottom: 20px;">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+        <h2 style="color: var(--primary-color); margin-bottom: 10px;">স্বাগতম রক্তযোদ্ধা!</h2>
+        <p style="color: #666; margin-bottom: 30px;">এই ডিভাইস থেকে ইতিমধ্যে রেজিস্ট্রেশন সম্পন্ন হয়েছে।</p>
+        
+        <div style="background: #f4f6f9; padding: 20px; border-radius: 15px; text-align: left; margin-bottom: 30px; border-left: 5px solid var(--accent-color);">
+            <p><strong>নাম:</strong> <span id="reg-name">--</span></p>
+            <p><strong>আইডি:</strong> <span id="reg-id" style="color: var(--success-color); font-weight: bold;">--</span></p>
+            <p><strong>রক্তের গ্রুপ:</strong> <span id="reg-group" style="color: var(--accent-color); font-weight: bold;">--</span></p>
+        </div>
+
+        <button class="btn btn-secondary" onclick="showRegistrationForm(true)">
+            <i class="fa-solid fa-user-plus"></i> অন্যের জন্য রেজিস্ট্রেশন করুন
+        </button>
+        <br><br>
+        <button class="btn btn-primary" onclick="showHome()">
+            <i class="fa-solid fa-house"></i> হোম পেজে যান
+        </button>
+    </div>
+
+    <div id="modal-success" class="modal-overlay">
+        <div class="modal-content" style="text-align: center; border-top: 8px solid var(--success-color);">
+            <div style="font-size: 5rem; color: var(--success-color); margin-bottom: 20px;">
+                <i class="fa-solid fa-heart-circle-check"></i>
+            </div>
+            <h2 class="text-success" style="font-weight: 800;">অভিনন্দন!</h2>
+            <p style="font-size: 1.2rem; margin: 10px 0;">রেজিস্ট্রেশন সফল হয়েছে।</p>
+            
+            <div style="background: #f1f8e9; padding: 20px; border-radius: 10px; margin: 20px 0; border: 2px dashed #28a745;">
+                <p style="font-size: 1.1rem; color: #555;">আপনার ডোনার আইডি</p>
+                <h1 id="success-id" style="font-size: 3rem; color: var(--primary-color); margin: 10px 0; letter-spacing: 2px;">RM-XXXX</h1>
+                <p style="font-size: 0.9rem; color: #777;">(এটি মনে রাখুন)</p>
+            </div>
+
+            <button class="btn btn-primary" onclick="location.reload()">
+                <i class="fa-solid fa-check"></i> ঠিক আছে
+            </button>
+        </div>
+    </div>
+    <script>
+        // ১. পেজ লোড হলে মেইনটেনেন্স পপ-আপ ও টাইমার
+        window.addEventListener('load', function() {
+            const popup = document.getElementById('popup-maintenance');
+            const timerDisplay = document.getElementById('timer');
+            let timeLeft = 20;
+            
+            // পপ-আপ দেখানো
+            popup.style.display = 'flex';
+
+            // টাইমার লজিক
+            const countdown = setInterval(() => {
+                timeLeft--;
+                timerDisplay.innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    closeModal('popup-maintenance');
+                }
+            }, 1000);
+
+            // ম্যানুয়ালি ক্লোজ করলে টাইমার বন্ধ হবে
+            popup.querySelector('.modal-close-btn').addEventListener('click', () => clearInterval(countdown));
+        });
+
+        // ২. ভিউ সুইচিং
+        function showRegistration() {
+            document.getElementById('view-home').style.display = 'none';
+            document.getElementById('view-registration').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+        function showHome() {
+            document.getElementById('view-registration').style.display = 'none';
+            document.getElementById('view-home').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        // ৩. মডাল কন্ট্রোল
+        function openModal(modalId) {
+            event.preventDefault();
+            // অন্য কোনো খোলা মডাল বন্ধ করা (যদি থাকে)
+            document.querySelectorAll('.modal-overlay').forEach(m => {
+                if(m.id !== 'popup-maintenance') m.style.display = 'none';
+            });
+            document.getElementById(modalId).style.display = 'flex';
+        }
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            // আন্ডারএজ মডাল বন্ধ করলে জন্মতারিখ রিসেট করা
+            if(modalId === 'modal-underage') {
+                document.getElementById('dob').value = '';
+            }
+        }
+
+        // ৪. কপি ও টোস্ট লজিক
+        function showToast(icon, msg, type = 'success') {
+            const toast = document.getElementById('toast-box');
+            toast.innerHTML = `<i class="${icon}"></i> ${msg}`;
+            toast.style.background = type === 'success' ? 'rgba(40, 167, 69, 0.95)' : 'rgba(255, 75, 43, 0.95)';
+            toast.style.display = 'flex';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
+        function copyText(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('fa-solid fa-clipboard-check', `নম্বরটি কপি হয়েছে: ${text}`);
+            });
+        }
+
+        // ৫. ফর্মের স্টেপ ও লজিক
+        function nextStep(stepId) {
+            const step = document.getElementById(stepId);
+            if (step && !step.classList.contains('active')) {
+                step.classList.add('active');
+                // একটু দেরিতে স্ক্রল করা যাতে এনিমেশন স্মুথ হয়
+                setTimeout(() => step.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+            }
+        }
+        function checkInput(input, nextStepId) { if(input.value.length > 2) nextStep(nextStepId); }
+        function checkMobileGroup() { if(document.getElementById('mobile').value.length >= 11) nextStep('step-address'); updateWhatsappList(); }
+        function checkAddressGroup() {
+            const dist = document.getElementById('district').value;
+            const upa = document.getElementById('upazila').value;
+            const addr = document.getElementById('address').value;
+            if(dist && upa && addr.length > 3) nextStep('step-donation');
+        }
+        
+        // বয়স যাচাই (Age Check)
+        function checkAgeLogic() {
+            const dobInput = document.getElementById('dob').value;
+            if(!dobInput) return;
+            const dob = new Date(dobInput);
+            const today = new Date();
+            let age = today.getFullYear() - dob.getFullYear();
+            const m = today.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) { age--; }
+
+            if (age < 18) {
+                openModal('modal-underage');
+            } else {
+                nextStep('step-gender');
+            }
+        }
+        // রক্তদানের তারিখ টোস্ট
+        function checkDonationDate() {
+            if(document.getElementById('lastDonation').value) {
+                showToast('fa-solid fa-heart', 'ধন্যবাদ! আপনি একজন অভিজ্ঞ রক্তদাতা। আমরা গর্বিত!', 'success');
+            }
+        }
+
+        // হোয়াটসঅ্যাপ ও সাবমিট বাটন
+        function updateWhatsappList() {
+            const m=document.getElementById('mobile').value, am=document.getElementById('altMobile').value, w=document.getElementById('whatsappSelect');
+            w.innerHTML='<option value="">বাছাই করুন (ঐচ্ছিক)</option>';
+            if(m.length>5) {let o=document.createElement('option'); o.value=m; o.text='মোবাইল: '+m; w.add(o);}
+            if(am.length>5) {let o=document.createElement('option'); o.value=am; o.text='বিকল্প: '+am; w.add(o);}
+            let o=document.createElement('option'); o.value='custom'; o.text='লিখুন (অন্য নম্বর)'; w.add(o);
+        }
+        function handleWhatsappLogic() {
+            document.getElementById('whatsappCustom').style.display=(document.getElementById('whatsappSelect').value==='custom')?'block':'none';
+            nextStep('step-agreement');
+        }
+        function toggleSubmit() {
+            document.getElementById('submitBtn').style.display = document.getElementById('agreePolicy').checked ? 'block' : 'none';
+        }
+
+        // ৬. সাবমিট ও কার্ড জেনারেশন
+
+<script>
+    // তোমার নতুন Apps Script URL এখানে বসাবে
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyW4HpOS-Zp2PDDRgz5LZDJUGvicaYjKH8KjIusy8Lgsp4P3cSG77oYx-eQ0TF1oFRB0g/exec'; 
+
+    // ১. পেজ লোড লজিক (ডিভাইস চেক)
+    window.addEventListener('load', function() {
+        // মেইনটেনেন্স পপ-আপ (আগের মতো)
+        const popup = document.getElementById('popup-maintenance');
+        if(popup) {
+            popup.style.display = 'flex';
+            let timeLeft = 20;
+            const timerDisplay = document.getElementById('timer');
+            const countdown = setInterval(() => {
+                timeLeft--;
+                if(timerDisplay) timerDisplay.innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    closeModal('popup-maintenance');
+                }
+            }, 1000);
+            popup.querySelector('.modal-close-btn').addEventListener('click', () => clearInterval(countdown));
+        }
+
+        // রেজিস্ট্রেশন চেক (One Device Logic)
+        checkRegistrationStatus();
+    });
+
+    // ২. ডিভাইস স্ট্যাটাস চেক ফাংশন
+    function checkRegistrationStatus() {
+        const savedUser = localStorage.getItem('roktomitro_donor');
+        if (savedUser) {
+            const user = JSON.parse(savedUser);
+            // ডাটা সেট করা
+            document.getElementById('reg-name').innerText = user.name;
+            document.getElementById('reg-id').innerText = user.id;
+            document.getElementById('reg-group').innerText = user.group;
+        }
+    }
+
+    // ৩. ভিউ কন্ট্রোল
+    function showRegistration() {
+        const savedUser = localStorage.getItem('roktomitro_donor');
+        document.getElementById('view-home').style.display = 'none';
+        
+        if (savedUser) {
+            // যদি আগে রেজিস্ট্রেশন করা থাকে
+            document.getElementById('view-already-registered').style.display = 'block';
+            document.getElementById('view-registration').style.display = 'none';
+        } else {
+            // একদম নতুন ইউজার
+            document.getElementById('view-already-registered').style.display = 'none';
+            document.getElementById('view-registration').style.display = 'block';
+        }
+        window.scrollTo(0, 0);
+    }
+
+    // "অন্যের জন্য রেজিস্ট্রেশন" বাটন ক্লিক করলে এটা কল হবে
+    function showRegistrationForm(forceShow = false) {
+        document.getElementById('view-already-registered').style.display = 'none';
+        document.getElementById('view-registration').style.display = 'block';
+        // ফর্ম ক্লিয়ার করা যাতে নতুনের জন্য ফ্রেশ থাকে
+        if(forceShow) {
+            document.getElementById('donorForm').reset();
+        }
+    }
+
+    function showHome() {
+        document.getElementById('view-registration').style.display = 'none';
+        document.getElementById('view-already-registered').style.display = 'none';
+        document.getElementById('view-home').style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+
+    // ৪. মডাল ও অন্যান্য ছোট ফাংশন (আগের মতোই)
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    
+    function showToast(icon, msg, type) {
+        const t = document.getElementById('toast-box');
+        t.innerHTML = `<i class="${icon}"></i> ${msg}`;
+        t.style.background = type === 'success' ? '#28a745' : '#ff4b2b';
+        t.style.display = 'flex';
+        setTimeout(() => t.style.display = 'none', 3000);
+    }
+
+    // ৫. ফর্ম সাবমিশন লজিক (আপডেট করা)
+    document.getElementById('donorForm').addEventListener('submit', function(e){
+        e.preventDefault();
+        
+        const submitBtn = document.getElementById('submitBtn');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং হচ্ছে...';
+        submitBtn.disabled = true;
+
+        let formData = {
+            fullName: document.getElementById('fullName').value,
+            bloodGroup: document.getElementById('bloodGroup').value,
+            dob: document.getElementById('dob').value,
+            gender: document.getElementById('gender').value,
+            mobile: document.getElementById('mobile').value,
+            altMobile: document.getElementById('altMobile').value || "N/A",
+            district: document.getElementById('district').value,
+            upazila: document.getElementById('upazila').value,
+            address: document.getElementById('address').value,
+            lastDonation: document.getElementById('lastDonation').value,
+            frequency: document.getElementById('frequency').value,
+            whatsapp: document.getElementById('whatsappSelect').value === 'custom' ? document.getElementById('whatsappCustom').value : document.getElementById('whatsappSelect').value,
+            facebook: document.getElementById('fbLink').value || "N/A"
+        };
+
+        fetch(scriptURL, {
+            method: 'POST',
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(response => {
+            if (response.result === "success") {
+                // ১. সফল হলে সাকসেস মডাল দেখানো
+                document.getElementById('success-id').innerText = response.donorId;
+                openModal('modal-success');
+
+                // ২. ডিভাইসে ডাটা সেভ করা (যদি আগে থেকে সেভ না থাকে)
+                // অর্থাৎ, নিজের রেজিস্ট্রেশন হলে সেভ হবে, অন্যের জন্য করলে সেভ হবে না
+                if (!localStorage.getItem('roktomitro_donor')) {
+                    const userData = {
+                        name: formData.fullName,
+                        id: response.donorId,
+                        group: formData.bloodGroup
+                    };
+                    localStorage.setItem('roktomitro_donor', JSON.stringify(userData));
+                }
+
+                document.getElementById('donorForm').reset();
+            } else if (response.result === "error" && response.message === "duplicate") {
+                showToast('fa-solid fa-triangle-exclamation', 'এই নম্বর দিয়ে ইতিমধ্যে রেজিস্ট্রেশন করা আছে!', 'error');
+            } else {
+                throw new Error("Server Error");
+            }
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        })
+        .catch(error => {
+            console.error(error);
+            // এরর হলেও ইউজারকে আইডি পেন্ডিং দেখাবো
+            document.getElementById('success-id').innerText = "RM-Pending";
+            openModal('modal-success');
+            
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        });
+    });
+
+    // স্টেপ নেভিগেশন (আগের লজিক)
+    function nextStep(stepId) {
+        const step = document.getElementById(stepId);
+        if (step && !step.classList.contains('active')) {
+            step.classList.add('active');
+            setTimeout(() => step.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+        }
+    }
+    // ইনপুট চেকার ফাংশনগুলো আগের মতোই থাকবে...
+    function checkInput(input, next) { if(input.value.length > 2) nextStep(next); }
+    function checkMobileGroup() { if(document.getElementById('mobile').value.length >= 11) nextStep('step-address'); updateWhatsappList(); }
+    function checkAddressGroup() { if(document.getElementById('address').value.length > 3) nextStep('step-donation'); }
+    function checkAgeLogic() {
+        const d = new Date(document.getElementById('dob').value);
+        const diff = new Date() - d;
+        const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+        if(age < 18) openModal('modal-underage'); else nextStep('step-gender');
+    }
+    function updateWhatsappList() {
+        const m=document.getElementById('mobile').value, am=document.getElementById('altMobile').value, w=document.getElementById('whatsappSelect');
+        w.innerHTML='<option value="">বাছাই করুন (ঐচ্ছিক)</option>';
+        if(m.length>5) {let o=document.createElement('option'); o.value=m; o.text='মোবাইল: '+m; w.add(o);}
+        if(am.length>5) {let o=document.createElement('option'); o.value=am; o.text='বিকল্প: '+am; w.add(o);}
+        let o=document.createElement('option'); o.value='custom'; o.text='লিখুন (অন্য নম্বর)'; w.add(o);
+    }
+    function handleWhatsappLogic() {
+        document.getElementById('whatsappCustom').style.display=(document.getElementById('whatsappSelect').value==='custom')?'block':'none';
+        nextStep('step-agreement');
+    }
+    function toggleSubmit() {
+        document.getElementById('submitBtn').style.display = document.getElementById('agreePolicy').checked ? 'block' : 'none';
+    }
+    function copyText(id) { navigator.clipboard.writeText(document.getElementById(id).innerText); showToast('fa-solid fa-check', 'কপি হয়েছে!', 'success'); }
+</script>
+
+        // ৭. ইমেজ ডাউনলোড (FIXED)
+        function downloadImage() {
+            const cardElement = document.getElementById('download-card');
+            
+            // html2canvas কনফিগারেশন
+            html2canvas(cardElement, {
+                scale: 3, // হাই রেজোলিউশন
+                useCORS: true, // ক্রস-অরিজিন ইমেজ সাপোর্ট
+                backgroundColor: null, // ট্রান্সপারেন্ট ব্যাকগ্রাউন্ড হ্যান্ডেল করা
+                logging: false, // কনসোল লগ বন্ধ রাখা
+                x: 0, y: 0 // সঠিক পজিশনিং
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `Roktomitro_Card_${document.getElementById('card-id').innerText}.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+                showToast('fa-solid fa-image', 'কার্ড ডাউনলোড সফল হয়েছে!');
+            }).catch(err => {
+                console.error("Image generation failed:", err);
+                showToast('fa-solid fa-triangle-exclamation', 'কার্ড ডাউনলোড করা যায়নি। আবার চেষ্টা করুন।', 'error');
+            });
+        }
+
+        // ৮. শেয়ার লজিক
+        function shareOnFacebook() {
+            const id = document.getElementById('card-id').innerText;
+            const group = document.getElementById('card-group').innerText;
+            const caption = `আমি রক্তমিত্র পরিবারের গর্বিত সদস্য হলাম! আমার ব্লাড গ্রুপ: ${group}, ডোনার আইডি: ${id}। আপনিও রেজিস্ট্রেশন করুন এবং জীবন বাঁচান!`;
+            const siteLink = window.location.href; // আপনার আসল ডোমেইন এখানে থাকলে ভালো হয়
+            const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(siteLink)}&quote=${encodeURIComponent(caption)}`;
+            window.open(fbUrl, '_blank', 'width=600,height=400');
+        }
+    </script>
+</body>
+</html>
