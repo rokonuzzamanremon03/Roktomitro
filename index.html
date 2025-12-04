@@ -522,212 +522,209 @@
     </div>
 
     <script>
-    // তোমার নতুন Apps Script URL এখানে বসাবে
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyW4HpOS-Zp2PDDRgz5LZDJUGvicaYjKH8KjIusy8Lgsp4P3cSG77oYx-eQ0TF1oFRB0g/exec'; 
+        // তোমার আপডেটেড Apps Script URL
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyW4HpOS-Zp2PDDRgz5LZDJUGvicaYjKH8KjIusy8Lgsp4P3cSG77oYx-eQ0TF1oFRB0g/exec';
 
-    // ১. পেজ লোড লজিক (ডিভাইস চেক)
-    window.addEventListener('load', function() {
+        // ১. গ্লোবাল ফাংশনস (এগুলো সবার আগে)
+        function openModal(id) {
+            const m = document.getElementById(id);
+            if(m) m.style.display = 'flex';
+        }
+        function closeModal(id) {
+            const m = document.getElementById(id);
+            if(m) m.style.display = 'none';
+            if(id === 'modal-underage') document.getElementById('dob').value = '';
+        }
+        function openInChrome() {
+            var url = window.location.href;
+            // Android Intent for Chrome
+            var intentUrl = "intent://" + url.replace("https://", "").replace("http://", "") + "#Intent;scheme=https;package=com.android.chrome;end";
+            window.location.href = intentUrl;
+        }
+        function closePopupForever() {
+            document.getElementById('popup-maintenance').style.display = 'none';
+            localStorage.setItem('roktomitro_popup_seen', 'true');
+        }
+        function handlePopupRegistration() {
+            closePopupForever();
+            showRegistration();
+        }
 
-// --- পপ-আপ লজিক (জীবনে একবার দেখাবে) ---
-        const hasSeenPopup = localStorage.getItem('roktomitro_popup_seen');
+        // ২. পেজ লোড লজিক (একটাই থাকবে)
+        window.addEventListener('load', function() {
+            
+            // --- ক. ফেসবুক/মেসেঞ্জার ব্রাউজার ডিটেকশন ---
+            var ua = navigator.userAgent || navigator.vendor || window.opera;
+            // Facebook, Messenger, Instagram, or FB_IAB detection
+            var isInApp = (ua.indexOf("FBAN") > -1) || 
+                          (ua.indexOf("FBAV") > -1) || 
+                          (ua.indexOf("Instagram") > -1) || 
+                          (ua.indexOf("Messenger") > -1) ||
+                          (ua.indexOf("FB_IAB") > -1);
 
-        if (!hasSeenPopup) {
-            // যদি আগে না দেখে থাকে, তাহলে পপ-আপ দেখাও
-            const popup = document.getElementById('popup-maintenance');
-            if(popup) {
-                popup.style.display = 'flex';
-                
-                // টাইমার লজিক
-                let timeLeft = 20;
-                const timerDisplay = document.getElementById('timer');
-                const countdown = setInterval(() => {
-                    timeLeft--;
-                    if(timerDisplay) timerDisplay.innerText = timeLeft;
-                    if (timeLeft <= 0) {
-                        clearInterval(countdown);
-                        closePopupForever(); // সময় শেষ হলে বন্ধ হবে এবং আর দেখাবে না
+            if (isInApp) {
+                // যদি ফেসবুক ব্রাউজার হয়, ওয়ার্নিং পপ-আপ দেখাও
+                document.getElementById('modal-fb-warning').style.display = 'flex';
+            } else {
+                // ফেসবুক না হলে মেইনটেনেন্স পপ-আপ দেখাবে (যদি আগে না দেখে থাকে)
+                const hasSeenPopup = localStorage.getItem('roktomitro_popup_seen');
+                if (!hasSeenPopup) {
+                    const popup = document.getElementById('popup-maintenance');
+                    if(popup) {
+                        popup.style.display = 'flex';
+                        let timeLeft = 20;
+                        const timerDisplay = document.getElementById('timer');
+                        const countdown = setInterval(() => {
+                            timeLeft--;
+                            if(timerDisplay) timerDisplay.innerText = timeLeft;
+                            if (timeLeft <= 0) {
+                                clearInterval(countdown);
+                                closePopupForever();
+                            }
+                        }, 1000);
                     }
-                }, 1000);
+                }
+            }
+
+            // --- খ. ডিভাইস রেজিস্ট্রেশন স্ট্যাটাস চেক ---
+            checkRegistrationStatus();
+        });
+
+        // ৩. অন্যান্য লজিক
+        function checkRegistrationStatus() {
+            const savedUser = localStorage.getItem('roktomitro_donor');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                document.getElementById('reg-name').innerText = user.name;
+                document.getElementById('reg-id').innerText = user.id;
+                document.getElementById('reg-group').innerText = user.group;
             }
         }
-        // যদি দেখে থাকে (hasSeenPopup == true), তাহলে কিছুই হবে না (পপ-আপ আসবে না)
 
-        // --- ডিভাইস চেক (One Device Policy) ---
-        checkRegistrationStatus();
-    });
-
-    // পপ-আপ বন্ধ করার এবং ফ্ল্যাগ সেভ করার ফাংশন
-    function closePopupForever() {
-        document.getElementById('popup-maintenance').style.display = 'none';
-        localStorage.setItem('roktomitro_popup_seen', 'true'); // ব্রাউজারে সেভ করে রাখা হলো
-    }
-
-    // পপ-আপের রেজিস্ট্রেশন বাটনের ফাংশন
-    function handlePopupRegistration() {
-        closePopupForever(); // পপ-আপ বন্ধ হবে এবং আর আসবে না
-        showRegistration();  // রেজিস্ট্রেশন পেজে নিয়ে যাবে
-    }
-
-            
-    // ২. ডিভাইস স্ট্যাটাস চেক ফাংশন
-    function checkRegistrationStatus() {
-        const savedUser = localStorage.getItem('roktomitro_donor');
-        if (savedUser) {
-            const user = JSON.parse(savedUser);
-            // ডাটা সেট করা
-            document.getElementById('reg-name').innerText = user.name;
-            document.getElementById('reg-id').innerText = user.id;
-            document.getElementById('reg-group').innerText = user.group;
+        function showRegistration() {
+            const savedUser = localStorage.getItem('roktomitro_donor');
+            document.getElementById('view-home').style.display = 'none';
+            if (savedUser) {
+                document.getElementById('view-already-registered').style.display = 'block';
+                document.getElementById('view-registration').style.display = 'none';
+            } else {
+                document.getElementById('view-already-registered').style.display = 'none';
+                document.getElementById('view-registration').style.display = 'block';
+            }
+            window.scrollTo(0, 0);
         }
-    }
 
-    // ৩. ভিউ কন্ট্রোল
-    function showRegistration() {
-        const savedUser = localStorage.getItem('roktomitro_donor');
-        document.getElementById('view-home').style.display = 'none';
-        
-        if (savedUser) {
-            // যদি আগে রেজিস্ট্রেশন করা থাকে
-            document.getElementById('view-already-registered').style.display = 'block';
-            document.getElementById('view-registration').style.display = 'none';
-        } else {
-            // একদম নতুন ইউজার
+        function showRegistrationForm(forceShow = false) {
             document.getElementById('view-already-registered').style.display = 'none';
             document.getElementById('view-registration').style.display = 'block';
+            if(forceShow) document.getElementById('donorForm').reset();
         }
-        window.scrollTo(0, 0);
-    }
 
-    // "অন্যের জন্য রেজিস্ট্রেশন" বাটন ক্লিক করলে এটা কল হবে
-    function showRegistrationForm(forceShow = false) {
-        document.getElementById('view-already-registered').style.display = 'none';
-        document.getElementById('view-registration').style.display = 'block';
-        // ফর্ম ক্লিয়ার করা যাতে নতুনের জন্য ফ্রেশ থাকে
-        if(forceShow) {
-            document.getElementById('donorForm').reset();
+        function showHome() {
+            document.getElementById('view-registration').style.display = 'none';
+            document.getElementById('view-already-registered').style.display = 'none';
+            document.getElementById('view-home').style.display = 'block';
+            window.scrollTo(0, 0);
         }
-    }
 
-    function showHome() {
-        document.getElementById('view-registration').style.display = 'none';
-        document.getElementById('view-already-registered').style.display = 'none';
-        document.getElementById('view-home').style.display = 'block';
-        window.scrollTo(0, 0);
-    }
+        function showToast(icon, msg, type) {
+            const t = document.getElementById('toast-box');
+            t.innerHTML = `<i class="${icon}"></i> ${msg}`;
+            t.style.background = type === 'success' ? '#28a745' : '#ff4b2b';
+            t.style.display = 'flex';
+            setTimeout(() => t.style.display = 'none', 3000);
+        }
 
-    // ৪. মডাল ও অন্যান্য ছোট ফাংশন (আগের মতোই)
-    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    
-    function showToast(icon, msg, type) {
-        const t = document.getElementById('toast-box');
-        t.innerHTML = `<i class="${icon}"></i> ${msg}`;
-        t.style.background = type === 'success' ? '#28a745' : '#ff4b2b';
-        t.style.display = 'flex';
-        setTimeout(() => t.style.display = 'none', 3000);
-    }
+        // ফর্ম সাবমিশন
+        document.getElementById('donorForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং...';
+            submitBtn.disabled = true;
 
-    // ৫. ফর্ম সাবমিশন লজিক (আপডেট করা)
-    document.getElementById('donorForm').addEventListener('submit', function(e){
-        e.preventDefault();
-        
-        const submitBtn = document.getElementById('submitBtn');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং হচ্ছে...';
-        submitBtn.disabled = true;
+            let formData = {
+                fullName: document.getElementById('fullName').value,
+                bloodGroup: document.getElementById('bloodGroup').value,
+                dob: document.getElementById('dob').value,
+                gender: document.getElementById('gender').value,
+                mobile: document.getElementById('mobile').value,
+                altMobile: document.getElementById('altMobile').value || "N/A",
+                district: document.getElementById('district').value,
+                upazila: document.getElementById('upazila').value,
+                address: document.getElementById('address').value,
+                lastDonation: document.getElementById('lastDonation').value,
+                frequency: document.getElementById('frequency').value,
+                whatsapp: document.getElementById('whatsappSelect').value === 'custom' ? document.getElementById('whatsappCustom').value : document.getElementById('whatsappSelect').value,
+                facebook: document.getElementById('fbLink').value || "N/A"
+            };
 
-        let formData = {
-            fullName: document.getElementById('fullName').value,
-            bloodGroup: document.getElementById('bloodGroup').value,
-            dob: document.getElementById('dob').value,
-            gender: document.getElementById('gender').value,
-            mobile: document.getElementById('mobile').value,
-            altMobile: document.getElementById('altMobile').value || "N/A",
-            district: document.getElementById('district').value,
-            upazila: document.getElementById('upazila').value,
-            address: document.getElementById('address').value,
-            lastDonation: document.getElementById('lastDonation').value,
-            frequency: document.getElementById('frequency').value,
-            whatsapp: document.getElementById('whatsappSelect').value === 'custom' ? document.getElementById('whatsappCustom').value : document.getElementById('whatsappSelect').value,
-            facebook: document.getElementById('fbLink').value || "N/A"
-        };
-
-        fetch(scriptURL, {
-            method: 'POST',
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(response => {
-            if (response.result === "success") {
-                // ১. সফল হলে সাকসেস মডাল দেখানো
-                document.getElementById('success-id').innerText = response.donorId;
-                openModal('modal-success');
-
-                // ২. ডিভাইসে ডাটা সেভ করা (যদি আগে থেকে সেভ না থাকে)
-                // অর্থাৎ, নিজের রেজিস্ট্রেশন হলে সেভ হবে, অন্যের জন্য করলে সেভ হবে না
-                if (!localStorage.getItem('roktomitro_donor')) {
-                    const userData = {
-                        name: formData.fullName,
-                        id: response.donorId,
-                        group: formData.bloodGroup
-                    };
-                    localStorage.setItem('roktomitro_donor', JSON.stringify(userData));
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(response => {
+                if (response.result === "success") {
+                    document.getElementById('success-id').innerText = response.donorId;
+                    openModal('modal-success');
+                    if (!localStorage.getItem('roktomitro_donor')) {
+                        const userData = {
+                            name: formData.fullName, id: response.donorId, group: formData.bloodGroup
+                        };
+                        localStorage.setItem('roktomitro_donor', JSON.stringify(userData));
+                    }
+                    document.getElementById('donorForm').reset();
+                } else if (response.result === "error" && response.message === "duplicate") {
+                    showToast('fa-solid fa-triangle-exclamation', 'এই নম্বর দিয়ে ইতিমধ্যে রেজিস্ট্রেশন করা আছে!', 'error');
+                } else {
+                    throw new Error("Server Error");
                 }
-
-                document.getElementById('donorForm').reset();
-            } else if (response.result === "error" && response.message === "duplicate") {
-                showToast('fa-solid fa-triangle-exclamation', 'এই নম্বর দিয়ে ইতিমধ্যে রেজিস্ট্রেশন করা আছে!', 'error');
-            } else {
-                throw new Error("Server Error");
-            }
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        })
-        .catch(error => {
-            console.error(error);
-            // এরর হলেও ইউজারকে আইডি পেন্ডিং দেখাবো
-            document.getElementById('success-id').innerText = "RM-Pending";
-            openModal('modal-success');
-            
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            })
+            .catch(error => {
+                console.error(error);
+                document.getElementById('success-id').innerText = "RM-Pending";
+                openModal('modal-success');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            });
         });
-    });
 
-    // স্টেপ নেভিগেশন (আগের লজিক)
-    function nextStep(stepId) {
-        const step = document.getElementById(stepId);
-        if (step && !step.classList.contains('active')) {
-            step.classList.add('active');
-            setTimeout(() => step.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+        // হেল্পার ফাংশনস (নেভিগেশন)
+        function nextStep(stepId) {
+            const step = document.getElementById(stepId);
+            if (step && !step.classList.contains('active')) {
+                step.classList.add('active');
+                setTimeout(() => step.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+            }
         }
-    }
-    // ইনপুট চেকার ফাংশনগুলো আগের মতোই থাকবে...
-    function checkInput(input, next) { if(input.value.length > 2) nextStep(next); }
-    function checkMobileGroup() { if(document.getElementById('mobile').value.length >= 11) nextStep('step-address'); updateWhatsappList(); }
-    function checkAddressGroup() { if(document.getElementById('address').value.length > 3) nextStep('step-donation'); }
-    function checkAgeLogic() {
-        const d = new Date(document.getElementById('dob').value);
-        const diff = new Date() - d;
-        const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
-        if(age < 18) openModal('modal-underage'); else nextStep('step-gender');
-    }
-    function updateWhatsappList() {
-        const m=document.getElementById('mobile').value, am=document.getElementById('altMobile').value, w=document.getElementById('whatsappSelect');
-        w.innerHTML='<option value="">বাছাই করুন (ঐচ্ছিক)</option>';
-        if(m.length>5) {let o=document.createElement('option'); o.value=m; o.text='মোবাইল: '+m; w.add(o);}
-        if(am.length>5) {let o=document.createElement('option'); o.value=am; o.text='বিকল্প: '+am; w.add(o);}
-        let o=document.createElement('option'); o.value='custom'; o.text='লিখুন (অন্য নম্বর)'; w.add(o);
-    }
-    function handleWhatsappLogic() {
-        document.getElementById('whatsappCustom').style.display=(document.getElementById('whatsappSelect').value==='custom')?'block':'none';
-        nextStep('step-agreement');
-    }
-    function toggleSubmit() {
-        document.getElementById('submitBtn').style.display = document.getElementById('agreePolicy').checked ? 'block' : 'none';
-    }
-    function copyText(id) { navigator.clipboard.writeText(document.getElementById(id).innerText); showToast('fa-solid fa-check', 'কপি হয়েছে!', 'success'); }
-</script>
+        function checkInput(input, next) { if(input.value.length > 2) nextStep(next); }
+        function checkMobileGroup() { if(document.getElementById('mobile').value.length >= 11) nextStep('step-address'); updateWhatsappList(); }
+        function checkAddressGroup() { if(document.getElementById('address').value.length > 3) nextStep('step-donation'); }
+        function checkAgeLogic() {
+            const d = new Date(document.getElementById('dob').value);
+            const diff = new Date() - d;
+            const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+            if(age < 18) openModal('modal-underage'); else nextStep('step-gender');
+        }
+        function updateWhatsappList() {
+            const m=document.getElementById('mobile').value, am=document.getElementById('altMobile').value, w=document.getElementById('whatsappSelect');
+            w.innerHTML='<option value="">বাছাই করুন</option>';
+            if(m.length>5) {let o=document.createElement('option'); o.value=m; o.text='মোবাইল: '+m; w.add(o);}
+            if(am.length>5) {let o=document.createElement('option'); o.value=am; o.text='বিকল্প: '+am; w.add(o);}
+            let o=document.createElement('option'); o.value='custom'; o.text='লিখুন (অন্য নম্বর)'; w.add(o);
+        }
+        function handleWhatsappLogic() {
+            document.getElementById('whatsappCustom').style.display=(document.getElementById('whatsappSelect').value==='custom')?'block':'none';
+            nextStep('step-agreement');
+        }
+        function toggleSubmit() {
+            document.getElementById('submitBtn').style.display = document.getElementById('agreePolicy').checked ? 'block' : 'none';
+        }
+        function copyText(id) { navigator.clipboard.writeText(document.getElementById(id).innerText); showToast('fa-solid fa-check', 'কপি হয়েছে!', 'success'); }
+    </script>
 </body>
 </html>
 
