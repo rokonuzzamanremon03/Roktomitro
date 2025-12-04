@@ -528,50 +528,6 @@
     // ১. পেজ লোড লজিক (ডিভাইস চেক)
     window.addEventListener('load', function() {
 
-// ১. ফেসবুক/মেসেঞ্জার ডিটেকশন
-        var ua = navigator.userAgent || navigator.vendor || window.opera;
-        var isInApp = (ua.indexOf("FBAN") > -1) || 
-                      (ua.indexOf("FBAV") > -1) || 
-                      (ua.indexOf("Instagram") > -1) || 
-                      (ua.indexOf("Messenger") > -1) ||
-                      (ua.indexOf("FB_IAB") > -1);
-
-        if (isInApp) {
-            // ফেসবুক ব্রাউজার হলে ওয়ার্নিং মডাল দেখাবে
-            document.getElementById('modal-fb-warning').style.display = 'flex';
-        } else {
-            // ফেসবুক না হলে মেইনটেনেন্স পপ-আপ দেখাবে (যদি আগে না দেখে থাকে)
-            const hasSeenPopup = localStorage.getItem('roktomitro_popup_seen');
-            if (!hasSeenPopup) {
-                const popup = document.getElementById('popup-maintenance');
-                if(popup) {
-                    popup.style.display = 'flex';
-                    let timeLeft = 20;
-                    const timerDisplay = document.getElementById('timer');
-                    const countdown = setInterval(() => {
-                        timeLeft--;
-                        if(timerDisplay) timerDisplay.innerText = timeLeft;
-                        if (timeLeft <= 0) {
-                            clearInterval(countdown);
-                            closePopupForever();
-                        }
-                    }, 1000);
-                }
-            }
-        }
-
-        // ২. রেজিস্ট্রেশন স্ট্যাটাস চেক
-        checkRegistrationStatus();
-    });
-
-    // ৩. ক্রোম ওপেন করার ফাংশন (এটি window.addEventListener এর নিচে বা বাইরে যেকোনো জায়গায় বসালেই হবে)
-    function openInChrome() {
-        var url = window.location.href;
-        // Android Intent (অ্যান্ড্রয়েডে সরাসরি ক্রোম ওপেন করার কমান্ড)
-        var intentUrl = "intent://" + url.replace("https://", "").replace("http://", "") + "#Intent;scheme=https;package=com.android.chrome;end";
-        window.location.href = intentUrl;
-    }
-
 // --- পপ-আপ লজিক (জীবনে একবার দেখাবে) ---
         const hasSeenPopup = localStorage.getItem('roktomitro_popup_seen');
 
