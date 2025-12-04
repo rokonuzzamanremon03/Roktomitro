@@ -211,6 +211,9 @@
                 <button class="btn btn-success btn-large" onclick="openModal('modal-donation-details')">
                     <i class="fa-solid fa-hand-holding-heart"></i> ডোনেশন করুন
                 </button>
+                <button class="btn btn-success btn-large" onclick="showRegistration()">
+                    <i class="fa-solid fa-hand-holding-heart"></i> ডোনার রেজিস্ট্রেশন
+                </button>
                 <p style="margin-top: 10px; font-size: 0.9rem; color: #777;">(এই পপ-আপটি <span id="timer">20</span> সেকেন্ড পর বন্ধ হবে)</p>
             </div>
         </div>
@@ -381,7 +384,7 @@
                 </div>
                  <div class="info-list-item">
                     <div class="info-label"><i class="fa-solid fa-building-columns text-primary"></i> ব্যাংক একাউন্ট</div>
-                    <div class="info-value"><span id="bank-num">Coming Soon</span> <i class="fa-regular fa-copy copy-btn" onclick="copyText('bank-num')"></i></div>
+                    <div class="info-value"><span id="bank-num"> Coming Soon</span> <i class="fa-regular fa-copy copy-btn" onclick="copyText('bank-num')"></i></div>
                 </div>
             </div>
         </div>
@@ -490,7 +493,10 @@
                 <h1 id="success-id" style="font-size: 3rem; color: var(--primary-color); margin: 10px 0; letter-spacing: 2px;">RM-XXXX</h1>
                 <p style="font-size: 0.9rem; color: #777;">(এটি মনে রাখুন)</p>
             </div>
-
+            <button class="btn btn-primary" onclick="openModal('modal-donation-details')">
+                    <i class="fa-solid fa-check"></i> ডোনেশন করুন
+                </button>
+            
             <button class="btn btn-primary" onclick="location.reload()">
                 <i class="fa-solid fa-check"></i> ঠিক আছে
             </button>
@@ -685,5 +691,6 @@
 </script>
 </body>
 </html>
+
 
 
