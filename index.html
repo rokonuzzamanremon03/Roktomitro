@@ -212,6 +212,10 @@
                     <i class="fa-solid fa-hand-holding-heart"></i> ডোনেশন করুন
                 </button>
                 
+                <button class="btn btn-primary btn-large" style="width: 100%; justify-content: center;" onclick="handlePopupRegistration()">
+                    <i class="fa-solid fa-user-plus"></i> ডোনার রেজিস্ট্রেশন করুন
+                </button>
+                
                 <p style="margin-top: 10px; font-size: 0.9rem; color: #777;">(এই পপ-আপটি <span id="timer">20</span> সেকেন্ড পর বন্ধ হবে)</p>
             </div>
         </div>
@@ -492,6 +496,10 @@
                 <p style="font-size: 0.9rem; color: #777;">(এটি মনে রাখুন)</p>
             </div>
             
+            <button class="btn btn-success" onclick="openModal('modal-donation-details')" style="padding: 12px 20px;">
+                    <i class="fa-solid fa-hand-holding-dollar"></i> ডোনেশন
+                </button>
+            
             <button class="btn btn-primary" onclick="location.reload()">
                 <i class="fa-solid fa-check"></i> ঠিক আছে
             </button>
@@ -520,7 +528,16 @@
             }, 1000);
             popup.querySelector('.modal-close-btn').addEventListener('click', () => clearInterval(countdown));
         }
+        
+  // --- পপ-আপ লজিক (জীবনে একবার দেখাবে) ---
+        const hasSeenPopup = localStorage.getItem('roktomitro_popup_seen');
 
+        if (!hasSeenPopup) {
+            // যদি আগে না দেখে থাকে, তাহলে পপ-আপ দেখাও
+            const popup = document.getElementById('popup-maintenance');
+            if(popup) {
+                popup.style.display = 'flex';
+            
         // রেজিস্ট্রেশন চেক (One Device Logic)
         checkRegistrationStatus();
     });
@@ -686,6 +703,7 @@
 </script>
 </body>
 </html>
+
 
 
 
