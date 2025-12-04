@@ -530,6 +530,45 @@
         // রেজিস্ট্রেশন চেক (One Device Logic)
         checkRegistrationStatus();
     });
+            // --- পপ-আপ লজিক (জীবনে একবার দেখাবে) ---
+        const hasSeenPopup = localStorage.getItem('roktomitro_popup_seen');
+
+        if (!hasSeenPopup) {
+            // যদি আগে না দেখে থাকে, তাহলে পপ-আপ দেখাও
+            const popup = document.getElementById('popup-maintenance');
+            if(popup) {
+                popup.style.display = 'flex';
+                
+                // টাইমার লজিক
+                let timeLeft = 20;
+                const timerDisplay = document.getElementById('timer');
+                const countdown = setInterval(() => {
+                    timeLeft--;
+                    if(timerDisplay) timerDisplay.innerText = timeLeft;
+                    if (timeLeft <= 0) {
+                        clearInterval(countdown);
+                        closePopupForever(); // সময় শেষ হলে বন্ধ হবে এবং আর দেখাবে না
+                    }
+                }, 1000);
+            }
+        }
+        // যদি দেখে থাকে (hasSeenPopup == true), তাহলে কিছুই হবে না (পপ-আপ আসবে না)
+
+        // --- ডিভাইস চেক (One Device Policy) ---
+        checkRegistrationStatus();
+    });
+
+    // পপ-আপ বন্ধ করার এবং ফ্ল্যাগ সেভ করার ফাংশন
+    function closePopupForever() {
+        document.getElementById('popup-maintenance').style.display = 'none';
+        localStorage.setItem('roktomitro_popup_seen', 'true'); // ব্রাউজারে সেভ করে রাখা হলো
+    }
+
+    // পপ-আপের রেজিস্ট্রেশন বাটনের ফাংশন
+    function handlePopupRegistration() {
+        closePopupForever(); // পপ-আপ বন্ধ হবে এবং আর আসবে না
+        showRegistration();  // রেজিস্ট্রেশন পেজে নিয়ে যাবে
+    }
 
     // ২. ডিভাইস স্ট্যাটাস চেক ফাংশন
     function checkRegistrationStatus() {
@@ -692,6 +731,7 @@
 </script>
 </body>
 </html>
+
 
 
 
