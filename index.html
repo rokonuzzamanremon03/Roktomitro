@@ -503,6 +503,26 @@
             </button>
         </div>
     </div>
+<div id="modal-fb-warning" class="modal-overlay" style="z-index: 9999;">
+        <div class="modal-content" style="text-align: center; border-top: 8px solid #1877f2;">
+            <div style="font-size: 4rem; color: #1877f2; margin-bottom: 20px;">
+                <i class="fa-brands fa-facebook"></i>
+            </div>
+            <h3 style="color: #333; font-weight: 700;">ব্রাউজার পরিবর্তন করুন</h3>
+            
+            <p style="font-size: 1.1rem; color: #555; margin: 20px 0; line-height: 1.6;">
+                আপনি বর্তমানে <strong>Facebook/Messenger</strong> এর ইন-অ্যাপ ব্রাউজার ব্যবহার করছেন। আমাদের ওয়েবসাইটটি সঠিকভাবে ব্যবহার করতে (কার্ড ডাউনলোড ও অন্যান্য ফিচারের জন্য) দয়া করে এটি <strong>Google Chrome</strong> এ ওপেন করুন।
+            </p>
+
+            <button id="btn-open-chrome" class="btn btn-primary" style="width: 100%; justify-content: center; background: #1877f2; font-size: 1.1rem; padding: 15px;" onclick="openInChrome()">
+                <i class="fa-brands fa-chrome"></i> Open in Chrome
+            </button>
+            
+            <p style="font-size: 0.9rem; color: #777; margin-top: 15px;">
+                অথবা, উপরে ডানদিকের মেনু <strong>(<i class="fa-solid fa-ellipsis-vertical"></i>)</strong> তে ক্লিক করে <strong>"Open in system browser"</strong> সিলেক্ট করুন।
+            </p>
+        </div>
+    </div>
 
     <script>
     // তোমার নতুন Apps Script URL এখানে বসাবে
@@ -510,6 +530,52 @@
 
     // ১. পেজ লোড লজিক (ডিভাইস চেক)
     window.addEventListener('load', function() {
+// পেজ লোড লজিক
+    window.addEventListener('load', function() {
+        
+        // --- ১. ফেসবুক ব্রাউজার ডিটেকশন (নতুন কোড) ---
+        var ua = navigator.userAgent || navigator.vendor || window.opera;
+        // ফেসবুক বা মেসেঞ্জার অ্যাপ ডিটেক্ট করা হচ্ছে (Android & iOS)
+        var isInstagram = (ua.indexOf('Instagram') > -1) ? true : false;
+        var isFacebook = (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
+        
+        if (isFacebook || isInstagram) {
+            // যদি ফেসবুক হয়, পপ-আপ দেখাও
+            document.getElementById('modal-fb-warning').style.display = 'flex';
+        } else {
+            // ফেসবুক না হলে সাধারণ পপ-আপ (মেইনটেনেন্স) দেখাও (যদি আগে না দেখে থাকে)
+            const hasSeenPopup = localStorage.getItem('roktomitro_popup_seen');
+            if (!hasSeenPopup) {
+                const popup = document.getElementById('popup-maintenance');
+                if(popup) {
+                    popup.style.display = 'flex';
+                    let timeLeft = 20;
+                    const timerDisplay = document.getElementById('timer');
+                    const countdown = setInterval(() => {
+                        timeLeft--;
+                        if(timerDisplay) timerDisplay.innerText = timeLeft;
+                        if (timeLeft <= 0) {
+                            clearInterval(countdown);
+                            closePopupForever();
+                        }
+                    }, 1000);
+                }
+            }
+        }
+        
+        // --- ২. ডিভাইস চেক (আগের কোড) ---
+        checkRegistrationStatus();
+    });
+
+    // --- ৩. "Open in Chrome" বাটন ফাংশন (স্ক্রিপ্টের যেকোনো জায়গায় বসাতে পারো) ---
+    function openInChrome() {
+        var url = window.location.href;
+        // অ্যান্ড্রয়েড ইন্টেন্ট ব্যবহার করে সরাসরি ক্রোমে পাঠানোর চেষ্টা
+        // এটি "roktomitro.netlify.app" লিংকটি ক্রোম অ্যাপে ওপেন করতে বলবে
+        var intentUrl = "intent://" + url.replace("https://", "").replace("http://", "") + "#Intent;scheme=https;package=com.android.chrome;end";
+        
+        window.location.href = intentUrl;
+    }
         
         // --- পপ-আপ লজিক (জীবনে একবার দেখাবে) ---
         const hasSeenPopup = localStorage.getItem('roktomitro_popup_seen');
