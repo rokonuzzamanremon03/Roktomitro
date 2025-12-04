@@ -529,15 +529,6 @@
             popup.querySelector('.modal-close-btn').addEventListener('click', () => clearInterval(countdown));
         }
         
-  // --- পপ-আপ লজিক (জীবনে একবার দেখাবে) ---
-        const hasSeenPopup = localStorage.getItem('roktomitro_popup_seen');
-
-        if (!hasSeenPopup) {
-            // যদি আগে না দেখে থাকে, তাহলে পপ-আপ দেখাও
-            const popup = document.getElementById('popup-maintenance');
-            if(popup) {
-                popup.style.display = 'flex';
-            
         // রেজিস্ট্রেশন চেক (One Device Logic)
         checkRegistrationStatus();
     });
@@ -703,6 +694,7 @@
 </script>
 </body>
 </html>
+
 
 
 
