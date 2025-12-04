@@ -510,27 +510,8 @@
 
     // ১. পেজ লোড লজিক (ডিভাইস চেক)
     window.addEventListener('load', function() {
-        // মেইনটেনেন্স পপ-আপ (আগের মতো)
-        const popup = document.getElementById('popup-maintenance');
-        if(popup) {
-            popup.style.display = 'flex';
-            let timeLeft = 20;
-            const timerDisplay = document.getElementById('timer');
-            const countdown = setInterval(() => {
-                timeLeft--;
-                if(timerDisplay) timerDisplay.innerText = timeLeft;
-                if (timeLeft <= 0) {
-                    clearInterval(countdown);
-                    closeModal('popup-maintenance');
-                }
-            }, 1000);
-            popup.querySelector('.modal-close-btn').addEventListener('click', () => clearInterval(countdown));
-        }
         
-        // রেজিস্ট্রেশন চেক (One Device Logic)
-        checkRegistrationStatus();
-    });
-            // --- পপ-আপ লজিক (জীবনে একবার দেখাবে) ---
+        // --- পপ-আপ লজিক (জীবনে একবার দেখাবে) ---
         const hasSeenPopup = localStorage.getItem('roktomitro_popup_seen');
 
         if (!hasSeenPopup) {
@@ -570,6 +551,7 @@
         showRegistration();  // রেজিস্ট্রেশন পেজে নিয়ে যাবে
     }
 
+            
     // ২. ডিভাইস স্ট্যাটাস চেক ফাংশন
     function checkRegistrationStatus() {
         const savedUser = localStorage.getItem('roktomitro_donor');
@@ -731,6 +713,7 @@
 </script>
 </body>
 </html>
+
 
 
 
