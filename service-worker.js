@@ -2,10 +2,12 @@ const CACHE_NAME = "roktomitro-v1";
 const urlsToCache = [
   "./",
   "./index.html",
-  "./manifest.json"
+  "./manifest.json",
+  "./images/icon-192.png",  // এই লাইন আপডেট করা হয়েছে
+  "./images/icon-512.png"   // এই লাইন আপডেট করা হয়েছে
 ];
 
-// Install Service Worker
+// বাকি কোড আগের মতোই থাকবে...
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -14,7 +16,6 @@ self.addEventListener("install", (event) => {
   );
 });
 
-// Fetch Request (Offline Support)
 self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
