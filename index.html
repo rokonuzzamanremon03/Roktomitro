@@ -530,6 +530,17 @@
         // তোমার আপডেটেড Apps Script URL
         const scriptURL = 'https://script.google.com/macros/s/AKfycbyW4HpOS-Zp2PDDRgz5LZDJUGvicaYjKH8KjIusy8Lgsp4P3cSG77oYx-eQ0TF1oFRB0g/exec';
 
+// Service Worker Registration for PWA
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./service-worker.js')
+                .then((reg) => console.log('Service Worker Registered!', reg.scope))
+                .catch((err) => console.log('Service Worker Failed!', err));
+        });
+    }
+
+    //
+
         // ১. গ্লোবাল ফাংশনস (এগুলো সবার আগে)
         function openModal(id) {
             const m = document.getElementById(id);
