@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    
+
     <style>
         /* --- গ্লোবাল স্টাইল --- */
         :root {
@@ -25,7 +25,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
         body { background: var(--gradient-bg); min-height: 100vh; color: var(--text-dark); overflow-x: hidden; }
         a { text-decoration: none; }
-        
+
         /* --- ইউটিলিটি ক্লাস --- */
         .container { width: 95%; max-width: 1100px; margin: 0 auto; padding: 20px; }
         .btn {
@@ -73,21 +73,21 @@
         .modal-close-btn:hover { color: var(--accent-color); transform: rotate(90deg); }
         .modal-header { font-size: 1.8rem; font-weight: 700; margin-bottom: 25px; color: var(--primary-color); text-align: center; }
         .modal-body { font-size: 1.1rem; line-height: 1.7; color: #555; }
-        
+
         /* Specific Modal Styles */
         #popup-maintenance .modal-content { border-top: 8px solid var(--warning-color); text-align: center; }
         #popup-maintenance .warn-icon { font-size: 4rem; color: var(--warning-color); margin-bottom: 20px; animation: pulse 2s infinite; }
-        
+
         .styled-list p { margin-bottom: 15px; position: relative; padding-left: 35px; }
         .styled-list p::before {
             content: '\f00c'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
             position: absolute; left: 0; top: 2px; color: var(--success-color); font-size: 1.2rem;
         }
         #modal-agreement .modal-content, #modal-policy .modal-content { border-left: 8px solid var(--secondary-color); }
-        
+
         #modal-underage .modal-content { border-top: 8px solid var(--warning-color); text-align: center; }
         #modal-underage .sad-icon { font-size: 5rem; color: var(--warning-color); margin-bottom: 25px; }
-        
+
         /* Donation & Contact List */
         .info-list-item {
             display: flex; justify-content: space-between; align-items: center;
@@ -110,11 +110,11 @@
         .hero-title { font-size: 3.5rem; font-weight: 800; margin-bottom: 20px; text-shadow: 0 5px 15px rgba(0,0,0,0.3); }
         .hero-buttons { display: flex; flex-direction: column; gap: 20px; align-items: center; margin-top: 40px; }
         .btn-large { padding: 15px 40px; font-size: 1.3rem; width: 100%; max-width: 400px; justify-content: center; }
-        
+
         .article-section { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding: 50px; border-radius: 30px; margin-top: 60px; }
         .article-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 30px; text-align: center; color: var(--warning-color); }
         .article-content p { font-size: 1.15rem; line-height: 1.8; margin-bottom: 25px; opacity: 0.9; text-align: justify; }
-        
+
         /* --- রেজিস্ট্রেশন ভিউ (গ্লাস বক্স) --- */
         #view-registration {
             display: none; background: var(--glass-bg); backdrop-filter: blur(20px);
@@ -243,7 +243,7 @@
     </div>
 
     <div class="container">
-        
+
         <div id="view-home">
             <header class="home-header">
                 <div class="logo-text"><span class="text-accent">রক্ত</span>মিত্র</div>
@@ -255,7 +255,7 @@
             <section class="hero-section">
                 <h1 class="hero-title">আপনার রক্তে বাঁচুক একটি প্রাণ</h1>
                 <p style="font-size: 1.2rem; opacity: 0.9;">রক্তদান একটি মহৎ কাজ। আসুন, আমরা সবাই মিলে একটি সুস্থ সমাজ গড়ে তুলি।</p>
-                
+
                 <div class="hero-buttons">
                     <button class="btn btn-primary btn-large" style="font-size: 1.5rem; padding: 20px 50px;" onclick="showRegistration()">
         <i class="fa-solid fa-user-plus"></i> ডোনার হোন (Registration)
@@ -285,7 +285,7 @@
                 <h2>ডোনার রেজিস্ট্রেশন</h2>
                 <p>সঠিক তথ্য দিয়ে ফর্মটি পূরণ করুন এবং জীবন বাঁচাতে এগিয়ে আসুন</p>
             </div>
-            
+
             <form id="donorForm">
                 <div class="input-group">
                     <label><i class="fa-solid fa-droplet text-accent"></i> রক্তের গ্রুপ *</label>
@@ -320,32 +320,25 @@
                     </div>
                 </div>
                 <div id="step-address" class="step">
-    <div class="input-group">
-        <label><i class="fa-solid fa-map text-accent"></i> বিভাগ *</label>
-        <select id="division" onchange="loadDistricts()">
-            <option value="" disabled selected>বাছাই করুন</option>
-            </select>
-    </div>
-
-    <div class="input-group">
-        <label><i class="fa-solid fa-map-location-dot text-accent"></i> জেলা *</label>
-        <select id="district" onchange="loadUpazilas(); checkAddressGroup()">
-            <option value="" disabled selected>আগে বিভাগ বাছাই করুন</option>
-        </select>
-    </div>
-
-    <div class="input-group">
-        <label><i class="fa-solid fa-map-pin text-accent"></i> উপজেলা *</label>
-        <select id="upazila" onchange="checkAddressGroup()">
-            <option value="" disabled selected>আগে জেলা বাছাই করুন</option>
-        </select>
-    </div>
-
-    <div class="input-group">
-        <label><i class="fa-solid fa-house-chimney text-accent"></i> বিস্তারিত ঠিকানা *</label>
-        <input type="text" id="address" placeholder="গ্রাম/রোড নং/বাড়ি নং..." oninput="checkAddressGroup()">
-    </div>
-</div>
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-map-location-dot text-accent"></i> জেলা *</label>
+                        <select id="district" onchange="checkAddressGroup()">
+                            <option value="" disabled selected>বাছাই করুন</option>
+                            <option>সাতক্ষীরা</option><option>খুলনা</option><option>ঢাকা</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-map-pin text-accent"></i> উপজেলা *</label>
+                        <select id="upazila" onchange="checkAddressGroup()">
+                            <option value="" disabled selected>বাছাই করুন</option>
+                            <option>কলারোয়া</option><option>তালা</option><option>সদর</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label><i class="fa-solid fa-house-chimney text-accent"></i> বিস্তারিত ঠিকানা *</label>
+                        <input type="text" id="address" placeholder="গ্রাম/রোড নং/বাড়ি নং..." oninput="checkAddressGroup()">
+                    </div>
+                </div>
                 <div id="step-donation" class="step">
                     <div class="input-group">
                         <label><i class="fa-solid fa-calendar-check text-accent"></i> শেষ রক্তদানের তারিখ</label>
@@ -399,7 +392,7 @@
             <div class="modal-header"><i class="fa-solid fa-hand-holding-dollar text-success"></i> ডোনেশন ডিটেইলস</div>
             <div class="modal-body">
                 <p class="text-center mb-20">আপনার সামান্য অনুদান আমাদের কার্যক্রমকে এগিয়ে নিতে সাহায্য করবে।</p>
-                
+
                 <div class="info-list-item">
                     <div class="info-label"><i class="fa-solid fa-mobile-screen" style="color:#e2136e;"></i> বিকাশ (Personal)</div>
                     <div class="info-value"><span id="bkash-num">Coming Soon</span> <i class="fa-regular fa-copy copy-btn" onclick="copyText('bkash-num')"></i></div>
@@ -430,7 +423,7 @@
             <div class="modal-body text-center">
                 <p class="mb-20">দুঃখিত, বাজেট স্বল্পতার কারণে আমাদের অটোমেটিক "রক্ত খোঁজার" সিস্টেমটি বর্তমানে বন্ধ আছে।</p>
                 <p>তবে জরুরি প্রয়োজনে রক্তের জন্য আমাদের সাথে সরাসরি যোগাযোগ করতে পারেন:</p>
-                
+
                 <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px;">
                     <a href="tel:+8801338891213" class="btn btn-success" style="justify-content: center;"><i class="fa-solid fa-phone"></i> কল করুন: 01338-891213</a>
                     <a href="https://wa.me/+8801338891213" target="_blank" class="btn btn-success" style="background:#25D366; justify-content: center;"><i class="fa-brands fa-whatsapp"></i> হোয়াটসঅ্যাপ মেসেজ</a>
@@ -494,7 +487,7 @@
         </div>
         <h2 style="color: var(--primary-color); margin-bottom: 10px;">স্বাগতম রক্তযোদ্ধা!</h2>
         <p style="color: #666; margin-bottom: 30px;">এই ডিভাইস থেকে ইতিমধ্যে রেজিস্ট্রেশন সম্পন্ন হয়েছে।</p>
-        
+
         <div style="background: #f4f6f9; padding: 20px; border-radius: 15px; text-align: left; margin-bottom: 30px; border-left: 5px solid var(--accent-color);">
             <p><strong>নাম:</strong> <span id="reg-name">--</span></p>
             <p><strong>আইডি:</strong> <span id="reg-id" style="color: var(--success-color); font-weight: bold;">--</span></p>
@@ -517,17 +510,17 @@
             </div>
             <h2 class="text-success" style="font-weight: 800;">অভিনন্দন!</h2>
             <p style="font-size: 1.2rem; margin: 10px 0;">রেজিস্ট্রেশন সফল হয়েছে।</p>
-            
+
             <div style="background: #f1f8e9; padding: 20px; border-radius: 10px; margin: 20px 0; border: 2px dashed #28a745;">
                 <p style="font-size: 1.1rem; color: #555;">আপনার ডোনার আইডি</p>
                 <h1 id="success-id" style="font-size: 3rem; color: var(--primary-color); margin: 10px 0; letter-spacing: 2px;">RM-XXXX</h1>
                 <p style="font-size: 0.9rem; color: #777;">(এটি মনে রাখুন)</p>
             </div>
-            
+
             <button class="btn btn-success" onclick="openModal('modal-donation-details')" style="padding: 12px 20px;">
                     <i class="fa-solid fa-hand-holding-dollar"></i> ডোনেশন
                 </button>
-            
+
             <button class="btn btn-primary" onclick="location.reload()">
                 <i class="fa-solid fa-check"></i> ঠিক আছে
             </button>
@@ -535,10 +528,10 @@
     </div>
 
     <script>
-    // তোমার আপডেটেড Apps Script URL
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyW4HpOS-Zp2PDDRgz5LZDJUGvicaYjKH8KjIusy8Lgsp4P3cSG77oYx-eQ0TF1oFRB0g/exec';
+        // তোমার আপডেটেড Apps Script URL
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyW4HpOS-Zp2PDDRgz5LZDJUGvicaYjKH8KjIusy8Lgsp4P3cSG77oYx-eQ0TF1oFRB0g/exec';
 
-    // Service Worker Registration for PWA
+// Service Worker Registration for PWA
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('./service-worker.js')
@@ -547,294 +540,207 @@
         });
     }
 
-    // ১. গ্লোবাল ফাংশনস
-    function openModal(id) {
-        const m = document.getElementById(id);
-        if(m) m.style.display = 'flex';
-    }
-    function closeModal(id) {
-        const m = document.getElementById(id);
-        if(m) m.style.display = 'none';
-        if(id === 'modal-underage') document.getElementById('dob').value = '';
-    }
-    
-    // Facebook Browser Fix
-    function openInChrome() {
-        var url = window.location.href;
-        var intentUrl = "intent://" + url.replace("https://", "").replace("http://", "") + "#Intent;scheme=https;package=com.android.chrome;end";
-        window.location.href = intentUrl;
-    }
+    //
 
-    function closePopupForever() {
-        document.getElementById('popup-maintenance').style.display = 'none';
-        localStorage.setItem('roktomitro_popup_seen', 'true');
-    }
-    function handlePopupRegistration() {
-        closePopupForever();
-        showRegistration();
-    }
+        // ১. গ্লোবাল ফাংশনস (এগুলো সবার আগে)
+        function openModal(id) {
+            const m = document.getElementById(id);
+            if(m) m.style.display = 'flex';
+        }
+        function closeModal(id) {
+            const m = document.getElementById(id);
+            if(m) m.style.display = 'none';
+            if(id === 'modal-underage') document.getElementById('dob').value = '';
+        }
+        function openInChrome() {
+            var url = window.location.href;
+            // Android Intent for Chrome
+            var intentUrl = "intent://" + url.replace("https://", "").replace("http://", "") + "#Intent;scheme=https;package=com.android.chrome;end";
+            window.location.href = intentUrl;
+        }
+        function closePopupForever() {
+            document.getElementById('popup-maintenance').style.display = 'none';
+            localStorage.setItem('roktomitro_popup_seen', 'true');
+        }
+        function handlePopupRegistration() {
+            closePopupForever();
+            showRegistration();
+        }
 
-    // ২. পেজ লোড লজিক
-    window.addEventListener('load', function() {
-        
-        // --- ক. ফেসবুক/মেসেঞ্জার ব্রাউজার ডিটেকশন ---
-        var ua = navigator.userAgent || navigator.vendor || window.opera;
-        var isInApp = (ua.indexOf("FBAN") > -1) || 
-                      (ua.indexOf("FBAV") > -1) || 
-                      (ua.indexOf("Instagram") > -1) || 
-                      (ua.indexOf("Messenger") > -1) ||
-                      (ua.indexOf("FB_IAB") > -1);
+        // ২. পেজ লোড লজিক (একটাই থাকবে)
+        window.addEventListener('load', function() {
 
-        if (isInApp) {
-            // ফেসবুক ব্রাউজার হলে ওয়ার্নিং পপ-আপ দেখাবে
-            const fbModal = document.getElementById('modal-fb-warning'); // HTML এ এই ID থাকতে হবে
-            if(fbModal) fbModal.style.display = 'flex';
-        } else {
-            // ফেসবুক না হলে মেইনটেনেন্স পপ-আপ দেখাবে (যদি আগে না দেখে থাকে)
-            const hasSeenPopup = localStorage.getItem('roktomitro_popup_seen');
-            if (!hasSeenPopup) {
-                const popup = document.getElementById('popup-maintenance');
-                if(popup) {
-                    popup.style.display = 'flex';
-                    let timeLeft = 20;
-                    const timerDisplay = document.getElementById('timer');
-                    const countdown = setInterval(() => {
-                        timeLeft--;
-                        if(timerDisplay) timerDisplay.innerText = timeLeft;
-                        if (timeLeft <= 0) {
-                            clearInterval(countdown);
-                            closePopupForever();
-                        }
-                    }, 1000);
+            // --- ক. ফেসবুক/মেসেঞ্জার ব্রাউজার ডিটেকশন ---
+            var ua = navigator.userAgent || navigator.vendor || window.opera;
+            // Facebook, Messenger, Instagram, or FB_IAB detection
+            var isInApp = (ua.indexOf("FBAN") > -1) || 
+                          (ua.indexOf("FBAV") > -1) || 
+                          (ua.indexOf("Instagram") > -1) || 
+                          (ua.indexOf("Messenger") > -1) ||
+                          (ua.indexOf("FB_IAB") > -1);
+
+            if (isInApp) {
+                // যদি ফেসবুক ব্রাউজার হয়, ওয়ার্নিং পপ-আপ দেখাও
+                document.getElementById('modal-fb-warning').style.display = 'flex';
+            } else {
+                // ফেসবুক না হলে মেইনটেনেন্স পপ-আপ দেখাবে (যদি আগে না দেখে থাকে)
+                const hasSeenPopup = localStorage.getItem('roktomitro_popup_seen');
+                if (!hasSeenPopup) {
+                    const popup = document.getElementById('popup-maintenance');
+                    if(popup) {
+                        popup.style.display = 'flex';
+                        let timeLeft = 20;
+                        const timerDisplay = document.getElementById('timer');
+                        const countdown = setInterval(() => {
+                            timeLeft--;
+                            if(timerDisplay) timerDisplay.innerText = timeLeft;
+                            if (timeLeft <= 0) {
+                                clearInterval(countdown);
+                                closePopupForever();
+                            }
+                        }, 1000);
+                    }
                 }
+            }
+
+            // --- খ. ডিভাইস রেজিস্ট্রেশন স্ট্যাটাস চেক ---
+            checkRegistrationStatus();
+        });
+
+        // ৩. অন্যান্য লজিক
+        function checkRegistrationStatus() {
+            const savedUser = localStorage.getItem('roktomitro_donor');
+            if (savedUser) {
+                const user = JSON.parse(savedUser);
+                document.getElementById('reg-name').innerText = user.name;
+                document.getElementById('reg-id').innerText = user.id;
+                document.getElementById('reg-group').innerText = user.group;
             }
         }
 
-        // --- খ. ডিভাইস রেজিস্ট্রেশন স্ট্যাটাস চেক ---
-        checkRegistrationStatus();
-    });
-
-    // ৩. নেভিগেশন লজিক
-    function checkRegistrationStatus() {
-        const savedUser = localStorage.getItem('roktomitro_donor');
-        if (savedUser) {
-            const user = JSON.parse(savedUser);
-            document.getElementById('reg-name').innerText = user.name;
-            document.getElementById('reg-id').innerText = user.id;
-            document.getElementById('reg-group').innerText = user.group;
+        function showRegistration() {
+            const savedUser = localStorage.getItem('roktomitro_donor');
+            document.getElementById('view-home').style.display = 'none';
+            if (savedUser) {
+                document.getElementById('view-already-registered').style.display = 'block';
+                document.getElementById('view-registration').style.display = 'none';
+            } else {
+                document.getElementById('view-already-registered').style.display = 'none';
+                document.getElementById('view-registration').style.display = 'block';
+            }
+            window.scrollTo(0, 0);
         }
-    }
 
-    function showRegistration() {
-        const savedUser = localStorage.getItem('roktomitro_donor');
-        document.getElementById('view-home').style.display = 'none';
-        // কার্ড পেজ বন্ধ করা (যদি খোলা থাকে)
-        const cardView = document.getElementById('view-card-download');
-        if(cardView) cardView.style.display = 'none';
-
-        if (savedUser) {
-            document.getElementById('view-already-registered').style.display = 'block';
-            document.getElementById('view-registration').style.display = 'none';
-        } else {
+        function showRegistrationForm(forceShow = false) {
             document.getElementById('view-already-registered').style.display = 'none';
             document.getElementById('view-registration').style.display = 'block';
+            if(forceShow) document.getElementById('donorForm').reset();
         }
-        window.scrollTo(0, 0);
-    }
 
-    function showRegistrationForm(forceShow = false) {
-        document.getElementById('view-already-registered').style.display = 'none';
-        document.getElementById('view-registration').style.display = 'block';
-        if(forceShow) document.getElementById('donorForm').reset();
-    }
-
-    function showHome() {
-        document.getElementById('view-registration').style.display = 'none';
-        document.getElementById('view-already-registered').style.display = 'none';
-        
-        // কার্ড পেজ বন্ধ করা
-        const cardView = document.getElementById('view-card-download');
-        if(cardView) cardView.style.display = 'none';
-        
-        document.getElementById('view-home').style.display = 'block';
-        window.scrollTo(0, 0);
-    }
-
-    // --- ৪. কার্ড জেনারেশন লজিক (নতুন অ্যাড করা হয়েছে) ---
-    function showCardPage() {
-        // সব পেজ লুকিয়ে কার্ড পেজ দেখানো
-        document.getElementById('view-home').style.display = 'none';
-        document.getElementById('view-registration').style.display = 'none';
-        document.getElementById('view-already-registered').style.display = 'none';
-        
-        document.getElementById('view-card-download').style.display = 'block';
-        document.getElementById('card-input-section').style.display = 'block';
-        document.getElementById('card-preview-section').style.display = 'none';
-        
-        // আগে লগইন করা থাকলে আইডি অটো বসবে
-        const savedUser = localStorage.getItem('roktomitro_donor');
-        if (savedUser) {
-            document.getElementById('verifyDonorId').value = JSON.parse(savedUser).id;
+        function showHome() {
+            document.getElementById('view-registration').style.display = 'none';
+            document.getElementById('view-already-registered').style.display = 'none';
+            document.getElementById('view-home').style.display = 'block';
+            window.scrollTo(0, 0);
         }
-        window.scrollTo(0,0);
-    }
 
-    function verifyAndGenerateCard() {
-        const id = document.getElementById('verifyDonorId').value.trim().toUpperCase();
-        if (id.length < 5) { showToast('fa-solid fa-circle-exclamation', 'সঠিক আইডি দিন', 'error'); return; }
+        function showToast(icon, msg, type) {
+            const t = document.getElementById('toast-box');
+            t.innerHTML = `<i class="${icon}"></i> ${msg}`;
+            t.style.background = type === 'success' ? '#28a745' : '#ff4b2b';
+            t.style.display = 'flex';
+            setTimeout(() => t.style.display = 'none', 3000);
+        }
 
-        const btn = document.querySelector('#card-input-section button');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> খুঁজছি...';
-        btn.disabled = true;
+        // ফর্ম সাবমিশন
+        document.getElementById('donorForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং...';
+            submitBtn.disabled = true;
 
-        fetch(scriptURL, {
-            method: 'POST',
-            body: JSON.stringify({ action: "getDonor", donorId: id })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.result === "success") {
-                document.getElementById('card-display-name').innerText = data.name;
-                document.getElementById('card-display-id').innerText = data.id;
-                document.getElementById('card-display-group').innerText = data.group;
+            let formData = {
+                fullName: document.getElementById('fullName').value,
+                bloodGroup: document.getElementById('bloodGroup').value,
+                dob: document.getElementById('dob').value,
+                gender: document.getElementById('gender').value,
+                mobile: document.getElementById('mobile').value,
+                altMobile: document.getElementById('altMobile').value || "N/A",
+                district: document.getElementById('district').value,
+                upazila: document.getElementById('upazila').value,
+                address: document.getElementById('address').value,
+                lastDonation: document.getElementById('lastDonation').value,
+                frequency: document.getElementById('frequency').value,
+                whatsapp: document.getElementById('whatsappSelect').value === 'custom' ? document.getElementById('whatsappCustom').value : document.getElementById('whatsappSelect').value,
+                facebook: document.getElementById('fbLink').value || "N/A"
+            };
 
-                document.getElementById('card-input-section').style.display = 'none';
-                document.getElementById('card-preview-section').style.display = 'block';
-                showToast('fa-solid fa-check', 'কার্ড তৈরি হয়েছে!', 'success');
-            } else {
-                showToast('fa-solid fa-xmark', 'কোনো ডোনার পাওয়া যায়নি!', 'error');
-            }
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        })
-        .catch(err => {
-            console.error(err);
-            showToast('fa-solid fa-wifi', 'নেটওয়ার্ক সমস্যা!', 'error');
-            btn.innerHTML = originalText;
-            btn.disabled = false;
-        });
-    }
-
-    function downloadCardImage() {
-        const cardElement = document.getElementById('download-card');
-        html2canvas(cardElement, { scale: 2, backgroundColor: null }).then(canvas => {
-            const link = document.createElement('a');
-            link.download = 'Roktomitro_Card.png';
-            link.href = canvas.toDataURL("image/png");
-            link.click();
-        });
-    }
-    // ----------------------------------------------------
-
-    function showToast(icon, msg, type) {
-        const t = document.getElementById('toast-box');
-        t.innerHTML = `<i class="${icon}"></i> ${msg}`;
-        t.style.background = type === 'success' ? '#28a745' : '#ff4b2b';
-        t.style.display = 'flex';
-        setTimeout(() => t.style.display = 'none', 3000);
-    }
-
-    // ৫. ফর্ম সাবমিশন
-    document.getElementById('donorForm').addEventListener('submit', function(e){
-        e.preventDefault();
-        const submitBtn = document.getElementById('submitBtn');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং...';
-        submitBtn.disabled = true;
-
-        let formData = {
-            action: "register", // নতুন লজিক অনুযায়ী action যোগ করা হলো
-            fullName: document.getElementById('fullName').value,
-            bloodGroup: document.getElementById('bloodGroup').value,
-            dob: document.getElementById('dob').value,
-            gender: document.getElementById('gender').value,
-            mobile: document.getElementById('mobile').value,
-            altMobile: document.getElementById('altMobile').value || "N/A",
-            district: document.getElementById('district').value,
-            upazila: document.getElementById('upazila').value,
-            address: document.getElementById('address').value,
-            lastDonation: document.getElementById('lastDonation').value,
-            frequency: document.getElementById('frequency').value,
-            whatsapp: document.getElementById('whatsappSelect').value === 'custom' ? document.getElementById('whatsappCustom').value : document.getElementById('whatsappSelect').value,
-            facebook: document.getElementById('fbLink').value || "N/A"
-        };
-
-        fetch(scriptURL, {
-            method: 'POST',
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(response => {
-            if (response.result === "success") {
-                document.getElementById('success-id').innerText = response.donorId;
-                openModal('modal-success');
-                if (!localStorage.getItem('roktomitro_donor')) {
-                    const userData = {
-                        name: formData.fullName, id: response.donorId, group: formData.bloodGroup
-                    };
-                    localStorage.setItem('roktomitro_donor', JSON.stringify(userData));
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(response => {
+                if (response.result === "success") {
+                    document.getElementById('success-id').innerText = response.donorId;
+                    openModal('modal-success');
+                    if (!localStorage.getItem('roktomitro_donor')) {
+                        const userData = {
+                            name: formData.fullName, id: response.donorId, group: formData.bloodGroup
+                        };
+                        localStorage.setItem('roktomitro_donor', JSON.stringify(userData));
+                    }
+                    document.getElementById('donorForm').reset();
+                } else if (response.result === "error" && response.message === "duplicate") {
+                    showToast('fa-solid fa-triangle-exclamation', 'এই নম্বর দিয়ে ইতিমধ্যে রেজিস্ট্রেশন করা আছে!', 'error');
+                } else {
+                    throw new Error("Server Error");
                 }
-                document.getElementById('donorForm').reset();
-            } else if (response.result === "error" && response.message === "duplicate") {
-                showToast('fa-solid fa-triangle-exclamation', 'এই নম্বর দিয়ে ইতিমধ্যে রেজিস্ট্রেশন করা আছে!', 'error');
-            } else {
-                throw new Error("Server Error");
-            }
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
-        })
-        .catch(error => {
-            console.error(error);
-            document.getElementById('success-id').innerText = "RM-Pending";
-            openModal('modal-success');
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            })
+            .catch(error => {
+                console.error(error);
+                document.getElementById('success-id').innerText = "RM-Pending";
+                openModal('modal-success');
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            });
         });
-    });
 
-    // ৬. হেল্পার ফাংশনস (নেভিগেশন)
-    function nextStep(stepId) {
-        const step = document.getElementById(stepId);
-        if (step && !step.classList.contains('active')) {
-            step.classList.add('active');
-            setTimeout(() => step.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+        // হেল্পার ফাংশনস (নেভিগেশন)
+        function nextStep(stepId) {
+            const step = document.getElementById(stepId);
+            if (step && !step.classList.contains('active')) {
+                step.classList.add('active');
+                setTimeout(() => step.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+            }
         }
-    }
-    function checkInput(input, next) { if(input.value.length > 2) nextStep(next); }
-    function checkMobileGroup() { if(document.getElementById('mobile').value.length >= 11) nextStep('step-address'); updateWhatsappList(); }
-    function checkAddressGroup() { if(document.getElementById('address').value.length > 3) nextStep('step-donation'); }
-    function checkAgeLogic() {
-        const d = new Date(document.getElementById('dob').value);
-        const diff = new Date() - d;
-        const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
-        if(age < 18) openModal('modal-underage'); else nextStep('step-gender');
-    }
-    function updateWhatsappList() {
-        const m=document.getElementById('mobile').value, am=document.getElementById('altMobile').value, w=document.getElementById('whatsappSelect');
-        w.innerHTML='<option value="">বাছাই করুন</option>';
-        if(m.length>5) {let o=document.createElement('option'); o.value=m; o.text='মোবাইল: '+m; w.add(o);}
-        if(am.length>5) {let o=document.createElement('option'); o.value=am; o.text='বিকল্প: '+am; w.add(o);}
-        let o=document.createElement('option'); o.value='custom'; o.text='লিখুন (অন্য নম্বর)'; w.add(o);
-    }
-    function handleWhatsappLogic() {
-        document.getElementById('whatsappCustom').style.display=(document.getElementById('whatsappSelect').value==='custom')?'block':'none';
-        nextStep('step-agreement');
-    }
-    function toggleSubmit() {
-        document.getElementById('submitBtn').style.display = document.getElementById('agreePolicy').checked ? 'block' : 'none';
-    }
-    function copyText(id) { navigator.clipboard.writeText(document.getElementById(id).innerText); showToast('fa-solid fa-check', 'কপি হয়েছে!', 'success'); }
-</script>
+        function checkInput(input, next) { if(input.value.length > 2) nextStep(next); }
+        function checkMobileGroup() { if(document.getElementById('mobile').value.length >= 11) nextStep('step-address'); updateWhatsappList(); }
+        function checkAddressGroup() { if(document.getElementById('address').value.length > 3) nextStep('step-donation'); }
+        function checkAgeLogic() {
+            const d = new Date(document.getElementById('dob').value);
+            const diff = new Date() - d;
+            const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+            if(age < 18) openModal('modal-underage'); else nextStep('step-gender');
+        }
+        function updateWhatsappList() {
+            const m=document.getElementById('mobile').value, am=document.getElementById('altMobile').value, w=document.getElementById('whatsappSelect');
+            w.innerHTML='<option value="">বাছাই করুন</option>';
+            if(m.length>5) {let o=document.createElement('option'); o.value=m; o.text='মোবাইল: '+m; w.add(o);}
+            if(am.length>5) {let o=document.createElement('option'); o.value=am; o.text='বিকল্প: '+am; w.add(o);}
+            let o=document.createElement('option'); o.value='custom'; o.text='লিখুন (অন্য নম্বর)'; w.add(o);
+        }
+        function handleWhatsappLogic() {
+            document.getElementById('whatsappCustom').style.display=(document.getElementById('whatsappSelect').value==='custom')?'block':'none';
+            nextStep('step-agreement');
+        }
+        function toggleSubmit() {
+            document.getElementById('submitBtn').style.display = document.getElementById('agreePolicy').checked ? 'block' : 'none';
+        }
+        function copyText(id) { navigator.clipboard.writeText(document.getElementById(id).innerText); showToast('fa-solid fa-check', 'কপি হয়েছে!', 'success'); }
+    </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
