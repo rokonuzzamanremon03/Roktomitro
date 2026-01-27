@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>রক্তমিত্র - Roktomitro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- গ্লোবাল স্টাইল --- */
+        :root {
+            --primary-color: #764ba2;
+            --secondary-color: #667eea;
+            --accent-color: #ff4b2b;
+            --success-color: #28a745;
+            --warning-color: #ffcc00;
+            --text-dark: #333;
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --gradient-bg: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; }
+        body { background: var(--gradient-bg); min-height: 100vh; color: var(--text-dark); overflow-x: hidden; }
+        
+        /* --- ইউটিলিটি ক্লাস --- */
+        .container { width: 95%; max-width: 1100px; margin: 0 auto; padding: 20px; }
+        .btn {
+            display: inline-flex; align-items: center; gap: 8px; padding: 12px 25px;
+            border: none; border-radius: 50px; font-weight: 600; cursor: pointer;
+            transition: all 0.3s ease; font-size: 1rem; color: white;
+            text-decoration: none;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .btn-primary { background: linear-gradient(90deg, #ff416c 0%, var(--accent-color) 100%); }
+        .btn-success { background: linear-gradient(90deg, #11998e 0%, var(--success-color) 100%); }
+        .btn-info { background: linear-gradient(90deg, #36D1DC 0%, #5B86E5 100%); }
+        .btn-warning { background: linear-gradient(90deg, #f8cdda 0%, #e29587 100%); color: #333; }
+        .btn-secondary { background: #6c757d; }
+        .text-accent { color: var(--accent-color); }
+        .mb-20 { margin-bottom: 20px; }
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+
+        /* --- ভিউ / পেজ কন্ট্রোল (SPA Logic) --- */
+        .view-section { display: none; animation: fadeIn 0.5s; }
+        #view-home { display: block; } /* ডিফল্ট হোম পেজ */
+        @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+        /* --- হোম পেজ --- */
+        .home-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+        .logo-text { font-size: 2.5rem; font-weight: 800; color: white; }
+        .hero-section { text-align: center; margin-bottom: 60px; color: white; }
+        .hero-title { font-size: 3.5rem; font-weight: 800; margin-bottom: 20px; }
+        .hero-buttons { display: flex; flex-direction: column; gap: 20px; align-items: center; margin-top: 40px; }
+        .btn-large { padding: 15px 40px; font-size: 1.3rem; width: 100%; max-width: 400px; justify-content: center; }
+
+        /* --- গ্লাস বক্স (ফর্ম এর জন্য) --- */
+        .glass-box {
+            background: var(--glass-bg); backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px); border: 1px solid var(--glass-border);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2); border-radius: 30px;
+            padding: 40px; width: 100%; max-width: 700px; margin: 40px auto; color: white;
+        }
+
+        /* --- ফর্ম এলিমেন্টস --- */
+        .input-group { margin-bottom: 25px; }
+        .input-group label { display: block; margin-bottom: 10px; font-weight: 600; }
+        .input-group input, .input-group select, .input-group textarea {
+            width: 100%; padding: 15px; background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3); border-radius: 12px;
+            color: white; font-size: 1rem; outline: none;
+        }
+        .input-group option { background: #333; color: white; }
+        
+        /* স্টেপ ফর্ম */
+        .step { display: none; animation: slideUp 0.5s ease-out; }
+        .step.active { display: block; }
+        @keyframes slideUp { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+
+        /* --- ডোনার কার্ড (সার্চ রেজাল্ট) --- */
+        .donor-card {
+            background: white; color: #333; padding: 20px; border-radius: 15px;
+            margin-bottom: 15px; display: flex; flex-direction: column; gap: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-left: 5px solid var(--primary-color);
+        }
+        .donor-card-header { display: flex; justify-content: space-between; align-items: center; }
+        .blood-badge { background: var(--accent-color); color: white; padding: 5px 10px; border-radius: 50px; font-weight: bold; }
+        .donor-actions { display: flex; gap: 10px; margin-top: 10px; }
+
+        /* --- মডাল --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+            display: none; justify-content: center; align-items: center; z-index: 5000; padding: 20px;
+        }
+        .modal-content {
+            background: #fff; color: var(--text-dark); padding: 30px; border-radius: 25px;
+            width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative;
+        }
+        .modal-close-btn { position: absolute; top: 20px; right: 25px; font-size: 2rem; cursor: pointer; color: #999; }
+        
+        /* রেস্পন্সিভ */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.5rem; }
+            .glass-box { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toast-box" style="position:fixed; top:30px; left:50%; transform:translateX(-50%); background:#28a745; color:white; padding:15px 30px; border-radius:50px; display:none; z-index:10000;"></div>
+
+    <div class="container">
+
+        <div id="view-home" class="view-section">
+            <header class="home-header">
+                <div class="logo-text"><span class="text-accent">রক্ত</span>মিত্র</div>
+                <div style="display: flex; gap: 10px;">
+                    <button id="nav-login-btn" class="btn btn-secondary" onclick="openModal('modal-login-select')">
+                        <i class="fa-solid fa-right-to-bracket"></i> লগইন / একাউন্ট
+                    </button>
+                    <button id="nav-profile-btn" class="btn btn-secondary hidden" onclick="showView('view-profile')">
+                        <i class="fa-solid fa-user"></i> আমার প্রোফাইল
+                    </button>
+                    <button class="btn btn-success" onclick="showView('view-donation')">
+                        <i class="fa-solid fa-hand-holding-dollar"></i> ডোনেশন
+                    </button>
+                </div>
+            </header>
+
+            <section class="hero-section">
+                <h1 class="hero-title">আপনার রক্তে বাঁচুক একটি প্রাণ</h1>
+                <p>রক্তদান একটি মহৎ কাজ। আসুন, আমরা সবাই মিলে একটি সুস্থ সমাজ গড়ে তুলি।</p>
+
+                <div class="hero-buttons">
+                    <button class="btn btn-primary btn-large" onclick="showView('view-registration')">
+                        <i class="fa-solid fa-user-plus"></i> ডোনার হোন (Registration)
+                    </button>
+                    <button class="btn btn-info btn-large" onclick="showView('view-search')">
+                        <i class="fa-solid fa-magnifying-glass"></i> রক্ত খুঁজুন (Search)
+                    </button>
+                    <button class="btn btn-warning btn-large" style="background: #ffcc00;" onclick="showView('view-blood-request')">
+                        <i class="fa-solid fa-bullhorn"></i> রক্তের প্রয়োজন (Request)
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <div id="view-registration" class="view-section glass-box">
+            <button class="btn btn-secondary mb-20" onclick="showHome()"><i class="fa-solid fa-arrow-left"></i> হোম</button>
+            <div class="text-center mb-20">
+                <h2>ডোনার রেজিস্ট্রেশন</h2>
+                <p>সঠিক তথ্য দিয়ে ফর্মটি পূরণ করুন</p>
+            </div>
+
+            <form id="donorForm">
+                <div class="input-group">
+                    <label>রক্তের গ্রুপ *</label>
+                    <select id="bloodGroup" onchange="nextStep('step-name')" required>
+                        <option value="" disabled selected>বাছাই করুন</option>
+                        <option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+                    </select>
+                </div>
+
+                <div id="step-name" class="step input-group">
+                    <label>পূর্ণ নাম *</label>
+                    <input type="text" id="fullName" placeholder="আপনার নাম লিখুন" oninput="checkInput(this, 'step-dob')">
+                </div>
+
+                <div id="step-dob" class="step input-group">
+                    <label>জন্ম তারিখ *</label>
+                    <input type="date" id="dob" onchange="checkAgeLogic()">
+                </div>
+
+                <div id="step-gender" class="step input-group">
+                    <label>লিঙ্গ *</label>
+                    <select id="gender" onchange="nextStep('step-mobile')">
+                        <option value="" disabled selected>বাছাই করুন</option>
+                        <option>Male</option><option>Female</option>
+                    </select>
+                </div>
+
+                <div id="step-mobile" class="step">
+                    <div class="input-group">
+                        <label>মোবাইল নম্বর *</label>
+                        <input type="tel" id="mobile" placeholder="017xxxxxxxx" oninput="checkMobileGroup()">
+                    </div>
+                    <div class="input-group">
+                        <label>বিকল্প মোবাইল নম্বর</label>
+                        <input type="tel" id="altMobile" placeholder="01xxxxxxxxx" oninput="updateWhatsappList()">
+                    </div>
+                </div>
+
+                <div id="step-address" class="step">
+                    <div class="input-group">
+                        <label>জেলা *</label>
+                        <select id="district" onchange="checkAddressGroup()">
+                            <option value="Satkhira" selected>সাতক্ষীরা</option>
+                            <option value="Khulna">খুলনা</option>
+                            <option value="Dhaka">ঢাকা</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>উপজেলা *</label>
+                        <select id="upazila" onchange="checkAddressGroup()">
+                            <option value="Kalaroa" selected>কলারোয়া</option>
+                            <option value="Tala">তালা</option>
+                            <option value="Saddar">সদর</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>বিস্তারিত ঠিকানা *</label>
+                        <input type="text" id="address" placeholder="গ্রাম/রোড নং..." oninput="checkAddressGroup()">
+                    </div>
+                </div>
+
+                <div id="step-donation" class="step">
+                    <div class="input-group">
+                        <label>শেষ রক্তদানের তারিখ</label>
+                        <input type="date" id="lastDonation" onchange="checkDonationDate()">
+                    </div>
+                    <div class="input-group">
+                        <label>কত মাস পর পর রক্ত দিতে পারবেন?</label>
+                        <select id="frequency" onchange="nextStep('step-social')">
+                            <option value="4" selected>৪ মাস (স্ট্যান্ডার্ড)</option>
+                            <option value="3">৩ মাস</option><option value="6">৬ মাস</option>
+                        </select>
+                    </div>
+                    <p class="text-accent" style="text-align:right; cursor:pointer;" onclick="nextStep('step-social')">পরবর্তী ধাপ &rarr;</p>
+                </div>
+
+                <div id="step-social" class="step">
+                    <div class="input-group">
+                        <label>হোয়াটসঅ্যাপ নম্বর</label>
+                        <select id="whatsappSelect" onchange="handleWhatsappLogic()">
+                            <option value="">বাছাই করুন (ঐচ্ছিক)</option>
+                        </select>
+                        <input type="tel" id="whatsappCustom" placeholder="নম্বর লিখুন" style="display:none; margin-top:10px;">
+                    </div>
+                    <div class="input-group">
+                        <label>ফেসবুক প্রোফাইল লিংক</label>
+                        <input type="url" id="fbLink" placeholder="https://facebook.com/user">
+                    </div>
+                    <p class="text-accent" style="text-align:right; cursor:pointer;" onclick="nextStep('step-agreement')">স্কিপ করুন &rarr;</p>
+                </div>
+
+                <div id="step-agreement" class="step">
+                    <div style="display:flex; gap:10px; margin-bottom:20px; background:rgba(255,255,255,0.2); padding:10px; border-radius:10px;">
+                        <input type="checkbox" id="agreePolicy" onchange="toggleSubmit()">
+                        <label for="agreePolicy" style="margin:0;">আমি সকল শর্তাবলী মেনে নিচ্ছি।</label>
+                    </div>
+                    <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%; display:none;">
+                        রেজিস্ট্রেশন সম্পন্ন করুন
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="view-search" class="view-section glass-box">
+            <button class="btn btn-secondary mb-20" onclick="showHome()"><i class="fa-solid fa-arrow-left"></i> হোম</button>
+            <h2 class="text-center mb-20">রক্তদাতা খুঁজুন</h2>
+            
+            <div class="input-group">
+                <label>রক্তের গ্রুপ</label>
+                <select id="searchGroup">
+                    <option value="">সকল</option>
+                    <option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>উপজেলা</label>
+                <select id="searchUpazila">
+                    <option value="">সকল</option>
+                    <option value="Kalaroa">কলারোয়া</option>
+                    <option value="Tala">তালা</option>
+                    <option value="Saddar">সদর</option>
+                </select>
+            </div>
+            <button class="btn btn-info" style="width:100%;" onclick="searchDonors()">খুঁজুন</button>
+            <br><br>
+            <div id="searchResults"></div>
+        </div>
+
+        <div id="view-blood-request" class="view-section glass-box">
+            <button class="btn btn-secondary mb-20" onclick="showHome()"><i class="fa-solid fa-arrow-left"></i> হোম</button>
+            <h2 class="text-center mb-20">রক্তের আবেদন করুন</h2>
+            <form id="requestForm">
+                 <div class="input-group">
+                    <label>রোগীর নাম</label>
+                    <input type="text" id="reqName" required>
+                </div>
+                 <div class="input-group">
+                    <label>রক্তের গ্রুপ প্রয়োজন</label>
+                    <select id="reqGroup" required>
+                         <option>A+</option><option>A-</option><option>B+</option><option>B-</option><option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>যোগাযোগের নম্বর</label>
+                    <input type="tel" id="reqMobile" required>
+                </div>
+                <div class="input-group">
+                    <label>হাসপাতাল/স্থান</label>
+                    <input type="text" id="reqLocation" required>
+                </div>
+                <div class="input-group">
+                    <label>কখন লাগবে?</label>
+                    <input type="datetime-local" id="reqTime" required>
+                </div>
+                <button type="submit" class="btn btn-warning" style="width:100%;">আবেদন পোস্ট করুন</button>
+            </form>
+            <hr style="margin: 20px 0; border-color: rgba(255,255,255,0.3);">
+            <h3 class="text-center">বর্তমান অনুরোধসমূহ</h3>
+            <div id="requestList" style="margin-top: 15px;"></div>
+        </div>
+
+        <div id="view-profile" class="view-section glass-box">
+            <button class="btn btn-secondary mb-20" onclick="handleLogout()"><i class="fa-solid fa-right-from-bracket"></i> লগ আউট</button>
+            <button class="btn btn-secondary mb-20" onclick="showHome()"><i class="fa-solid fa-house"></i> হোম</button>
+            
+            <h2 class="text-center">আমার প্রোফাইল</h2>
+            <div style="background: white; color: #333; padding: 20px; border-radius: 15px; margin-top: 20px;">
+                <h3 id="pName" style="color:var(--primary-color)"></h3>
+                <p><strong>ID:</strong> <span id="pId" class="text-success"></span></p>
+                <p><strong>Group:</strong> <span id="pGroup" class="text-accent"></span></p>
+                
+                <hr style="margin: 15px 0;">
+                
+                <div class="input-group" style="margin-bottom: 10px;">
+                    <label style="color: #333;">শেষ রক্তদানের তারিখ (Update)</label>
+                    <input type="date" id="pLastDonation" style="background: #eee; color: #333; border: 1px solid #ccc;">
+                </div>
+                <button class="btn btn-success" style="padding: 8px 15px; font-size: 0.9rem;" onclick="updateDonationDate()">আপডেট করুন</button>
+                
+                <hr style="margin: 15px 0;">
+                <p style="font-size: 0.9rem; color: #666;">অন্যান্য তথ্য পরিবর্তনের জন্য আবেদন করুন:</p>
+                <button class="btn btn-warning" style="padding: 8px 15px; font-size: 0.9rem;" onclick="openModal('modal-appeal')">তথ্য পরিবর্তনের আবেদন</button>
+            </div>
+        </div>
+
+        <div id="view-donation" class="view-section glass-box">
+            <button class="btn btn-secondary mb-20" onclick="showHome()"><i class="fa-solid fa-arrow-left"></i> হোম</button>
+            <h2 class="text-center">ডোনেশন ডিটেইলস</h2>
+            <p class="text-center mb-20">আপনার সামান্য অনুদান আমাদের কার্যক্রমকে এগিয়ে নিতে সাহায্য করবে।</p>
+            <div style="background: white; color: #333; padding: 20px; border-radius: 15px;">
+                <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;">
+                    <span><i class="fa-solid fa-mobile-screen" style="color:#e2136e;"></i> বিকাশ (Personal)</span>
+                    <span style="font-family:monospace;">Coming Soon</span>
+                </div>
+                <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;">
+                    <span><i class="fa-solid fa-mobile-screen" style="color:#f6921e;"></i> নগদ (Personal)</span>
+                    <span style="font-family:monospace;">Coming Soon</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="modal-login-select" class="modal-overlay">
+        <div class="modal-content text-center">
+            <span class="modal-close-btn" onclick="closeModal('modal-login-select')">&times;</span>
+            <h2 class="mb-20">কি করতে চান?</h2>
+            <button class="btn btn-primary" style="width: 100%; margin-bottom: 10px;" onclick="closeModal('modal-login-select'); openModal('modal-create-account')">একাউন্ট তৈরি করুন</button>
+            <button class="btn btn-success" style="width: 100%;" onclick="closeModal('modal-login-select'); openModal('modal-login')">লগইন করুন</button>
+        </div>
+    </div>
+
+    <div id="modal-create-account" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn" onclick="closeModal('modal-create-account')">&times;</span>
+            <h3 class="text-center mb-20">একাউন্ট তৈরি (ভেরিফিকেশন)</h3>
+            <div id="verifyStep">
+                <input type="text" id="caId" placeholder="Donor ID (RM-XXXX)" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:5px;">
+                <input type="tel" id="caMobile" placeholder="রেজিস্ট্রেশনকৃত মোবাইল নম্বর" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:5px;">
+                <button class="btn btn-info" style="width:100%;" onclick="verifyDonor()">তথ্য যাচাই করুন</button>
+            </div>
+            <div id="passwordStep" class="hidden">
+                <p class="text-success text-center">তথ্য সঠিক! পাসওয়ার্ড সেট করুন:</p>
+                <input type="password" id="caPass" placeholder="নতুন পাসওয়ার্ড" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:5px;">
+                <button class="btn btn-primary" style="width:100%;" onclick="createAccountFinal()">একাউন্ট কনফার্ম করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-login" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn" onclick="closeModal('modal-login')">&times;</span>
+            <h3 class="text-center mb-20">লগইন</h3>
+            <input type="text" id="lId" placeholder="Donor ID" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:5px;">
+            <input type="password" id="lPass" placeholder="Password" style="width:100%; padding:10px; margin-bottom:10px; border:1px solid #ccc; border-radius:5px;">
+            <button class="btn btn-success" style="width:100%;" onclick="handleLogin()">লগইন করুন</button>
+        </div>
+    </div>
+
+    <div id="modal-appeal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close-btn" onclick="closeModal('modal-appeal')">&times;</span>
+            <h3>তথ্য পরিবর্তনের আবেদন</h3>
+            <textarea id="appealText" rows="4" placeholder="কি পরিবর্তন করতে চান এবং কেন?" style="width:100%; padding:10px; margin:10px 0; border:1px solid #ccc;"></textarea>
+            <button class="btn btn-warning" style="width:100%;" onclick="submitAppeal()">আবেদন পাঠান</button>
+        </div>
+    </div>
+
+    <div id="modal-success" class="modal-overlay">
+        <div class="modal-content" style="text-align: center; border-top: 8px solid var(--success-color);">
+            <div style="font-size: 5rem; color: var(--success-color); margin-bottom: 20px;">
+                <i class="fa-solid fa-heart-circle-check"></i>
+            </div>
+            <h2 class="text-success">অভিনন্দন!</h2>
+            <p>আপনার ডোনার আইডি:</p>
+            <h1 id="success-id" style="font-size: 3rem; color: var(--primary-color);">RM-XXXX</h1>
+            <p style="color:red; font-size:0.9rem;">(এটি স্ক্রিনশট দিয়ে রাখুন, একাউন্ট খুলতে লাগবে)</p>
+            <button class="btn btn-primary" onclick="showHome(); closeModal('modal-success')">ঠিক আছে</button>
+        </div>
+    </div>
+    
+    <div id="modal-underage" class="modal-overlay">
+        <div class="modal-content text-center">
+             <span class="modal-close-btn" onclick="closeModal('modal-underage')">&times;</span>
+            <i class="fa-regular fa-face-sad-tear" style="font-size:4rem; color:orange;"></i>
+            <h3>বয়স ১৮ হয়নি!</h3>
+            <p>দুঃখিত, ১৮ বছরের নিচে রক্তদান সম্ভব নয়।</p>
+        </div>
+    </div>
+    
+    <div id="modal-fb-warning" class="modal-overlay" style="z-index: 9999;">
+        <div class="modal-content" style="text-align: center; border-top: 8px solid #1877f2;">
+            <i class="fa-brands fa-facebook" style="font-size: 4rem; color: #1877f2;"></i>
+            <h3>ব্রাউজার পরিবর্তন করুন</h3>
+            <p>Facebook ব্রাউজারে ফিচারগুলো কাজ নাও করতে পারে। Chrome ব্যবহার করুন।</p>
+            <button class="btn btn-primary" onclick="openInChrome()">Open in Chrome</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics.js";
+        import { getFirestore, collection, addDoc, getDocs, doc, setDoc, updateDoc, query, where, getDoc } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyAhiWE13tazdBO8uKdFAK7obuMrHRyK4PE",
+          authDomain: "roktomitro-6e5d3.firebaseapp.com",
+          projectId: "roktomitro-6e5d3",
+          storageBucket: "roktomitro-6e5d3.firebasestorage.app",
+          messagingSenderId: "1089255935970",
+          appId: "1:1089255935970:web:ceb2feaab1b5096878f3bb",
+          measurementId: "G-7TX43Q5C3K"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const db = getFirestore(app);
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbyW4HpOS-Zp2PDDRgz5LZDJUGvicaYjKH8KjIusy8Lgsp4P3cSG77oYx-eQ0TF1oFRB0g/exec';
+
+        let currentUser = null;
+
+        // --- NAVIGATION & UI CONTROL ---
+        
+        // সব উইন্ডো ফাংশন গ্লোবাল করা হয়েছে যেন HTML onclick কাজ করে
+        window.showView = function(viewId) {
+            document.querySelectorAll('.view-section').forEach(el => el.style.display = 'none');
+            document.getElementById(viewId).style.display = 'block';
+            window.scrollTo(0,0);
+            
+            if(viewId === 'view-blood-request') loadRequests();
+        };
+
+        window.showHome = function() {
+            showView('view-home');
+            updateNavUI(); // হোম পেজে আসলে বাটন আপডেট হবে
+        };
+
+        window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; };
+        window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; };
+
+        // লগইন চেক এবং UI আপডেট
+        function updateNavUI() {
+            const loginBtn = document.getElementById('nav-login-btn');
+            const profileBtn = document.getElementById('nav-profile-btn');
+            
+            if (currentUser) {
+                // ইউজার লগইন করা থাকলে
+                loginBtn.classList.add('hidden');
+                profileBtn.classList.remove('hidden');
+            } else {
+                // লগআউট অবস্থায়
+                loginBtn.classList.remove('hidden');
+                profileBtn.classList.add('hidden');
+            }
+        }
+
+        // --- REGISTRATION LOGIC (Detailed Form) ---
+        
+        // নেভিগেশন হেল্পার (ফর্ম এর ভিতরে)
+        window.nextStep = function(stepId) {
+            const step = document.getElementById(stepId);
+            if(step) {
+                step.classList.add('active');
+                setTimeout(() => step.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+            }
+        };
+        window.checkInput = function(input, next) { if(input.value.length > 2) nextStep(next); };
+        window.checkMobileGroup = function() { if(document.getElementById('mobile').value.length >= 11) nextStep('step-address'); updateWhatsappList(); };
+        window.checkAddressGroup = function() { if(document.getElementById('address').value.length > 3) nextStep('step-donation'); };
+        window.checkDonationDate = function() { nextStep('step-social'); };
+        window.checkAgeLogic = function() {
+             const d = new Date(document.getElementById('dob').value);
+            const diff = new Date() - d;
+            const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+            if(age < 18) { openModal('modal-underage'); document.getElementById('dob').value = ''; } 
+            else { nextStep('step-gender'); }
+        };
+        window.updateWhatsappList = function() {
+            const m=document.getElementById('mobile').value, am=document.getElementById('altMobile').value, w=document.getElementById('whatsappSelect');
+            w.innerHTML='<option value="">বাছাই করুন</option>';
+            if(m.length>5) {let o=document.createElement('option'); o.value=m; o.text='মোবাইল: '+m; w.add(o);}
+            if(am.length>5) {let o=document.createElement('option'); o.value=am; o.text='বিকল্প: '+am; w.add(o);}
+            let o=document.createElement('option'); o.value='custom'; o.text='লিখুন (অন্য নম্বর)'; w.add(o);
+        };
+        window.handleWhatsappLogic = function() {
+            document.getElementById('whatsappCustom').style.display=(document.getElementById('whatsappSelect').value==='custom')?'block':'none';
+            nextStep('step-agreement');
+        };
+        window.toggleSubmit = function() {
+            document.getElementById('submitBtn').style.display = document.getElementById('agreePolicy').checked ? 'block' : 'none';
+        };
+
+        // ফর্ম সাবমিট হ্যান্ডলার
+        document.getElementById('donorForm').addEventListener('submit', async function(e){
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.innerHTML = 'প্রসেসিং...'; btn.disabled = true;
+
+            const randomNum = Math.floor(1000 + Math.random() * 9000);
+            const donorId = "RM-" + randomNum;
+
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                bloodGroup: document.getElementById('bloodGroup').value,
+                dob: document.getElementById('dob').value,
+                gender: document.getElementById('gender').value,
+                mobile: document.getElementById('mobile').value,
+                altMobile: document.getElementById('altMobile').value || "N/A",
+                district: document.getElementById('district').value,
+                upazila: document.getElementById('upazila').value,
+                address: document.getElementById('address').value,
+                lastDonation: document.getElementById('lastDonation').value || "N/A",
+                frequency: document.getElementById('frequency').value,
+                whatsapp: document.getElementById('whatsappSelect').value === 'custom' ? document.getElementById('whatsappCustom').value : document.getElementById('whatsappSelect').value,
+                fbLink: document.getElementById('fbLink').value || "N/A",
+                donorId: donorId,
+                isActive: false
+            };
+
+            try {
+                await setDoc(doc(db, "donors", donorId), formData); // Firestore
+                fetch(scriptURL, { method: 'POST', body: JSON.stringify(formData) }); // Sheets Backup
+
+                document.getElementById('success-id').innerText = donorId;
+                openModal('modal-success');
+                document.getElementById('donorForm').reset();
+            } catch (error) {
+                console.error("Error:", error);
+                alert("সমস্যা হয়েছে! ইন্টারনেট চেক করুন।");
+            }
+            btn.innerHTML = 'রেজিস্ট্রেশন সম্পন্ন করুন'; btn.disabled = false;
+        });
+
+        // --- AUTH LOGIC (Login/Account) ---
+        window.verifyDonor = async function() {
+            const id = document.getElementById('caId').value.trim();
+            const mobile = document.getElementById('caMobile').value.trim();
+            if(!id || !mobile) return alert("সব তথ্য দিন");
+
+            const docSnap = await getDoc(doc(db, "donors", id));
+            if (docSnap.exists() && docSnap.data().mobile === mobile) {
+                if(docSnap.data().password) alert("এই আইডিতে ইতিমধ্যে একাউন্ট আছে। লগইন করুন।");
+                else {
+                    document.getElementById('verifyStep').classList.add('hidden');
+                    document.getElementById('passwordStep').classList.remove('hidden');
+                }
+            } else alert("তথ্য ভুল বা আইডি পাওয়া যায়নি!");
+        };
+
+        window.createAccountFinal = async function() {
+            const id = document.getElementById('caId').value.trim();
+            const pass = document.getElementById('caPass').value.trim();
+            if(pass.length < 4) return alert("পাসওয়ার্ড কমপক্ষে ৪ সংখ্যার হতে হবে");
+
+            await updateDoc(doc(db, "donors", id), { password: pass, isActive: true });
+            alert("একাউন্ট তৈরি সফল! এখন লগইন করুন।");
+            closeModal('modal-create-account'); openModal('modal-login');
+        };
+
+        window.handleLogin = async function() {
+            const id = document.getElementById('lId').value.trim();
+            const pass = document.getElementById('lPass').value.trim();
+            const docSnap = await getDoc(doc(db, "donors", id));
+
+            if (docSnap.exists() && docSnap.data().password === pass) {
+                currentUser = docSnap.data();
+                currentUser.id = id;
+                closeModal('modal-login');
+                loadProfile();
+                updateNavUI(); // লগইন সফল হলে ন্যাভবার আপডেট হবে
+                alert("স্বাগতম, " + currentUser.fullName);
+                showView('view-home'); // লগইনের পর হোম পেজে যাবে
+            } else alert("ID বা পাসওয়ার্ড ভুল!");
+        };
+
+        window.handleLogout = function() {
+            currentUser = null;
+            updateNavUI();
+            showView('view-home');
+            alert("লগ আউট সফল।");
+        };
+
+        function loadProfile() {
+            document.getElementById('pName').innerText = currentUser.fullName;
+            document.getElementById('pId').innerText = currentUser.id;
+            document.getElementById('pGroup').innerText = currentUser.bloodGroup;
+            document.getElementById('pLastDonation').value = currentUser.lastDonation !== "N/A" ? currentUser.lastDonation : "";
+        }
+
+        window.updateDonationDate = async function() {
+            const newDate = document.getElementById('pLastDonation').value;
+            if(!newDate) return;
+            await updateDoc(doc(db, "donors", currentUser.id), { lastDonation: newDate });
+            alert("আপডেট হয়েছে!");
+        };
+
+        window.submitAppeal = async function() {
+            const text = document.getElementById('appealText').value;
+            if(!text) return;
+            await addDoc(collection(db, "appeals"), { donorId: currentUser.id, name: currentUser.fullName, request: text, time: new Date() });
+            alert("আবেদন পাঠানো হয়েছে।"); closeModal('modal-appeal');
+        };
+
+        // --- SEARCH LOGIC (Open for all) ---
+        window.searchDonors = async function() {
+            const group = document.getElementById('searchGroup').value;
+            const upazila = document.getElementById('searchUpazila').value;
+            const resDiv = document.getElementById('searchResults');
+            resDiv.innerHTML = '<div class="text-center">খুঁজছি...</div>';
+
+            const querySnapshot = await getDocs(collection(db, "donors"));
+            let html = "";
+            let count = 0;
+
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if ((group === "" || data.bloodGroup === group) && (upazila === "" || data.upazila === upazila)) {
+                    count++;
+                    const isAvailable = checkAvailability(data.lastDonation);
+                    const availabilityBadge = isAvailable ? 
+                        `<span style="color:green; font-weight:bold;">● রক্ত দিতে পারবে</span>` : 
+                        `<span style="color:red; font-weight:bold;">● রক্ত দিতে পারবে না</span>`;
+
+                    html += `
+                        <div class="donor-card">
+                            <div class="donor-card-header">
+                                <h3>${data.fullName}</h3>
+                                <span class="blood-badge">${data.bloodGroup}</span>
+                            </div>
+                            <p><i class="fa-solid fa-location-dot"></i> ${data.upazila}, ${data.district}</p>
+                            <p>${availabilityBadge}</p>
+                            <div class="donor-actions">
+                                ${renderContactButton(data)}
+                            </div>
+                        </div>`;
+                }
+            });
+            resDiv.innerHTML = count > 0 ? html : "<p class='text-center'>কোনো ডোনার পাওয়া যায়নি</p>";
+        };
+
+        function checkAvailability(dateStr) {
+            if(dateStr === "N/A" || !dateStr) return true;
+            const diffDays = Math.ceil((new Date() - new Date(dateStr)) / (1000 * 60 * 60 * 24));
+            return diffDays >= 120;
+        }
+
+        function renderContactButton(data) {
+            if(data.gender === "Female") {
+                return `<button class="btn btn-success" style="padding:5px 10px; font-size:0.8rem;" onclick="contactAdminForFemale('${data.donorId}')"><i class="fa-solid fa-phone"></i> প্রতিনিধি</button>`;
+            } else {
+                return `
+                    <button class="btn btn-success" style="padding:5px 10px; font-size:0.8rem;" onclick="logAndCall('${data.donorId}', '${data.mobile}')"><i class="fa-solid fa-phone"></i> কল</button>
+                    <button class="btn btn-success" style="background:#25D366; padding:5px 10px;" onclick="logAndWhatsapp('${data.donorId}', '${data.mobile}')"><i class="fa-brands fa-whatsapp"></i></button>
+                `;
+            }
+        }
+
+        // --- PRIVACY & LOGGING ---
+        const ADMIN_NUMBER = "01778362310"; 
+        window.contactAdminForFemale = function(targetId) {
+            alert("নিরাপত্তার স্বার্থে মহিলা ডোনারদের সাথে প্রতিনিধি কথা বলবেন।");
+            logContact("Guest", targetId, "Call_Female_Proxy");
+            window.location.href = `tel:${ADMIN_NUMBER}`;
+        };
+        window.logAndCall = function(targetId, number) {
+            logContact(currentUser ? currentUser.id : "Guest", targetId, "Call");
+            window.location.href = `tel:${number}`;
+        };
+        window.logAndWhatsapp = function(targetId, number) {
+            logContact(currentUser ? currentUser.id : "Guest", targetId, "WhatsApp");
+            window.location.href = `https://wa.me/+88${number}`;
+        };
+        async function logContact(seeker, donor, type) {
+            try { await addDoc(collection(db, "contact_logs"), { seeker, donor, type, time: new Date() }); } catch(e){}
+        }
+
+        // --- BLOOD REQUEST ---
+        document.getElementById('requestForm').addEventListener('submit', async function(e){
+            e.preventDefault();
+            const data = {
+                name: document.getElementById('reqName').value,
+                group: document.getElementById('reqGroup').value,
+                mobile: document.getElementById('reqMobile').value,
+                location: document.getElementById('reqLocation').value,
+                time: document.getElementById('reqTime').value,
+                postedAt: new Date()
+            };
+            await addDoc(collection(db, "blood_requests"), data);
+            alert("আবেদন পোস্ট করা হয়েছে!"); document.getElementById('requestForm').reset(); loadRequests();
+        });
+
+        async function loadRequests() {
+            const snaps = await getDocs(collection(db, "blood_requests"));
+            let html = "";
+            snaps.forEach(doc => {
+                const d = doc.data();
+                html += `
+                    <div style="background:rgba(255,255,255,0.1); padding:15px; border-radius:10px; margin-bottom:10px; border-left:4px solid var(--warning-color);">
+                        <h4 style="color:var(--warning-color);">${d.group} প্রয়োজন</h4>
+                        <p>রোগী: ${d.name} | স্থান: ${d.location}</p>
+                        <p>সময়: ${new Date(d.time).toLocaleString()}</p>
+                        <a href="tel:${d.mobile}" class="btn btn-success" style="padding:5px 10px; font-size:0.8rem; margin-top:5px;">কল করুন</a>
+                    </div>`;
+            });
+            document.getElementById('requestList').innerHTML = html;
+        }
+
+        window.openInChrome = function() {
+            window.location.href = "intent://" + window.location.href.replace(/https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
+        };
+    </script>
+</body>
+</html>
