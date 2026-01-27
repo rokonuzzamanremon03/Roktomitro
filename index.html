@@ -105,6 +105,28 @@
             .hero-title { font-size: 2.5rem; }
             .glass-box { padding: 20px; }
         }
+        /* --- ডোনেশন পেজ স্টাইল --- */
+        .btn-pay {
+            background: linear-gradient(90deg, #11998e 0%, #38ef7d 100%);
+            color: white; border: none; padding: 15px 30px;
+            border-radius: 50px; font-size: 1.1rem; font-weight: bold;
+            cursor: pointer; width: 100%; margin-top: 15px;
+            transition: transform 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .btn-pay:hover { transform: translateY(-2px); }
+        .btn-pay:disabled { background: #ccc; cursor: not-allowed; }
+
+        .secure-badge {
+            margin-top: 20px; font-size: 0.8rem; color: #eee;
+            display: flex; justify-content: center; align-items: center; gap: 5px;
+        }
+        #status-msg { margin-top: 15px; font-size: 0.9rem; line-height: 1.4; }
+        .error { color: #721c24; background: #f8d7da; padding: 5px 10px; border-radius: 5px; display: inline-block; }
+        .success { color: #155724; background: #d4edda; padding: 5px 10px; border-radius: 5px; display: inline-block; }
+
+        /* সাকসেস ভিউ */
+        #view-donation-success { display: none; text-align: center; }
+        .success-icon { font-size: 4rem; color: #2fff79; margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -341,18 +363,41 @@
 
         <div id="view-donation" class="view-section glass-box">
             <button class="btn btn-secondary mb-20" onclick="showHome()"><i class="fa-solid fa-arrow-left"></i> হোম</button>
-            <h2 class="text-center">ডোনেশন ডিটেইলস</h2>
-            <p class="text-center mb-20">আপনার সামান্য অনুদান আমাদের কার্যক্রমকে এগিয়ে নিতে সাহায্য করবে।</p>
-            <div style="background: white; color: #333; padding: 20px; border-radius: 15px;">
-                <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;">
-                    <span><i class="fa-solid fa-mobile-screen" style="color:#e2136e;"></i> বিকাশ (Personal)</span>
-                    <span style="font-family:monospace;">Coming Soon</span>
-                </div>
-                <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;">
-                    <span><i class="fa-solid fa-mobile-screen" style="color:#f6921e;"></i> নগদ (Personal)</span>
-                    <span style="font-family:monospace;">Coming Soon</span>
-                </div>
+            <h2 class="text-center"><i class="fa-solid fa-hand-holding-heart"></i> ডোনেশন</h2>
+            <p class="text-center mb-20">আপনার ছোট অবদান বাঁচাতে পারে একটি প্রাণ</p>
+    
+        <div class="input-group">
+            <label>আপনার নাম (English)</label>
+            <input type="text" id="cus_name" placeholder="Name" value="Guest Donor">
+        </div>
+
+        <div class="input-group">
+            <label>মোবাইল নম্বর</label>
+            <input type="tel" id="mobile_don" placeholder="017xxxxxxxx">
+        </div>
+
+        <div class="input-group">
+            <label>টাকার পরিমাণ (BDT)</label>
+            <input type="number" id="amount" placeholder="Minimum 10 Tk" value="50">
+        </div>
+
+        <button id="payBtn" class="btn-pay" onclick="processPayment()">
+            <i class="fa-solid fa-heart"></i> ডোনেট করুন (ZiniPay)
+        </button>
+
+        <div id="status-msg" class="text-center"></div>
+
+        <div class="secure-badge">
+            <i class="fa-solid fa-shield-halved"></i> Secured by ZiniPay
             </div>
+        </div>
+
+        <div id="view-donation-success" class="view-section glass-box">
+            <div class="success-icon"><i class="fa-solid fa-circle-check"></i></div>
+            <h2 style="color: #2fff79;">ধন্যবাদ!</h2>
+            <p>আপনার ডোনেশন সফল হয়েছে।</p>
+            <p>Transaction ID: <span id="tx-id" style="font-weight:bold; color:white;"></span></p>
+            <button class="btn btn-primary" onclick="window.location.href='/'">হোম পেজে যান</button>
         </div>
 
     </div>
@@ -745,5 +790,93 @@
             window.location.href = "intent://" + window.location.href.replace(/https?:\/\//, "") + "#Intent;scheme=https;package=com.android.chrome;end";
         };
     </script>
+    
+    <script>
+    // --- পেমেন্ট কনফিগারেশন ---
+    const API_KEY = "d539cd6c2549fd30e0ed87eae12ebe58fde3b9fc1bb8fc90"; 
+    const CREATE_URL = "https://api.zinipay.com/v1/payment/create";
+    // এই ডোমেইনটি অবশ্যই আপনার লাইভ সাইটের হতে হবে (Netlify বা যেখানে হোস্ট করেছেন)
+    const BRAND_DOMAIN = "https://roktomitro.netlify.app"; 
+
+    // পেমেন্ট প্রসেসিং ফাংশন
+    async function processPayment() {
+        const amount = document.getElementById('amount').value;
+        const mobile = document.getElementById('mobile_don').value;
+        const name = document.getElementById('cus_name').value;
+        const btn = document.getElementById('payBtn');
+        const msg = document.getElementById('status-msg');
+
+        // ভ্যালিডেশন
+        if(amount < 10) { 
+            msg.innerHTML = "<span class='error'>সর্বনিম্ন ১০ টাকা হতে হবে।</span>"; 
+            return; 
+        }
+        if(!mobile || mobile.length < 11) { 
+            msg.innerHTML = "<span class='error'>সঠিক ১১ সংখ্যার মোবাইল নম্বর দিন।</span>"; 
+            return; 
+        }
+
+        // লোডিং শুরু
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> প্রসেসিং...';
+        btn.disabled = true;
+        msg.innerHTML = "";
+
+        // পেলোড তৈরি
+        const dummyEmail = `donor_${mobile}@roktomitro.com`;
+        const successUrl = `${BRAND_DOMAIN}?status=success`;
+        const cancelUrl = `${BRAND_DOMAIN}?status=cancel`;
+
+        const payload = {
+            "cus_name": name || "Anonymous",
+            "cus_email": dummyEmail,
+            "amount": amount.toString(),
+            "redirect_url": successUrl,
+            "cancel_url": cancelUrl,
+            "metadata": { "phone": mobile, "generated_time": new Date().toISOString() }
+        };
+
+        try {
+            const response = await fetch(CREATE_URL, {
+                method: "POST",
+                headers: { "zini-api-key": API_KEY, "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            if (data.payment_url) {
+                msg.innerHTML = "<span class='success'>গেটওয়ে ওপেন হচ্ছে...</span>";
+                window.location.href = data.payment_url;
+            } else {
+                let errorMsg = data.message || data.error || "লিংক পাওয়া যায়নি";
+                msg.innerHTML = `<span class='error'>সমস্যা: ${JSON.stringify(errorMsg)}</span>`;
+            }
+        } catch (error) {
+            msg.innerHTML = `<span class='error'>নেটওয়ার্ক এরর: ${error.message}</span>`;
+        }
+
+        if(!msg.innerHTML.includes("গেটওয়ে")) {
+            btn.innerHTML = '<i class="fa-solid fa-heart"></i> ডোনেট করুন (ZiniPay)';
+            btn.disabled = false;
+        }
+    }
+
+    // পেজ লোড হলে চেক করা (পেমেন্ট শেষে ফিরে আসলে)
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const status = urlParams.get('status');
+        const invoiceId = urlParams.get('invoiceId'); 
+
+        if(status === 'success') {
+            // সব ভিউ লুকিয়ে সাকসেস ভিউ দেখানো
+            document.querySelectorAll('.view-section').forEach(el => el.style.display = 'none');
+            document.getElementById('view-donation-success').style.display = 'block';
+            if(invoiceId) document.getElementById('tx-id').innerText = invoiceId;
+        } else if (status === 'cancel') {
+            alert("আপনি পেমেন্ট বাতিল করেছেন।");
+            showView('view-donation'); // আবার ডোনেশন পেজে নিয়ে যাবে
+        }
+    };
+</script>
 </body>
 </html>
